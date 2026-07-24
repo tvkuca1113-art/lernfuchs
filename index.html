@@ -1253,6 +1253,165 @@ RAW_VOCAB.push(
   {de:'falsch', bs:'pogrešan', en:'wrong', pos:'adj', topic:'adjs', lvl:'A1'}
 );
 
+RAW_VOCAB.push(
+  /* ---- A2 proširenje --------------------------------------------------- */
+  // Beruf
+  {de:'Anwalt', art:'der', pl:'Anwälte', bs:'advokat', en:'lawyer', pos:'noun', emoji:'⚖️', topic:'work', lvl:'A2'},
+  {de:'Friseur', art:'der', pl:'Friseure', bs:'frizer', en:'hairdresser', pos:'noun', emoji:'💇', topic:'work', lvl:'A2'},
+  {de:'Mechaniker', art:'der', pl:'Mechaniker', bs:'mehaničar', en:'mechanic', pos:'noun', emoji:'🔧', topic:'work', lvl:'A2'},
+  {de:'Bäcker', art:'der', pl:'Bäcker', bs:'pekar', en:'baker', pos:'noun', emoji:'🥖', topic:'work', lvl:'A2'},
+  {de:'Journalist', art:'der', pl:'Journalisten', bs:'novinar', en:'journalist', pos:'noun', emoji:'📰', topic:'work', lvl:'A2'},
+  {de:'Firma', art:'die', pl:'Firmen', bs:'firma', en:'company', pos:'noun', emoji:'🏢', topic:'work', lvl:'A2'},
+  {de:'Kollege', art:'der', pl:'Kollegen', bs:'kolega', en:'colleague', pos:'noun', topic:'work', lvl:'A2'},
+  {de:'Besprechung', art:'die', pl:'Besprechungen', bs:'sastanak', en:'meeting', pos:'noun', topic:'work', lvl:'A2'},
+  {de:'Gehalt', art:'das', pl:'Gehälter', bs:'plata', en:'salary', pos:'noun', emoji:'💶', topic:'work', lvl:'A2'},
+  {de:'Bewerbung', art:'die', pl:'Bewerbungen', bs:'prijava (za posao)', en:'job application', pos:'noun', topic:'work', lvl:'A2'},
+  // Reisen & Natur
+  {de:'Ankunft', art:'die', pl:'Ankünfte', bs:'dolazak', en:'arrival', pos:'noun', topic:'travel', lvl:'A2'},
+  {de:'Abfahrt', art:'die', pl:'Abfahrten', bs:'polazak', en:'departure', pos:'noun', topic:'travel', lvl:'A2'},
+  {de:'Ausweis', art:'der', pl:'Ausweise', bs:'lična karta', en:'ID card', pos:'noun', emoji:'🪪', topic:'travel', lvl:'A2'},
+  {de:'Grenze', art:'die', pl:'Grenzen', bs:'granica', en:'border', pos:'noun', topic:'travel', lvl:'A2'},
+  {de:'Sehenswürdigkeit', art:'die', pl:'Sehenswürdigkeiten', bs:'znamenitost', en:'sight/attraction', pos:'noun', topic:'travel', lvl:'A2'},
+  {de:'Strand', art:'der', pl:'Strände', bs:'plaža', en:'beach', pos:'noun', emoji:'🏖️', topic:'travel', lvl:'A2'},
+  {de:'Meer', art:'das', pl:'Meere', bs:'more', en:'sea', pos:'noun', emoji:'🌊', topic:'travel', lvl:'A2'},
+  {de:'Berg', art:'der', pl:'Berge', bs:'planina', en:'mountain', pos:'noun', emoji:'⛰️', topic:'travel', lvl:'A2'},
+  {de:'Insel', art:'die', pl:'Inseln', bs:'ostrvo', en:'island', pos:'noun', emoji:'🏝️', topic:'travel', lvl:'A2'},
+  {de:'Wald', art:'der', pl:'Wälder', bs:'šuma', en:'forest', pos:'noun', emoji:'🌲', topic:'travel', lvl:'A2'},
+  // Gesundheit
+  {de:'Erkältung', art:'die', pl:'Erkältungen', bs:'prehlada', en:'cold (illness)', pos:'noun', emoji:'🤧', topic:'health', lvl:'A2'},
+  {de:'Husten', art:'der', pl:'—', bs:'kašalj', en:'cough', pos:'noun', topic:'health', lvl:'A2'},
+  {de:'Grippe', art:'die', pl:'Grippen', bs:'grip', en:'flu', pos:'noun', topic:'health', lvl:'A2'},
+  {de:'Gesundheit', art:'die', pl:'—', bs:'zdravlje', en:'health', pos:'noun', topic:'health', lvl:'A2'},
+  {de:'Zahnarzt', art:'der', pl:'Zahnärzte', bs:'stomatolog', en:'dentist', pos:'noun', emoji:'🦷', topic:'health', lvl:'A2'},
+  {de:'sich erholen', refl:true, bs:'odmoriti se / oporaviti', en:'to recover/relax', pos:'verb', topic:'health', lvl:'A2'},
+  // Freizeit
+  {de:'Gitarre', art:'die', pl:'Gitarren', bs:'gitara', en:'guitar', pos:'noun', emoji:'🎸', topic:'hobby', lvl:'A2'},
+  {de:'Klavier', art:'das', pl:'Klaviere', bs:'klavir', en:'piano', pos:'noun', emoji:'🎹', topic:'hobby', lvl:'A2'},
+  {de:'Mannschaft', art:'die', pl:'Mannschaften', bs:'ekipa / tim', en:'team', pos:'noun', emoji:'⚽', topic:'hobby', lvl:'A2'},
+  {de:'zeichnen', bs:'crtati', en:'to draw', pos:'verb', topic:'hobby', lvl:'A2'},
+  {de:'gewinnen', bs:'pobijediti', en:'to win', pos:'verb', topic:'hobby', lvl:'A2'},
+  {de:'verlieren', bs:'izgubiti', en:'to lose', pos:'verb', topic:'hobby', lvl:'A2'},
+  {de:'sammeln', bs:'skupljati', en:'to collect', pos:'verb', topic:'hobby', lvl:'A2'},
+  // Trennbare Verben (mapiraju na postojeće osnove → rade u konjugaciji)
+  {de:'abfahren', sep:'ab', bs:'otputovati / krenuti', en:'to depart', pos:'verb', topic:'sepverbs', lvl:'A2', ex:'Der Bus fährt um acht ab.', exbs:'Autobus kreće u osam.', exen:'The bus departs at eight.'},
+  {de:'zurückkommen', sep:'zurück', bs:'vratiti se', en:'to come back', pos:'verb', topic:'sepverbs', lvl:'A2'},
+  {de:'aufmachen', sep:'auf', bs:'otvoriti', en:'to open', pos:'verb', topic:'sepverbs', lvl:'A2'},
+  {de:'zumachen', sep:'zu', bs:'zatvoriti', en:'to close', pos:'verb', topic:'sepverbs', lvl:'A2'},
+  {de:'mitnehmen', sep:'mit', bs:'ponijeti', en:'to take along', pos:'verb', topic:'sepverbs', lvl:'A2'},
+  {de:'teilnehmen', sep:'teil', bs:'učestvovati', en:'to take part', pos:'verb', topic:'sepverbs', lvl:'A2'},
+  {de:'ausgehen', sep:'aus', bs:'izaći (u grad)', en:'to go out', pos:'verb', topic:'sepverbs', lvl:'A2'},
+  // Reflexive
+  {de:'sich beeilen', refl:true, bs:'požuriti se', en:'to hurry', pos:'verb', topic:'reflexive', lvl:'A2'},
+  {de:'sich ärgern', refl:true, bs:'ljutiti se', en:'to be annoyed', pos:'verb', topic:'reflexive', lvl:'A2'},
+  {de:'sich erinnern', refl:true, bs:'sjećati se', en:'to remember', pos:'verb', topic:'reflexive', lvl:'A2', ex:'Ich erinnere mich an dich.', exbs:'Sjećam te se.', exen:'I remember you.'},
+  {de:'sich entscheiden', refl:true, bs:'odlučiti se', en:'to decide', pos:'verb', topic:'reflexive', lvl:'A2'},
+  // Mehr Nomen/Adjektive
+  {de:'Grund', art:'der', pl:'Gründe', bs:'razlog', en:'reason', pos:'noun', topic:'a2misc', lvl:'A2'},
+  {de:'Lösung', art:'die', pl:'Lösungen', bs:'rješenje', en:'solution', pos:'noun', topic:'a2misc', lvl:'A2'},
+  {de:'Vorschlag', art:'der', pl:'Vorschläge', bs:'prijedlog', en:'suggestion', pos:'noun', topic:'a2misc', lvl:'A2'},
+  {de:'Gefühl', art:'das', pl:'Gefühle', bs:'osjećaj', en:'feeling', pos:'noun', topic:'a2misc', lvl:'A2'},
+  {de:'Einladung', art:'die', pl:'Einladungen', bs:'pozivnica', en:'invitation', pos:'noun', emoji:'💌', topic:'a2misc', lvl:'A2'},
+  {de:'Geschenk', art:'das', pl:'Geschenke', bs:'poklon', en:'gift', pos:'noun', emoji:'🎁', topic:'a2misc', lvl:'A2'},
+  {de:'Nachricht', art:'die', pl:'Nachrichten', bs:'vijest / poruka', en:'message/news', pos:'noun', topic:'a2misc', lvl:'A2'},
+  {de:'möglich', bs:'moguć', en:'possible', pos:'adj', topic:'a2misc', lvl:'A2'},
+  {de:'nötig', bs:'potreban', en:'necessary', pos:'adj', topic:'a2misc', lvl:'A2'},
+  {de:'pünktlich', bs:'tačan (na vrijeme)', en:'punctual', pos:'adj', topic:'a2misc', lvl:'A2'}
+);
+
+RAW_VOCAB.push(
+  /* ---- NOVA TEMA A1: Restoran (topic 'restaurant') --------------------- */
+  {de:'Speisekarte', art:'die', pl:'Speisekarten', bs:'jelovnik', en:'menu', pos:'noun', emoji:'📋', topic:'restaurant', lvl:'A1', ex:'Die Speisekarte, bitte!', exbs:'Jelovnik, molim!', exen:'The menu, please!'},
+  {de:'Rechnung', art:'die', pl:'Rechnungen', bs:'račun', en:'bill', pos:'noun', emoji:'🧾', topic:'restaurant', lvl:'A1', ex:'Die Rechnung, bitte.', exbs:'Račun, molim.', exen:'The bill, please.'},
+  {de:'Teller', art:'der', pl:'Teller', bs:'tanjir', en:'plate', pos:'noun', emoji:'🍽️', topic:'restaurant', lvl:'A1'},
+  {de:'Glas', art:'das', pl:'Gläser', bs:'čaša', en:'glass', pos:'noun', emoji:'🥛', topic:'restaurant', lvl:'A1'},
+  {de:'Gabel', art:'die', pl:'Gabeln', bs:'viljuška', en:'fork', pos:'noun', emoji:'🍴', topic:'restaurant', lvl:'A1'},
+  {de:'Messer', art:'das', pl:'Messer', bs:'nož', en:'knife', pos:'noun', emoji:'🔪', topic:'restaurant', lvl:'A1'},
+  {de:'Löffel', art:'der', pl:'Löffel', bs:'kašika', en:'spoon', pos:'noun', emoji:'🥄', topic:'restaurant', lvl:'A1'},
+  {de:'Frühstück', art:'das', pl:'Frühstücke', bs:'doručak', en:'breakfast', pos:'noun', emoji:'🍳', topic:'restaurant', lvl:'A1'},
+  {de:'Mittagessen', art:'das', pl:'Mittagessen', bs:'ručak', en:'lunch', pos:'noun', emoji:'🍽️', topic:'restaurant', lvl:'A1'},
+  {de:'Abendessen', art:'das', pl:'Abendessen', bs:'večera', en:'dinner', pos:'noun', emoji:'🍲', topic:'restaurant', lvl:'A1'},
+  {de:'bestellen', bs:'naručiti', en:'to order', pos:'verb', topic:'restaurant', lvl:'A1', ex:'Ich möchte bestellen.', exbs:'Želim naručiti.', exen:'I would like to order.'},
+  {de:'lecker', bs:'ukusan', en:'tasty', pos:'adj', emoji:'😋', topic:'restaurant', lvl:'A1'},
+  {de:'Trinkgeld', art:'das', pl:'Trinkgelder', bs:'napojnica', en:'tip', pos:'noun', topic:'restaurant', lvl:'A1'},
+  {de:'Kellner', art:'der', pl:'Kellner', bs:'konobar', en:'waiter', pos:'noun', emoji:'🧑‍🍳', topic:'restaurant', lvl:'A1'},
+
+  /* ---- NOVA TEMA A2: Kupovina (topic 'shopping') ----------------------- */
+  {de:'Geschäft', art:'das', pl:'Geschäfte', bs:'radnja / prodavnica', en:'shop', pos:'noun', emoji:'🏬', topic:'shopping', lvl:'A2'},
+  {de:'Preis', art:'der', pl:'Preise', bs:'cijena', en:'price', pos:'noun', emoji:'🏷️', topic:'shopping', lvl:'A2', ex:'Was kostet das? Der Preis ist gut.', exbs:'Koliko to košta? Cijena je dobra.', exen:'How much is it? The price is good.'},
+  {de:'Rabatt', art:'der', pl:'Rabatte', bs:'popust', en:'discount', pos:'noun', topic:'shopping', lvl:'A2'},
+  {de:'Größe', art:'die', pl:'Größen', bs:'veličina', en:'size', pos:'noun', topic:'shopping', lvl:'A2'},
+  {de:'Kasse', art:'die', pl:'Kassen', bs:'kasa', en:'checkout', pos:'noun', emoji:'🛒', topic:'shopping', lvl:'A2'},
+  {de:'Quittung', art:'die', pl:'Quittungen', bs:'priznanica', en:'receipt', pos:'noun', emoji:'🧾', topic:'shopping', lvl:'A2'},
+  {de:'Angebot', art:'das', pl:'Angebote', bs:'ponuda', en:'offer', pos:'noun', topic:'shopping', lvl:'A2'},
+  {de:'Kunde', art:'der', pl:'Kunden', bs:'kupac / mušterija', en:'customer', pos:'noun', topic:'shopping', lvl:'A2'},
+  {de:'anprobieren', sep:'an', bs:'probati (odjeću)', en:'to try on', pos:'verb', topic:'shopping', lvl:'A2'},
+  {de:'umtauschen', sep:'um', bs:'zamijeniti', en:'to exchange', pos:'verb', topic:'shopping', lvl:'A2'},
+  {de:'passen', bs:'pristajati / odgovarati', en:'to fit/suit', pos:'verb', topic:'shopping', lvl:'A2'},
+  {de:'günstig', bs:'povoljan', en:'cheap/good value', pos:'adj', topic:'shopping', lvl:'A2'},
+
+  /* ---- B1 proširenje (društvo, glagoli, konektori, pridjevi) ----------- */
+  {de:'Bildung', art:'die', pl:'—', bs:'obrazovanje', en:'education', pos:'noun', emoji:'🎓', topic:'b1society', lvl:'B1'},
+  {de:'Politik', art:'die', pl:'—', bs:'politika', en:'politics', pos:'noun', topic:'b1society', lvl:'B1'},
+  {de:'Kultur', art:'die', pl:'Kulturen', bs:'kultura', en:'culture', pos:'noun', topic:'b1society', lvl:'B1'},
+  {de:'Wissenschaft', art:'die', pl:'Wissenschaften', bs:'nauka', en:'science', pos:'noun', emoji:'🔬', topic:'b1society', lvl:'B1'},
+  {de:'Entwicklung', art:'die', pl:'Entwicklungen', bs:'razvoj', en:'development', pos:'noun', topic:'b1society', lvl:'B1'},
+  {de:'Ziel', art:'das', pl:'Ziele', bs:'cilj', en:'goal', pos:'noun', emoji:'🎯', topic:'b1society', lvl:'B1'},
+  {de:'Ursache', art:'die', pl:'Ursachen', bs:'uzrok', en:'cause', pos:'noun', topic:'b1society', lvl:'B1'},
+  {de:'Folge', art:'die', pl:'Folgen', bs:'posljedica', en:'consequence', pos:'noun', topic:'b1society', lvl:'B1'},
+  {de:'Verantwortung', art:'die', pl:'—', bs:'odgovornost', en:'responsibility', pos:'noun', topic:'b1society', lvl:'B1'},
+  {de:'Unterschied', art:'der', pl:'Unterschiede', bs:'razlika', en:'difference', pos:'noun', topic:'b1society', lvl:'B1'},
+  {de:'erreichen', bs:'postići / stići', en:'to achieve/reach', pos:'verb', topic:'b1verbs', lvl:'B1'},
+  {de:'verbessern', bs:'poboljšati', en:'to improve', pos:'verb', topic:'b1verbs', lvl:'B1'},
+  {de:'vermeiden', bs:'izbjeći', en:'to avoid', pos:'verb', topic:'b1verbs', lvl:'B1'},
+  {de:'unterstützen', bs:'podržati', en:'to support', pos:'verb', topic:'b1verbs', lvl:'B1'},
+  {de:'verbieten', bs:'zabraniti', en:'to forbid', pos:'verb', topic:'b1verbs', lvl:'B1'},
+  {de:'ermöglichen', bs:'omogućiti', en:'to enable', pos:'verb', topic:'b1verbs', lvl:'B1'},
+  {de:'dennoch', bs:'ipak', en:'nonetheless', pos:'adv', topic:'b1connect', lvl:'B1'},
+  {de:'allerdings', bs:'međutim / doduše', en:'however', pos:'adv', topic:'b1connect', lvl:'B1'},
+  {de:'einerseits', bs:'s jedne strane', en:'on one hand', pos:'adv', topic:'b1connect', lvl:'B1'},
+  {de:'andererseits', bs:'s druge strane', en:'on the other hand', pos:'adv', topic:'b1connect', lvl:'B1'},
+  {de:'verantwortlich', bs:'odgovoran', en:'responsible', pos:'adj', topic:'b1adj', lvl:'B1'},
+  {de:'selbstständig', bs:'samostalan', en:'independent', pos:'adj', topic:'b1adj', lvl:'B1'},
+  {de:'zuverlässig', bs:'pouzdan', en:'reliable', pos:'adj', topic:'b1adj', lvl:'B1'},
+  {de:'höflich', bs:'učtiv', en:'polite', pos:'adj', topic:'b1adj', lvl:'B1'},
+  {de:'ehrlich', bs:'iskren', en:'honest', pos:'adj', topic:'b1adj', lvl:'B1'},
+
+  /* ---- NOVA TEMA B1: Mediji i tehnologija (topic 'media') -------------- */
+  {de:'Internet', art:'das', pl:'—', bs:'internet', en:'internet', pos:'noun', emoji:'🌐', topic:'media', lvl:'B1'},
+  {de:'Smartphone', art:'das', pl:'Smartphones', bs:'pametni telefon', en:'smartphone', pos:'noun', emoji:'📱', topic:'media', lvl:'B1'},
+  {de:'App', art:'die', pl:'Apps', bs:'aplikacija', en:'app', pos:'noun', emoji:'📲', topic:'media', lvl:'B1'},
+  {de:'Passwort', art:'das', pl:'Passwörter', bs:'lozinka', en:'password', pos:'noun', emoji:'🔑', topic:'media', lvl:'B1'},
+  {de:'Webseite', art:'die', pl:'Webseiten', bs:'web stranica', en:'website', pos:'noun', topic:'media', lvl:'B1'},
+  {de:'Nutzer', art:'der', pl:'Nutzer', bs:'korisnik', en:'user', pos:'noun', topic:'media', lvl:'B1'},
+  {de:'Werbung', art:'die', pl:'Werbungen', bs:'reklama', en:'advertising', pos:'noun', emoji:'📢', topic:'media', lvl:'B1'},
+  {de:'Datei', art:'die', pl:'Dateien', bs:'datoteka', en:'file', pos:'noun', emoji:'📁', topic:'media', lvl:'B1'},
+  {de:'teilen', bs:'dijeliti (share)', en:'to share', pos:'verb', topic:'media', lvl:'B1'},
+  {de:'speichern', bs:'sačuvati (save)', en:'to save', pos:'verb', emoji:'💾', topic:'media', lvl:'B1'},
+  {de:'soziale Medien', bs:'društvene mreže', en:'social media', pos:'phrase', topic:'media', lvl:'B1'},
+
+  /* ---- B2 proširenje + NOVA TEMA B2: Ekonomija (topic 'economy') ------- */
+  {de:'Maßnahme', art:'die', pl:'Maßnahmen', bs:'mjera', en:'measure', pos:'noun', topic:'b2adv', lvl:'B2'},
+  {de:'Fortschritt', art:'der', pl:'Fortschritte', bs:'napredak', en:'progress', pos:'noun', topic:'b2adv', lvl:'B2'},
+  {de:'Krise', art:'die', pl:'Krisen', bs:'kriza', en:'crisis', pos:'noun', topic:'b2adv', lvl:'B2'},
+  {de:'Vielfalt', art:'die', pl:'—', bs:'raznolikost', en:'diversity', pos:'noun', topic:'b2adv', lvl:'B2'},
+  {de:'Klimawandel', art:'der', pl:'—', bs:'klimatske promjene', en:'climate change', pos:'noun', emoji:'🌍', topic:'b2adv', lvl:'B2'},
+  {de:'Digitalisierung', art:'die', pl:'—', bs:'digitalizacija', en:'digitalization', pos:'noun', topic:'b2adv', lvl:'B2'},
+  {de:'umstritten', bs:'sporan', en:'controversial', pos:'adj', topic:'b2adv', lvl:'B2'},
+  {de:'wesentlich', bs:'bitan / suštinski', en:'essential', pos:'adj', topic:'b2adv', lvl:'B2'},
+  {de:'zunehmend', bs:'sve više / rastući', en:'increasing', pos:'adj', topic:'b2adv', lvl:'B2'},
+  {de:'Wirtschaft', art:'die', pl:'—', bs:'privreda / ekonomija', en:'economy', pos:'noun', emoji:'📈', topic:'economy', lvl:'B2'},
+  {de:'Arbeitsmarkt', art:'der', pl:'Arbeitsmärkte', bs:'tržište rada', en:'job market', pos:'noun', topic:'economy', lvl:'B2'},
+  {de:'Vorstellungsgespräch', art:'das', pl:'Vorstellungsgespräche', bs:'razgovor za posao', en:'job interview', pos:'noun', topic:'economy', lvl:'B2'},
+  {de:'Steuer', art:'die', pl:'Steuern', bs:'porez', en:'tax', pos:'noun', topic:'economy', lvl:'B2'},
+  {de:'Vertrag', art:'der', pl:'Verträge', bs:'ugovor', en:'contract', pos:'noun', emoji:'📄', topic:'economy', lvl:'B2'},
+  {de:'Gewinn', art:'der', pl:'Gewinne', bs:'dobit / profit', en:'profit', pos:'noun', topic:'economy', lvl:'B2'},
+  {de:'Verlust', art:'der', pl:'Verluste', bs:'gubitak', en:'loss', pos:'noun', topic:'economy', lvl:'B2'},
+  {de:'Konkurrenz', art:'die', pl:'—', bs:'konkurencija', en:'competition', pos:'noun', topic:'economy', lvl:'B2'},
+  {de:'Unternehmen', art:'das', pl:'Unternehmen', bs:'preduzeće', en:'enterprise', pos:'noun', emoji:'🏢', topic:'economy', lvl:'B2'},
+  {de:'eine Rolle spielen', bs:'igrati ulogu', en:'to play a role', pos:'phrase', nvv:true, topic:'b2nvv', lvl:'B2'},
+  {de:'in Betracht ziehen', bs:'uzeti u obzir', en:'to take into consideration', pos:'phrase', nvv:true, topic:'b2nvv', lvl:'B2'}
+);
+
 /* ---- Finalize vocab: stable ids + fast lookup indexes ------------------- */
 (function finalizeVocab(){
   const used = Object.create(null);
@@ -1312,7 +1471,8 @@ const CONJ = {
   mögen:  {praes:{ich:'mag',du:'magst',er:'mag',wir:'mögen',ihr:'mögt',sie:'mögen'}, praet:{ich:'mochte',du:'mochtest',er:'mochte',wir:'mochten',ihr:'mochtet',sie:'mochten'}, pp:'gemocht', aux:'haben', k2:'möchte'},
 };
 // Separable verbs derive their finite form from the base verb + particle at the end.
-const SEP_BASE = { ankommen:'kommen', mitkommen:'kommen', aufstehen:'stehen', anrufen:'rufen', einkaufen:'kaufen', fernsehen:'sehen', aufräumen:'räumen', einladen:'laden', anfangen:'fangen' };
+const SEP_BASE = { ankommen:'kommen', mitkommen:'kommen', aufstehen:'stehen', anrufen:'rufen', einkaufen:'kaufen', fernsehen:'sehen', aufräumen:'räumen', einladen:'laden', anfangen:'fangen',
+  abfahren:'fahren', zurückkommen:'kommen', aufmachen:'machen', zumachen:'machen', mitnehmen:'nehmen', teilnehmen:'nehmen', ausgehen:'gehen' };
 // (stehen/rufen/räumen/laden/fangen present forms for separable-base support)
 Object.assign(CONJ, {
   stehen:{praes:{ich:'stehe',du:'stehst',er:'steht',wir:'stehen',ihr:'steht',sie:'stehen'}, pp:'gestanden', aux:'haben'},
@@ -1666,6 +1826,7 @@ const UNITS = [
   {id:'a1u7', lvl:'A1', icon:'👕', color:'lb-a1', title:{bs:'Tijelo i odjeća',en:'Body & clothes'}, vocab:['body','clothes'], grammar:['g_negation'], lessons:3},
   {id:'a1u8', lvl:'A1', icon:'🏙️', color:'lb-a1', title:{bs:'U gradu',en:'In the city'}, vocab:['city'], grammar:['g_wortstellung'], lessons:3},
   {id:'a1u9', lvl:'A1', icon:'⚡', color:'lb-a1', title:{bs:'Glagoli i svakodnevica',en:'Verbs & daily life'}, vocab:['verbs','adjs','wfragen'], grammar:['g_seinhaben','g_praesens'], lessons:4},
+  {id:'a1u10', lvl:'A1', icon:'🍽️', color:'lb-a1', title:{bs:'U restoranu',en:'At the restaurant'}, vocab:['restaurant'], grammar:['g_akkusativ'], lessons:3},
   // ---- A2 ----
   {id:'a2u1', lvl:'A2', icon:'💼', color:'lb-a2', title:{bs:'Posao i zanimanja',en:'Work & jobs'}, vocab:['work'], grammar:['g_perfekt'], lessons:3},
   {id:'a2u2', lvl:'A2', icon:'🌦️', color:'lb-a2', title:{bs:'Vrijeme i putovanja',en:'Weather & travel'}, vocab:['weather','travel'], grammar:['g_dativ'], lessons:4},
@@ -1675,16 +1836,19 @@ const UNITS = [
   {id:'a2u6', lvl:'A2', icon:'📍', color:'lb-a2', title:{bs:'Predlozi mjesta',en:'Prepositions of place'}, vocab:['wechselprep'], grammar:['g_wechselprep'], lessons:3},
   {id:'a2u7', lvl:'A2', icon:'🔗', color:'lb-a2', title:{bs:'Zavisne rečenice',en:'Subordinate clauses'}, vocab:['a2misc'], grammar:['g_nebensatz','g_imperativ'], lessons:3},
   {id:'a2u8', lvl:'A2', icon:'🩺', color:'lb-a2', title:{bs:'Zdravlje i hobiji',en:'Health & hobbies'}, vocab:['health','reflexive','hobby'], grammar:['g_reflexiv'], lessons:3},
+  {id:'a2u9', lvl:'A2', icon:'🛍️', color:'lb-a2', title:{bs:'Kupovina',en:'Shopping'}, vocab:['shopping'], grammar:['g_dativ'], lessons:3},
   // ---- B1 ----
   {id:'b1u1', lvl:'B1', icon:'📜', color:'lb-b1', title:{bs:'Prošlost',en:'The past'}, vocab:['b1verbs'], grammar:['g_praeteritum'], lessons:3},
   {id:'b1u2', lvl:'B1', icon:'💭', color:'lb-b1', title:{bs:'Konjunktiv II',en:'Conditional'}, vocab:['b1society'], grammar:['g_konj2'], lessons:3},
   {id:'b1u3', lvl:'B1', icon:'🧩', color:'lb-b1', title:{bs:'Relativne rečenice i genitiv',en:'Relative clauses & genitive'}, vocab:['b1society'], grammar:['g_relativ','g_genitiv'], lessons:3},
   {id:'b1u4', lvl:'B1', icon:'🎯', color:'lb-b1', title:{bs:'Pridjevi i pasiv',en:'Adjectives & passive'}, vocab:['b1adj'], grammar:['g_adjektiv','g_passiv'], lessons:3},
   {id:'b1u5', lvl:'B1', icon:'🔮', color:'lb-b1', title:{bs:'Budućnost i konektori',en:'Future & connectors'}, vocab:['b1connect'], grammar:['g_futur','g_konnektoren'], lessons:3},
+  {id:'b1u6', lvl:'B1', icon:'📱', color:'lb-b1', title:{bs:'Mediji i tehnologija',en:'Media & technology'}, vocab:['media'], grammar:['g_relativ'], lessons:3},
   // ---- B2 ----
   {id:'b2u1', lvl:'B2', icon:'🗞️', color:'lb-b2', title:{bs:'Indirektni govor',en:'Reported speech'}, vocab:['b2adv'], grammar:['g_konj1'], lessons:3},
   {id:'b2u2', lvl:'B2', icon:'✒️', color:'lb-b2', title:{bs:'Stil i nominalizacija',en:'Style & nominalization'}, vocab:['b2adv'], grammar:['g_nominal','g_partizipadj'], lessons:3},
   {id:'b2u3', lvl:'B2', icon:'🎓', color:'lb-b2', title:{bs:'Kolokacije',en:'Collocations'}, vocab:['b2nvv'], grammar:['g_nvv','g_subjektivmodal'], lessons:3},
+  {id:'b2u4', lvl:'B2', icon:'💼', color:'lb-b2', title:{bs:'Posao i ekonomija',en:'Work & economy'}, vocab:['economy'], grammar:['g_passiv'], lessons:3},
 ];
 const UNIT_BY_ID = Object.fromEntries(UNITS.map(u=>[u.id,u]));
 const LEVELS = ['A1','A2','B1','B2'];
@@ -1951,6 +2115,119 @@ EXAM_TASKS.B2 = {
       tips:{bs:'Jasna teza, argumenti i pobijanje protivargumenta („dem würde ich widersprechen“).', en:'Clear thesis, arguments, and rebut a counterargument.'} },
   ],
 };
+/* ---- Dodatni ispitni zadaci (varijacija kroz pick()) ------------------- */
+EXAM_TASKS.A1.lesen.push(
+  { title:'Öffnungszeiten', text:'Supermarkt REWE — Öffnungszeiten:\nMontag bis Freitag: 8–20 Uhr\nSamstag: 8–18 Uhr\nSonntag: geschlossen',
+    qs:[ {q:'Der Supermarkt ist am Sonntag offen.', opts:['Richtig','Falsch'], a:1},
+         {q:'Am Samstag schließt der Supermarkt um 18 Uhr.', opts:['Richtig','Falsch'], a:0},
+         {q:'Wann öffnet der Supermarkt am Montag?', opts:['um 8 Uhr','um 18 Uhr','um 20 Uhr'], a:0} ] },
+  { title:'SMS von Tom', text:'Hi Lena, ich bin heute krank und kann nicht zur Uni kommen. Kannst du mir bitte deine Notizen schicken? Danke dir! Tom',
+    qs:[ {q:'Tom ist gesund.', opts:['Richtig','Falsch'], a:1},
+         {q:'Tom möchte die Notizen von Lena.', opts:['Richtig','Falsch'], a:0},
+         {q:'Warum kommt Tom nicht?', opts:['Er ist krank.','Er hat keine Zeit.','Er ist im Urlaub.'], a:0} ] }
+);
+EXAM_TASKS.A1.hoeren.push(
+  { title:'Ansage: Arztpraxis', script:'Guten Tag, hier ist die Praxis von Doktor Weber. Wir haben heute leider geschlossen. In dringenden Fällen rufen Sie bitte die Nummer eins eins zwei an. Vielen Dank.',
+    qs:[ {q:'Wie ist die Praxis heute?', opts:['geöffnet','geschlossen','umgezogen'], a:1},
+         {q:'Welche Nummer soll man im Notfall anrufen?', opts:['110','112','116'], a:1} ] },
+  { title:'Wetterbericht', script:'Und nun das Wetter für morgen: Im Norden regnet es den ganzen Tag. Im Süden scheint dagegen die Sonne. Die Temperatur liegt bei etwa fünfzehn Grad.',
+    qs:[ {q:'Wie ist das Wetter im Süden?', opts:['sonnig','regnerisch','windig'], a:0},
+         {q:'Wie viel Grad sind es?', opts:['5 Grad','15 Grad','50 Grad'], a:1} ] }
+);
+EXAM_TASKS.A1.sprachbausteine.push(
+  { title:'Grammatik A1 (2)', items:[
+    {q:'Ich habe ___ Bruder.', opts:['einen','ein','eine'], a:0},
+    {q:'Das Kind spielt ___ Garten.', opts:['im','am','zum'], a:0},
+    {q:'Wie viel ___ das?', opts:['kostet','kosten','kostest'], a:0},
+    {q:'Er ___ aus Italien.', opts:['kommt','kommen','komme'], a:0},
+    {q:'Wir fahren ___ dem Auto.', opts:['mit','für','ohne'], a:0} ] }
+);
+EXAM_TASKS.A1.schreiben.push(
+  { task:{bs:'Napiši hotelu da rezervišeš sobu. Napiši: koje datume, koju sobu i postavi jedno pitanje.', en:'Write to a hotel to book a room. Include: which dates, which room, and ask one question.'},
+    points:['Datum','Zimmer','eine Frage'], min:30,
+    model:'Sehr geehrte Damen und Herren,\nich möchte ein Doppelzimmer für zwei Nächte reservieren, vom 10. bis 12. Mai. Was kostet das Zimmer pro Nacht? Bitte schreiben Sie mir zurück.\nMit freundlichen Grüßen,\nEmin',
+    tips:{bs:'Formalni pozdrav („Sehr geehrte…“ / „Mit freundlichen Grüßen“). Navedi datume jasno.', en:'Formal greeting. State the dates clearly.'} }
+);
+EXAM_TASKS.A1.sprechen.push(
+  { task:{bs:'Pričaj o svojoj porodici: koliko članova, ko su, čime se bave.', en:'Talk about your family: how many members, who they are, what they do.'},
+    parts:['Über die Familie sprechen'],
+    model:'Meine Familie ist nicht sehr groß. Ich habe eine Schwester und einen Bruder. Meine Mutter ist Lehrerin und mein Vater ist Ingenieur. Wir haben auch einen Hund. Wir wohnen zusammen in Sarajevo.',
+    tips:{bs:'Koristi „mein/meine“ i jednostavne rečenice. Reci zanimanja s „ist“.', en:'Use “mein/meine” and simple sentences. State jobs with “ist”.'} }
+);
+
+EXAM_TASKS.A2.lesen.push(
+  { title:'E-Mail: Umzug', text:'Hallo Sara,\nich habe endlich eine neue Wohnung gefunden! Sie hat drei Zimmer, einen Balkon und liegt sehr zentral. Ich ziehe am 1. April um. Kannst du mir vielleicht beim Umzug helfen? Ich bestelle Pizza für alle. Liebe Grüße, Nina',
+    qs:[ {q:'Nina hat eine neue Wohnung gefunden.', opts:['Richtig','Falsch'], a:0},
+         {q:'Die Wohnung hat keinen Balkon.', opts:['Richtig','Falsch'], a:1},
+         {q:'Wann zieht Nina um?', opts:['am 1. April','am 1. März','am 4. Januar'], a:0},
+         {q:'Was möchte Nina von Sara?', opts:['Geld','Hilfe beim Umzug','ein Auto'], a:1} ] }
+);
+EXAM_TASKS.A2.hoeren.push(
+  { title:'Durchsage im Kaufhaus', script:'Liebe Kunden, wir möchten Sie darauf hinweisen, dass unser Kaufhaus in zehn Minuten schließt. Bitte gehen Sie zur Kasse. Morgen sind wir wieder ab neun Uhr für Sie da. Vielen Dank für Ihren Einkauf.',
+    qs:[ {q:'Wann schließt das Kaufhaus?', opts:['in 10 Minuten','in einer Stunde','morgen'], a:0},
+         {q:'Ab wann ist das Kaufhaus morgen offen?', opts:['ab 8 Uhr','ab 9 Uhr','ab 10 Uhr'], a:1} ] }
+);
+EXAM_TASKS.A2.sprachbausteine.push(
+  { title:'Grammatik A2 (2)', items:[
+    {q:'Ich interessiere mich ___ Sport.', opts:['für','auf','an'], a:0},
+    {q:'Wenn das Wetter schön ist, ___ wir ins Schwimmbad.', opts:['gehen','geht','gegangen'], a:0},
+    {q:'Ich habe ___ Freundin ein Geschenk gekauft.', opts:['meiner','meine','meinem'], a:0},
+    {q:'Das ist der Bus, ___ zum Bahnhof fährt.', opts:['der','den','dem'], a:0},
+    {q:'Nach ___ Arbeit gehe ich nach Hause.', opts:['der','die','dem'], a:0} ] }
+);
+EXAM_TASKS.A2.schreiben.push(
+  { task:{bs:'Vidio/la si oglas za posao. Napiši kratku prijavu: zašto se javljaš, tvoje iskustvo, i kad možeš početi.', en:'You saw a job ad. Write a short application: why you apply, your experience, and when you can start.'},
+    points:['Grund der Bewerbung','Erfahrung','Beginn'], min:40,
+    model:'Sehr geehrte Frau Meier,\nich habe Ihre Anzeige gelesen und möchte mich als Kellner bewerben. Ich habe schon zwei Jahre in einem Café gearbeitet und spreche gut Deutsch. Ich kann ab dem 1. Juni anfangen. Über eine Antwort würde ich mich sehr freuen.\nMit freundlichen Grüßen, Emin',
+    tips:{bs:'Formalno. Reci iskustvo s Perfektom („ich habe … gearbeitet“).', en:'Formal. State experience in the perfect tense.'} }
+);
+EXAM_TASKS.A2.sprechen.push(
+  { task:{bs:'Planiraj s partnerom izlet za vikend: kada, kuda, kako putujete, šta ćete raditi.', en:'Plan a weekend trip with a partner: when, where, how you travel, what you will do.'},
+    parts:['Gemeinsam planen'],
+    model:'Sollen wir am Samstag einen Ausflug machen? Wir könnten mit dem Zug nach Salzburg fahren. Dort können wir die Altstadt anschauen und in einem Café essen. Am Abend fahren wir wieder zurück. Was meinst du?',
+    tips:{bs:'Koristi „Sollen wir…?“, „Wir könnten…“, „Was meinst du?“ za prijedloge.', en:'Use “Sollen wir…?”, “Wir könnten…”, “Was meinst du?” for suggestions.'} }
+);
+
+EXAM_TASKS.B1.lesen.push(
+  { title:'Ratgeber: Gesund schlafen', text:'Guter Schlaf ist wichtig für die Gesundheit. Experten empfehlen, jeden Tag zur gleichen Zeit ins Bett zu gehen. Man sollte das Handy mindestens eine Stunde vor dem Schlafen weglegen, weil das blaue Licht wach macht. Auch Kaffee am Abend ist keine gute Idee. Wer schlecht schläft, ist tagsüber müde und kann sich schlechter konzentrieren.',
+    qs:[ {q:'Man sollte jeden Tag zur gleichen Zeit schlafen gehen.', opts:['Richtig','Falsch'], a:0},
+         {q:'Das Handy vor dem Schlafen ist laut Text gut.', opts:['Richtig','Falsch'], a:1},
+         {q:'Warum ist blaues Licht ein Problem?', opts:['Es macht wach.','Es ist zu dunkel.','Es ist teuer.'], a:0} ] }
+);
+EXAM_TASKS.B1.hoeren.push(
+  { title:'Interview: Sprachen lernen', script:'Unsere heutige Gästin ist Sprachlehrerin. Sie sagt, der wichtigste Tipp beim Sprachenlernen sei Regelmäßigkeit: Besser jeden Tag zwanzig Minuten als einmal pro Woche drei Stunden. Außerdem solle man keine Angst vor Fehlern haben, denn aus Fehlern lerne man am meisten.',
+    qs:[ {q:'Was ist laut der Lehrerin der wichtigste Tipp?', opts:['Regelmäßigkeit','viel Geld','ein teures Buch'], a:0},
+         {q:'Was sagt sie über Fehler?', opts:['Man soll sie vermeiden.','Aus Fehlern lernt man.','Fehler sind verboten.'], a:1} ] }
+);
+EXAM_TASKS.B1.sprachbausteine.push(
+  { title:'Grammatik B1 (2)', items:[
+    {q:'Ich hoffe, ___ du bald kommst.', opts:['dass','das','ob'], a:0},
+    {q:'Der Film, ___ wir gestern gesehen haben, war spannend.', opts:['den','der','dem'], a:0},
+    {q:'An deiner Stelle ___ ich einen Arzt fragen.', opts:['würde','werde','wurde'], a:0},
+    {q:'Trotz ___ Regens sind wir spazieren gegangen.', opts:['des','dem','der'], a:0},
+    {q:'Er ist umgezogen, ___ er einen neuen Job hat.', opts:['weil','deshalb','trotzdem'], a:0} ] }
+);
+EXAM_TASKS.B2.lesen.push(
+  { title:'Kommentar: Ehrenamt', text:'Immer weniger Menschen engagieren sich ehrenamtlich, obwohl die Gesellschaft dringend auf freiwillige Helfer angewiesen ist. Der Grund ist oft Zeitmangel: Viele fühlen sich durch Beruf und Familie bereits stark belastet. Dabei zeigen Studien, dass ehrenamtliche Tätigkeit nicht nur anderen hilft, sondern auch das eigene Wohlbefinden steigert.',
+    qs:[ {q:'Immer mehr Menschen engagieren sich ehrenamtlich.', opts:['Richtig','Falsch'], a:1},
+         {q:'Ein häufiger Grund gegen Ehrenamt ist Zeitmangel.', opts:['Richtig','Falsch'], a:0},
+         {q:'Was zeigen laut Text Studien?', opts:['Ehrenamt steigert das eigene Wohlbefinden.','Ehrenamt kostet zu viel.','Ehrenamt ist sinnlos.'], a:0} ] }
+);
+EXAM_TASKS.B2.hoeren.push(
+  { title:'Diskussion: Städtereisen', script:'In der Diskussion geht es um Massentourismus. Ein Stadtplaner betont, dass Tourismus wichtige Einnahmen bringe und Arbeitsplätze schaffe. Eine Anwohnerin kritisiert jedoch, dass die Mieten steigen und die Innenstädte überfüllt seien. Beide fordern klare Regeln, um den Tourismus nachhaltiger zu gestalten.',
+    qs:[ {q:'Welchen Vorteil nennt der Stadtplaner?', opts:['Einnahmen und Arbeitsplätze','mehr Ruhe','günstige Mieten'], a:0},
+         {q:'Was kritisiert die Anwohnerin?', opts:['steigende Mieten und volle Städte','zu wenig Touristen','schlechtes Wetter'], a:0},
+         {q:'Was fordern beide?', opts:['ein Tourismusverbot','klare Regeln','höhere Preise'], a:1} ] }
+);
+EXAM_TASKS.B2.sprachbausteine.push(
+  { title:'Grammatik B2 (2)', items:[
+    {q:'Es ist wichtig, dass alle Faktoren berücksichtigt ___.', opts:['werden','wurden','worden'], a:0},
+    {q:'Hätte ich mehr Zeit gehabt, ___ ich dir geholfen.', opts:['hätte','habe','würde'], a:0},
+    {q:'Das Projekt, ___ Erfolg alle überraschte, wurde gelobt.', opts:['dessen','deren','das'], a:0},
+    {q:'Man sollte nichts tun, ___ man nicht versteht.', opts:['was','das','dass'], a:0},
+    {q:'Sie legt großen Wert ___ Pünktlichkeit.', opts:['auf','an','für'], a:0} ] }
+);
+
 const examTasks=(lvl,key)=> (EXAM_TASKS[lvl] && EXAM_TASKS[lvl][key]) || [];
 
 /* ============================================================================
