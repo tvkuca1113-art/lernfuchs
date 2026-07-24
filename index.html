@@ -645,6 +645,16 @@ const I18N = {
     installed:'Instalirano', install_hint:'Dodaj na početni ekran za app osjećaj.',
     no_key_badge:'bez ključa • offline', with_ai:'AI aktivan', mock:'demo',
     total_words:'Naučene riječi', joined:'Član od', reset_done:'Napredak resetovan.',
+    nav_exams:'Ispiti', exam_prep:'Priprema za ispite', exam_pick_body:'Odaberi ispit', exam_pick_level:'Odaberi nivo',
+    exam_structure:'Struktura ispita', exam_practice:'Vježbaj', exam_pass:'Prag prolaza', exam_time:'Trajanje', exam_points:'Bodovi',
+    exam_speaking:'Usmeni', exam_group:'u grupi', exam_pair:'u paru', exam_individual:'pojedinačno',
+    exam_modular:'Modularno — svaki modul se polaže odvojeno', exam_not_modular:'Jedan ukupni rezultat',
+    exam_parts:'dijelova', exam_items:'zadataka', exam_passed:'POLOŽENO! 🎉', exam_failed:'Još malo vježbe!',
+    exam_model:'Primjer odgovora', exam_your_answer:'Tvoj odgovor', exam_tips:'Savjeti', exam_write_here:'Piši svoj odgovor ovdje…',
+    exam_words:'riječi', exam_show_model:'Prikaži primjer odgovora', exam_content_points:'Tačke sadržaja', exam_ai_check:'Provjeri s AI-jem',
+    exam_task:'Zadatak', exam_start:'Počni', exam_result:'Rezultat', exam_correct_of:'tačno od', exam_time_up:'Vrijeme je isteklo!',
+    exam_read_text:'Pročitaj tekst', exam_listen_audio:'Poslušaj (klik za reprodukciju)', exam_replay:'Ponovi audio', exam_intro:'Vježbaj module pravih ispita s tajmerom i bodovanjem — odvojeno od puta učenja.',
+    exam_self_rate:'Kad završiš govor, uporedi s primjerom i ocijeni se.', exam_done_speaking:'Završio/la sam',
   },
   en:{
     app_tagline:'Learn German — from A1 to B2',
@@ -703,6 +713,16 @@ const I18N = {
     installed:'Installed', install_hint:'Add to home screen for an app feel.',
     no_key_badge:'no key • offline', with_ai:'AI on', mock:'demo',
     total_words:'Words learned', joined:'Member since', reset_done:'Progress reset.',
+    nav_exams:'Exams', exam_prep:'Exam preparation', exam_pick_body:'Choose an exam', exam_pick_level:'Choose a level',
+    exam_structure:'Exam structure', exam_practice:'Practice', exam_pass:'Pass mark', exam_time:'Duration', exam_points:'Points',
+    exam_speaking:'Speaking', exam_group:'group', exam_pair:'in pairs', exam_individual:'individual',
+    exam_modular:'Modular — each module is taken separately', exam_not_modular:'One overall result',
+    exam_parts:'parts', exam_items:'items', exam_passed:'PASSED! 🎉', exam_failed:'Keep practicing!',
+    exam_model:'Model answer', exam_your_answer:'Your answer', exam_tips:'Tips', exam_write_here:'Write your answer here…',
+    exam_words:'words', exam_show_model:'Show model answer', exam_content_points:'Content points', exam_ai_check:'Check with AI',
+    exam_task:'Task', exam_start:'Start', exam_result:'Result', exam_correct_of:'correct of', exam_time_up:'Time is up!',
+    exam_read_text:'Read the text', exam_listen_audio:'Listen (click to play)', exam_replay:'Replay audio', exam_intro:'Practice real exam modules with a timer and scoring — separate from the learning path.',
+    exam_self_rate:'When you finish speaking, compare with the model and rate yourself.', exam_done_speaking:'I\'m done',
   }
 };
 function t(key, vars){
@@ -1573,6 +1593,265 @@ function allLessons(){ const out=[]; for(const u of UNITS){ for(let i=0;i<u.less
 function unitVocab(u){ return u.vocab.flatMap(topic=>vocabByTopic(topic)); }
 
 /* ============================================================================
+   2c. EXAM PREP — Goethe / telc / ÖSD (A1–B2). Completely separate from the
+   learning path. Structures below are modelled on the official exam formats
+   (goethe.de, telc.net, osd.at). Practice content lives in EXAM_TASKS, keyed
+   by CEFR level and reused across exam bodies (a module's `practice` field
+   points at the right task bank). Adding a task = copy a line in EXAM_TASKS.
+   ========================================================================== */
+const EXAM_BODIES = {
+  goethe:{ name:'Goethe-Zertifikat', org:'Goethe-Institut', flag:'🇩🇪', color:'#1a7a3c',
+    note:{bs:'Najpoznatiji njemački certifikat, priznat u cijelom svijetu.', en:'The most recognized German certificate, accepted worldwide.'} },
+  telc:{ name:'telc Deutsch', org:'telc gGmbH', flag:'🇪🇺', color:'#0a86a8',
+    note:{bs:'Ima poseban modul „Sprachbausteine“ (gramatika i vokabular).', en:'Has a unique “Sprachbausteine” module (grammar & vocabulary).'} },
+  osd:{ name:'ÖSD Zertifikat', org:'Austrija (ÖSD)', flag:'🇦🇹', color:'#c0392b',
+    note:{bs:'Austrijski standard; usmeni dio može biti pojedinačni ili u paru.', en:'Austrian standard; the oral part can be individual or in pairs.'} },
+};
+// module: {key, name, icon, parts, items, min, pts, practice(task bank key), desc}
+function M(key,name,icon,parts,items,min,pts,practice,descBs,descEn){ return {key,name,icon,parts,items,min,pts,practice,desc:{bs:descBs,en:descEn}}; }
+const L=(p,i,m,pts,d1,d2)=>M('lesen','Lesen','📖',p,i,m,pts,'lesen',d1,d2);
+const H=(p,i,m,pts,d1,d2)=>M('hoeren','Hören','🎧',p,i,m,pts,'hoeren',d1,d2);
+const SB=(p,i,m,pts,d1,d2)=>M('sprachbausteine','Sprachbausteine','🧩',p,i,m,pts,'sprachbausteine',d1,d2);
+const SCH=(p,i,m,pts,d1,d2)=>M('schreiben','Schreiben','✍️',p,i,m,pts,'schreiben',d1,d2);
+const SP=(p,i,m,pts,d1,d2)=>M('sprechen','Sprechen','🗣️',p,i,m,pts,'sprechen',d1,d2);
+
+const EXAM_STRUCTURE = {
+  goethe:{
+    A1:{ modular:false, speaking:'group', passPct:60, totalMin:65, totalPts:'—',
+      note:{bs:'„Start Deutsch 1“. Usmeni je u grupi. Jedan ukupni rezultat.', en:'“Start Deutsch 1”. Group speaking. One overall result.'},
+      modules:[ H(3,15,20,'25%','MC i richtig/falsch: kratki dijalozi i najave','MC & true/false: short dialogues and announcements'),
+                L(3,15,25,'25%','richtig/falsch, izbor a/b: oglasi, natpisi','true/false, a/b choice: ads, signs'),
+                SCH(2,2,20,'25%','Popuni formular + kratka poruka (~30 riječi)','Fill a form + short message (~30 words)'),
+                SP(3,3,15,'25%','Predstavljanje, pitanja/odgovori, molbe (u grupi)','Introduce yourself, ask/answer, requests (group)') ] },
+    A2:{ modular:false, speaking:'pair', passPct:60, totalMin:90, totalPts:100,
+      note:{bs:'Svaki modul 25 bodova (ukupno 100). Usmeni u paru.', en:'Each module 25 points (100 total). Paired speaking.'},
+      modules:[ H(4,20,30,25,'MC, richtig/falsch, spajanje: najave i razgovori','MC, true/false, matching: announcements & conversations'),
+                L(4,20,30,25,'MC, richtig/falsch, spajanje oglasa i osoba','MC, true/false, matching ads to people'),
+                SCH(2,2,30,25,'Lična poruka + polu-formalna poruka','Personal message + semi-formal message'),
+                SP(3,3,15,25,'Pitanja o sebi, monolog o životu, zajedničko planiranje','Questions about you, monologue, plan together') ] },
+    B1:{ modular:true, speaking:'pair', passPct:60, totalMin:165, totalPts:400,
+      note:{bs:'MODULARNO: 4 modula po 100 bodova, svaki se polaže odvojeno (≥60). Isti ispit kao ÖSD B1.', en:'MODULAR: 4 modules of 100 pts, each passed separately (≥60). Same exam as ÖSD B1.'},
+      modules:[ L(5,30,65,100,'Spajanje, MC, richtig/falsch: mišljenja, oglasi, upute','Matching, MC, true/false: opinions, ads, instructions'),
+                H(4,30,40,100,'MC i richtig/falsch: najave, radio, razgovori','MC & true/false: announcements, radio, conversations'),
+                SCH(3,3,60,100,'Neformalni e-mail + forum/mišljenje + formalna poruka','Informal email + forum/opinion + formal message'),
+                SP(3,3,15,100,'Zajedničko planiranje, prezentacija teme, diskusija','Plan together, present a topic, discuss') ] },
+    B2:{ modular:true, speaking:'pair', passPct:60, totalMin:180, totalPts:400,
+      note:{bs:'MODULARNO: 4 modula po 100 bodova (≥60 svaki). Naglasak na argumentaciji.', en:'MODULAR: 4 modules of 100 pts (≥60 each). Focus on argumentation.'},
+      modules:[ L(5,30,65,100,'MC, spajanje, richtig/falsch: blogovi, izvještaji, komentari','MC, matching, true/false: blogs, reports, comments'),
+                H(4,30,40,100,'MC, spajanje, richtig/falsch: intervjui, diskusije','MC, matching, true/false: interviews, discussions'),
+                SCH(2,2,75,100,'Argumentativni forum-post (~150 r.) + formalna poruka (~100 r.)','Argumentative forum post (~150w) + formal message (~100w)'),
+                SP(2,2,15,100,'Kratka prezentacija + diskusija/argumentacija','Short presentation + discussion/argument') ] },
+  },
+  telc:{
+    A1:{ modular:false, speaking:'group', passPct:60, totalMin:65, totalPts:'—',
+      note:{bs:'Isti format kao Start Deutsch 1 (razvijen s Goetheom).', en:'Same format as Start Deutsch 1 (co-developed with Goethe).'},
+      modules:[ H(3,15,20,'—','Kratki dijalozi i najave (MC, richtig/falsch)','Short dialogues & announcements (MC, true/false)'),
+                L(3,15,25,'—','Oglasi, natpisi (richtig/falsch, a/b)','Ads, signs (true/false, a/b)'),
+                SCH(2,2,20,'—','Formular + kratka poruka','Form + short message'),
+                SP(3,3,15,'—','Predstavljanje, pitanja, molbe (u grupi)','Introduce, ask, requests (group)') ] },
+    A2:{ modular:false, speaking:'pair', passPct:60, totalMin:90, totalPts:'—',
+      note:{bs:'„Start Deutsch 2“. Usmeni u paru.', en:'“Start Deutsch 2”. Paired speaking.'},
+      modules:[ H(3,15,20,'—','Poruke, MC, redoslijed','Messages, MC, ordering'),
+                L(3,15,25,'—','MC, richtig/falsch, spajanje','MC, true/false, matching'),
+                SCH(2,2,25,'—','Formular + kratka poruka (~40 r.)','Form + short message (~40w)'),
+                SP(3,3,15,'—','Predstavljanje, razgovor, dogovor','Introduce, converse, negotiate') ] },
+    B1:{ modular:false, speaking:'pair', passPct:60, totalMin:150, totalPts:300,
+      note:{bs:'300 bodova (225 pismeno + 75 usmeno), prag 60%. Sadrži Sprachbausteine.', en:'300 pts (225 written + 75 oral), 60% pass. Includes Sprachbausteine.'},
+      modules:[ L(3,20,'—',75,'Globalno/detaljno/selektivno čitanje (spajanje + MC)','Global/detail/selective reading (matching + MC)'),
+                SB(2,20,'—',30,'Gramatika i vokabular: MC + spajanje (cloze)','Grammar & vocabulary: MC + matching (cloze)'),
+                H(3,20,30,75,'richtig/falsch: globalno/detaljno/selektivno','true/false: global/detail/selective'),
+                SCH(1,1,30,'—','Napiši pismo/e-mail (4 tačke sadržaja)','Write a letter/email (4 content points)'),
+                SP(3,3,15,75,'Uspostavi kontakt, diskusija, zajednički zadatak (u paru)','Make contact, discussion, joint task (paired)') ] },
+    B2:{ modular:false, speaking:'pair', passPct:60, totalMin:140, totalPts:300,
+      note:{bs:'300 bodova, prag 60%. Sprachbausteine + argumentativno pisanje.', en:'300 pts, 60% pass. Sprachbausteine + argumentative writing.'},
+      modules:[ L(3,20,'—',75,'Spajanje tekst-naslov, MC, situacije','Text-heading matching, MC, situations'),
+                SB(2,30,'—',30,'Gramatika/vokabular MC + cloze','Grammar/vocab MC + cloze'),
+                H(3,20,20,75,'richtig/falsch: globalno/detaljno/selektivno','true/false: global/detail/selective'),
+                SCH(1,1,30,'—','Napiši e-mail (izbor od 2 teme)','Write an email (choice of 2 topics)'),
+                SP(3,3,15,75,'Iskustvo/tema, diskusija, zajedničko planiranje','Experience/topic, discussion, plan together') ] },
+  },
+  osd:{
+    A1:{ modular:false, speaking:'individual', passPct:60, totalMin:55, totalPts:100,
+      note:{bs:'Usmeni je POJEDINAČNI (za razliku od Goethe/telc grupe). 100 bodova.', en:'Speaking is INDIVIDUAL (unlike Goethe/telc group). 100 points.'},
+      modules:[ L(3,16,25,30,'Kratki tekstovi, oglasi (richtig/falsch, izbor)','Short texts, ads (true/false, choice)'),
+                H(3,15,10,30,'Najave i dijalozi (MC, richtig/falsch)','Announcements & dialogues (MC, true/false)'),
+                SCH(2,2,20,15,'Popuni podatke + kratki tekst','Fill in details + short text'),
+                SP(3,3,10,25,'Predstavljanje, pitanja, molbe (pojedinačno)','Introduce, questions, requests (individual)') ] },
+    A2:{ modular:false, speaking:'pair', passPct:60, totalMin:75, totalPts:90,
+      note:{bs:'90 bodova (70 pismeno + 20 usmeno). Usmeni pojedinačni ili u paru.', en:'90 pts (70 written + 20 oral). Speaking individual or in pairs.'},
+      modules:[ L(2,10,30,25,'Detaljno i selektivno čitanje','Detailed & selective reading'),
+                H(3,14,15,30,'Najave, razgovori (MC, richtig/falsch)','Announcements, conversations (MC, true/false)'),
+                SCH(1,1,30,15,'Napiši poruku/pismo','Write a message/letter'),
+                SP(2,2,10,20,'Razgovor o sebi + zajednički zadatak','Talk about yourself + joint task') ] },
+    B1:{ modular:true, speaking:'pair', passPct:60, totalMin:165, totalPts:400,
+      note:{bs:'Isti kao Goethe B1 — MODULARNO, 4 modula po 100 (≥60 svaki).', en:'Same as Goethe B1 — MODULAR, 4 modules of 100 (≥60 each).'},
+      modules:[ L(5,30,65,100,'Spajanje, MC, richtig/falsch','Matching, MC, true/false'),
+                H(4,30,40,100,'MC i richtig/falsch','MC & true/false'),
+                SCH(3,3,60,100,'Tri zadatka pisanja (razni registri)','Three writing tasks (different registers)'),
+                SP(3,3,15,100,'Planiranje, prezentacija, diskusija','Plan, present, discuss') ] },
+    B2:{ modular:true, speaking:'pair', passPct:60, totalMin:180, totalPts:100,
+      note:{bs:'MODULARNO na pismeni vs usmeni (70 + 30 bodova).', en:'MODULAR into written vs oral (70 + 30 points).'},
+      modules:[ L(4,20,90,20,'Duži tekstovi (MC, spajanje, richtig/falsch)','Longer texts (MC, matching, true/false)'),
+                H(2,15,30,20,'Intervjui i izvještaji','Interviews & reports'),
+                SCH(2,2,60,30,'Dva zadatka (drugi = izbor od 2)','Two tasks (T2 = choice of 2)'),
+                SP(3,3,20,30,'Prezentacija + diskusija + argumentacija','Presentation + discussion + argument') ] },
+  },
+};
+const EXAM_LEVELS=['A1','A2','B1','B2'];
+
+/* Practice task bank — keyed by CEFR level, reused across all three exams.
+   qs use {q, opts:[...], a:indexOfCorrect}. richtig/falsch = opts ['Richtig','Falsch']. */
+const EXAM_TASKS = {
+  A1:{
+    lesen:[
+      { title:'E-Mail von Anna', text:'Liebe Sophie,\nwie geht es dir? Ich bin jetzt in Hamburg. Die Stadt ist schön und sehr groß. Das Wetter ist gut. Am Montag komme ich nach Hause. Kannst du mich um 18 Uhr vom Bahnhof abholen? Bring bitte auch meinen Schlüssel mit.\nLiebe Grüße, Anna',
+        qs:[ {q:'Anna ist in Berlin.', opts:['Richtig','Falsch'], a:1},
+             {q:'Das Wetter in Hamburg ist gut.', opts:['Richtig','Falsch'], a:0},
+             {q:'Anna kommt am Montag nach Hause.', opts:['Richtig','Falsch'], a:0},
+             {q:'Sophie soll Anna vom Flughafen abholen.', opts:['Richtig','Falsch'], a:1} ] },
+    ],
+    hoeren:[
+      { title:'Durchsage am Bahnhof', script:'Achtung, eine Durchsage am Gleis drei. Der Zug nach München fährt heute nicht um vierzehn Uhr, sondern erst um fünfzehn Uhr dreißig. Der Grund ist ein technisches Problem. Wir bitten um Entschuldigung.',
+        qs:[ {q:'Wohin fährt der Zug?', opts:['nach München','nach Hamburg','nach Berlin'], a:0},
+             {q:'Wann fährt der Zug?', opts:['um 14:00','um 15:30','um 13:00'], a:1},
+             {q:'Warum fährt der Zug später?', opts:['das Wetter','ein technisches Problem','ein Streik'], a:1} ] },
+    ],
+    sprachbausteine:[
+      { title:'Grammatik & Wortschatz A1', items:[
+        {q:'Ich ___ aus Bosnien.', opts:['komme','kommt','kommen'], a:0},
+        {q:'Das ist ___ Auto.', opts:['ein','eine','einen'], a:0},
+        {q:'Wie ___ du?', opts:['heißt','heiße','heißen'], a:0},
+        {q:'Ich trinke ___ Kaffee.', opts:['einen','ein','eine'], a:0},
+        {q:'Wir ___ in Berlin.', opts:['wohnen','wohnt','wohne'], a:0},
+        {q:'___ du Deutsch?', opts:['Sprichst','Sprecht','Spreche'], a:0} ] },
+    ],
+    schreiben:[
+      { task:{bs:'Napiši kratku poruku prijatelju Maxu. Pozovi ga na kafu u subotu. Napiši: kada, gdje i u koliko sati.', en:'Write a short message to your friend Max. Invite him for coffee on Saturday. Write: when, where and at what time.'},
+        points:['Wann? (Samstag)','Wo? (Café)','Uhrzeit'], min:30,
+        model:'Hallo Max,\nhast du am Samstag Zeit? Möchtest du einen Kaffee trinken? Wir können uns um 15 Uhr im Café Stern treffen. Passt das für dich?\nLiebe Grüße,\nEmin',
+        tips:{bs:'Pozdrav na početku i kraju. Kratke, jasne rečenice. Odgovori na sve tri tačke.', en:'Greeting at start and end. Short, clear sentences. Answer all three points.'} },
+    ],
+    sprechen:[
+      { task:{bs:'Predstavi se. Reci: ime, odakle si, gdje živiš, koje jezike govoriš i šta radiš.', en:'Introduce yourself. Say: name, where you are from, where you live, which languages you speak and what you do.'},
+        parts:['Sich vorstellen','Fragen stellen und beantworten','Um etwas bitten'],
+        model:'Hallo, ich heiße Emin. Ich komme aus Bosnien und wohne in Berlin. Ich spreche Bosnisch, Deutsch und ein bisschen Englisch. Ich bin Student. Ich lerne gern Deutsch.',
+        tips:{bs:'Govori polako i jasno. Koristi jednostavne rečenice s „Ich…“.', en:'Speak slowly and clearly. Use simple “Ich…” sentences.'} },
+    ],
+  },
+  A2:{
+    lesen:[
+      { title:'Anzeige: Deutschkurs', text:'Sprachschule Aktiv bietet neue Deutschkurse an. Der Kurs beginnt am 5. September und findet montags und mittwochs von 18 bis 20 Uhr statt. Ein Kurs kostet 120 Euro. Für Studenten gibt es einen Rabatt. Die Anmeldung ist bis zum 1. September im Büro oder online möglich.',
+        qs:[ {q:'Der Kurs findet zweimal pro Woche statt.', opts:['Richtig','Falsch'], a:0},
+             {q:'Alle bezahlen den gleichen Preis.', opts:['Richtig','Falsch'], a:1},
+             {q:'Man kann sich online anmelden.', opts:['Richtig','Falsch'], a:0},
+             {q:'Wann beginnt der Kurs?', opts:['am 1. September','am 5. September','am 5. Oktober'], a:1} ] },
+    ],
+    hoeren:[
+      { title:'Nachricht auf dem Anrufbeantworter', script:'Hallo Julia, hier ist Markus. Wir treffen uns morgen doch nicht um sieben, sondern schon um halb sieben vor dem Kino. Der Film beginnt nämlich um Punkt sieben. Kannst du bitte die Tickets kaufen? Danke und bis morgen!',
+        qs:[ {q:'Wer spricht?', opts:['Julia','Markus','Anna'], a:1},
+             {q:'Wann treffen sich die beiden?', opts:['um 18:30','um 19:00','um 07:00'], a:0},
+             {q:'Was soll Julia machen?', opts:['das Kino anrufen','die Tickets kaufen','das Auto holen'], a:1} ] },
+    ],
+    sprachbausteine:[
+      { title:'Grammatik & Wortschatz A2', items:[
+        {q:'Gestern ___ ich einen Film gesehen.', opts:['habe','bin','hat'], a:0},
+        {q:'Ich fahre ___ dem Bus zur Arbeit.', opts:['mit','für','ohne'], a:0},
+        {q:'Wir sind am Wochenende nach Wien ___.', opts:['gefahren','gefahrt','fahren'], a:0},
+        {q:'Du ___ heute nicht arbeiten, es ist Sonntag.', opts:['musst','muss','müssen'], a:0},
+        {q:'Ich gebe ___ Kind einen Apfel.', opts:['dem','den','der'], a:0},
+        {q:'Er ist größer ___ sein Bruder.', opts:['als','wie','wenn'], a:0} ] },
+    ],
+    schreiben:[
+      { task:{bs:'Prijatelj Thomas te je pozvao na rođendan, ali ne možeš doći. Odgovori: zahvali se, objasni zašto ne možeš, i predloži drugi termin.', en:'Your friend Thomas invited you to his birthday, but you can\'t come. Reply: thank him, explain why, and suggest another date.'},
+        points:['sich bedanken','Absage + Grund (weil…)','neuen Termin vorschlagen'], min:40,
+        model:'Hallo Thomas,\nvielen Dank für die Einladung zu deinem Geburtstag! Leider kann ich am Samstag nicht kommen, weil ich arbeiten muss. Das tut mir wirklich leid. Können wir uns vielleicht nächste Woche treffen? Ich lade dich gern zum Essen ein.\nViele Grüße,\nEmin',
+        tips:{bs:'Koristi „weil“ za razlog i „Können wir…?“ za prijedlog. Budi ljubazan.', en:'Use “weil” for the reason and “Können wir…?” for the suggestion. Be polite.'} },
+    ],
+    sprechen:[
+      { task:{bs:'Ispričaj o svom tipičnom danu: kada ustaješ, šta radiš, kada se vraćaš kući i šta radiš navečer.', en:'Describe your typical day: when you get up, what you do, when you get home and what you do in the evening.'},
+        parts:['Über den Alltag sprechen','Gemeinsam etwas planen'],
+        model:'Ich stehe um sieben Uhr auf. Dann frühstücke ich und fahre zur Arbeit. Ich arbeite von neun bis fünf. Am Abend koche ich und sehe fern. Am Wochenende treffe ich meine Freunde.',
+        tips:{bs:'Koristi odvojive glagole (aufstehen) i priloge vremena (dann, danach, am Abend).', en:'Use separable verbs (aufstehen) and time adverbs (dann, danach, am Abend).'} },
+    ],
+  },
+};
+
+EXAM_TASKS.B1 = {
+  lesen:[
+    { title:'Forum: Stadt oder Land?', text:'Viele junge Menschen ziehen heute in die Großstadt, weil sie dort bessere Jobs und mehr Freizeitangebote finden. Andere bevorzugen das Land: Dort ist die Luft sauberer, die Mieten sind günstiger und man hat mehr Ruhe. Experten sagen, dass beide Lebensformen Vor- und Nachteile haben. Am wichtigsten ist, dass jeder selbst entscheidet, was ihm wichtiger ist.',
+      qs:[ {q:'Junge Menschen ziehen oft wegen der Jobs in die Stadt.', opts:['Richtig','Falsch'], a:0},
+           {q:'Auf dem Land sind die Mieten teurer.', opts:['Richtig','Falsch'], a:1},
+           {q:'Laut Experten ist nur das Stadtleben gut.', opts:['Richtig','Falsch'], a:1},
+           {q:'Was ist laut Text am wichtigsten?', opts:['in der Stadt zu wohnen','selbst zu entscheiden','viel Geld zu haben'], a:1} ] },
+  ],
+  hoeren:[
+    { title:'Radio: Ehrenamt', script:'Und jetzt zu unserem Thema Ehrenamt. Unser heutiger Gast, Frau Meier, engagiert sich seit fünf Jahren freiwillig bei der Tafel und hilft, Lebensmittel an bedürftige Familien zu verteilen. Sie sagt, die Arbeit mache ihr große Freude und sie habe dadurch viele neue Menschen kennengelernt. Sie wünscht sich, dass mehr junge Leute mitmachen.',
+      qs:[ {q:'Wie lange engagiert sich Frau Meier schon?', opts:['seit einem Jahr','seit fünf Jahren','seit zehn Jahren'], a:1},
+           {q:'Was macht sie bei der Tafel?', opts:['Geld sammeln','Lebensmittel verteilen','Kurse geben'], a:1},
+           {q:'Was wünscht sie sich?', opts:['mehr Geld','mehr junge Freiwillige','einen neuen Job'], a:1} ] },
+  ],
+  sprachbausteine:[
+    { title:'Grammatik & Wortschatz B1', items:[
+      {q:'Ich lerne Deutsch, ___ ich in Deutschland arbeiten möchte.', opts:['weil','wegen','trotzdem'], a:0},
+      {q:'Das ist der Mann, ___ mir geholfen hat.', opts:['der','den','dem'], a:0},
+      {q:'Wenn ich mehr Zeit ___, würde ich reisen.', opts:['hätte','habe','hatte'], a:0},
+      {q:'Das Haus ___ gerade renoviert.', opts:['wird','ist','hat'], a:0},
+      {q:'___ des schlechten Wetters bleiben wir zu Hause.', opts:['Wegen','Weil','Obwohl'], a:0},
+      {q:'Ich freue mich ___ das Wochenende.', opts:['auf','über','für'], a:0} ] },
+  ],
+  schreiben:[
+    { task:{bs:'U forumu se raspravlja: „Treba li se u školama zabraniti mobitel?“ Napiši komentar (~80 riječi): mišljenje + dva razloga.', en:'A forum debates: “Should phones be banned in schools?” Write a comment (~80 words): opinion + two reasons.'},
+      points:['Meinung nennen','zwei Argumente','Beispiel oder Schluss'], min:80,
+      model:'Meiner Meinung nach sollten Handys während des Unterrichts verboten sein. Erstens lenken sie die Schüler ab, sodass sie sich nicht mehr konzentrieren können. Zweitens nutzen manche Schüler das Handy, um bei Prüfungen zu schummeln. In den Pausen finde ich es aber in Ordnung. Deshalb bin ich für ein Verbot nur während des Unterrichts.',
+      tips:{bs:'Koristi „Meiner Meinung nach…“, „Erstens… Zweitens…“ i konektore (deshalb, sodass).', en:'Use “Meiner Meinung nach…”, “Erstens… Zweitens…” and connectors (deshalb, sodass).'} },
+  ],
+  sprechen:[
+    { task:{bs:'Prezentiraj temu „Zdrava ishrana“: uvod, tvoje iskustvo, situacija u tvojoj zemlji, prednosti/nedostaci, mišljenje.', en:'Present “Healthy eating”: intro, your experience, situation in your country, pros/cons, opinion.'},
+      parts:['Thema präsentieren','über Erfahrungen sprechen','diskutieren'],
+      model:'Ich möchte über gesunde Ernährung sprechen. Mir ist es wichtig, viel Obst und Gemüse zu essen. In meinem Land kochen die Menschen oft frisch. Ein Vorteil gesunder Ernährung ist, dass man sich fitter fühlt. Ein Nachteil ist, dass gesundes Essen manchmal teurer ist. Meiner Meinung nach lohnt es sich trotzdem.',
+      tips:{bs:'Struktura: uvod → iskustvo → prednosti/nedostaci → mišljenje. Koristi vezne riječi.', en:'Structure: intro → experience → pros/cons → opinion. Use connectors.'} },
+  ],
+};
+
+EXAM_TASKS.B2 = {
+  lesen:[
+    { title:'Artikel: Homeoffice', text:'Seit der Pandemie arbeiten immer mehr Menschen von zu Hause. Befürworter betonen, dass Homeoffice Zeit spart und die Vereinbarkeit von Beruf und Familie verbessert. Kritiker weisen jedoch darauf hin, dass der persönliche Kontakt zu den Kollegen verloren geht und die Grenze zwischen Arbeit und Freizeit verschwimmt. Studien zeigen, dass ein Mischmodell – teils Büro, teils zu Hause – von den meisten Beschäftigten bevorzugt wird.',
+      qs:[ {q:'Befürworter sagen, Homeoffice spare Zeit.', opts:['Richtig','Falsch'], a:0},
+           {q:'Kritiker sehen keine Nachteile im Homeoffice.', opts:['Richtig','Falsch'], a:1},
+           {q:'Was bevorzugen laut Studien die meisten Beschäftigten?', opts:['nur Büro','nur Homeoffice','ein Mischmodell'], a:2},
+           {q:'Welcher Nachteil wird genannt?', opts:['weniger Kontakt zu Kollegen','längere Arbeitswege','höhere Steuern'], a:0} ] },
+  ],
+  hoeren:[
+    { title:'Diskussion: Elektroautos', script:'In unserer heutigen Diskussion geht es um Elektroautos. Der erste Experte argumentiert, dass Elektroautos die Luft in den Städten sauberer machen und langfristig günstiger sind. Die zweite Expertin gibt allerdings zu bedenken, dass die Herstellung der Batterien viele Rohstoffe verbraucht und dass es noch zu wenige Ladestationen gibt. Beide sind sich jedoch einig, dass die Politik bessere Rahmenbedingungen schaffen muss.',
+      qs:[ {q:'Welchen Vorteil nennt der erste Experte?', opts:['sauberere Luft','mehr Platz','schnellere Autos'], a:0},
+           {q:'Was kritisiert die zweite Expertin?', opts:['den Preis der Autos','den Rohstoffverbrauch der Batterien','das Design'], a:1},
+           {q:'Worin sind sich beide einig?', opts:['E-Autos sind schlecht','die Politik muss handeln','man braucht keine Ladestationen'], a:1} ] },
+  ],
+  sprachbausteine:[
+    { title:'Grammatik & Wortschatz B2', items:[
+      {q:'___ des schlechten Wetters fand das Fest statt.', opts:['Trotz','Wegen','Während'], a:0},
+      {q:'Er tut so, ___ ob er alles wüsste.', opts:['als','wie','dass'], a:0},
+      {q:'Die Entscheidung wurde gestern ___.', opts:['getroffen','genommen','gemacht'], a:0},
+      {q:'Je mehr man übt, ___ besser wird man.', opts:['desto','als','wie'], a:0},
+      {q:'Der Minister sagte, er ___ keine Zeit gehabt.', opts:['habe','hat','wird'], a:0},
+      {q:'Wir müssen alle Faktoren ___.', opts:['berücksichtigen','aufpassen','beachten lassen'], a:0} ] },
+  ],
+  schreiben:[
+    { task:{bs:'Napiši komentar za novine (~150 riječi): „Društvene mreže — korist ili šteta za mlade?“ Argumenti za i protiv + tvoj stav.', en:'Write a newspaper comment (~150 words): “Social media — benefit or harm for young people?” Arguments for and against + your position.'},
+      points:['Einleitung','Argumente dafür','Argumente dagegen','eigene Position + Schluss'], min:150,
+      model:'Soziale Medien sind aus dem Alltag junger Menschen nicht mehr wegzudenken. Einerseits ermöglichen sie es, mit Freunden in Kontakt zu bleiben und sich schnell zu informieren. Andererseits bergen sie Risiken: Viele Jugendliche verbringen zu viel Zeit online, vergleichen sich ständig mit anderen und stehen unter Druck. Hinzu kommt die Gefahr von Falschinformationen. Meiner Ansicht nach kommt es vor allem auf einen bewussten Umgang an. Schulen und Eltern sollten Medienkompetenz vermitteln, damit Jugendliche die Vorteile nutzen und die Nachteile vermeiden. Ein generelles Verbot halte ich für den falschen Weg.',
+      tips:{bs:'Struktura: uvod → za → protiv → stav. Koristi „einerseits… andererseits“, „meiner Ansicht nach“.', en:'Structure: intro → for → against → position. Use “einerseits… andererseits”, “meiner Ansicht nach”.'} },
+  ],
+  sprechen:[
+    { task:{bs:'Kratka prezentacija pa argumentacija s partnerom: „Treba li studij biti besplatan za sve?“', en:'Short presentation, then argue with a partner: “Should university be free for everyone?”'},
+      parts:['Präsentation','Diskussion / Argumentation'],
+      model:'Ich bin der Meinung, dass ein Studium für alle kostenlos sein sollte. Bildung ist ein Grundrecht und sollte nicht vom Einkommen der Eltern abhängen. Kostenlose Bildung fördert die Chancengleichheit. Natürlich muss der Staat das finanzieren, aber langfristig profitiert die ganze Gesellschaft von gut ausgebildeten Menschen. Ein mögliches Gegenargument ist, dass die Qualität leiden könnte – dem würde ich aber widersprechen.',
+      tips:{bs:'Jasna teza, argumenti i pobijanje protivargumenta („dem würde ich widersprechen“).', en:'Clear thesis, arguments, and rebut a counterargument.'} },
+  ],
+};
+const examTasks=(lvl,key)=> (EXAM_TASKS[lvl] && EXAM_TASKS[lvl][key]) || [];
+
+/* ============================================================================
    3. STATE — one versioned object. Shaped to map 1:1 onto a future backend
    response, so server sync in Part B is a drop-in. All mutations go through
    here and are persisted by save().
@@ -1740,14 +2019,26 @@ const Audio_ = (function(){
   };
   function play(name){ try{ (sfx[name]||(()=>{}))(); }catch(e){} }
 
-  // German TTS
+  // German TTS — pick the CLEAREST available voice, not the first (default is
+  // often the robotic eSpeak/Compact one). Ranking prefers natural/cloud voices.
   let voices = [];
   function loadVoices(){ voices = (window.speechSynthesis? speechSynthesis.getVoices():[]) || []; }
   if(window.speechSynthesis){ loadVoices(); speechSynthesis.onvoiceschanged = loadVoices; }
+  function voiceScore(v){
+    const n=(v.name||'').toLowerCase(); let s=0;
+    if(/de[-_]de/i.test(v.lang)) s+=40; else if(/^de/i.test(v.lang)) s+=20; else return -1;   // German only
+    if(/google/.test(n)) s+=55;                                                   // "Google Deutsch" — very natural
+    if(/natural|neural|online|premium|enhanced|wavenet|siri/.test(n)) s+=48;      // modern high-quality engines
+    if(/(katja|hedda|conrad|amala|seraphina|louisa|vicki|marlene|petra|markus|anna|christoph|florian|ingrid|gisela)/.test(n)) s+=16;
+    if(/microsoft/.test(n)) s+=10;
+    if(/(espeak|compact|e-speak|pico)/.test(n)) s-=70;                            // robotic — push to bottom
+    if(v.localService===false) s+=8;                                             // cloud voices are usually clearer
+    return s;
+  }
+  function rankedVoices(){ if(!voices.length) loadVoices(); return voices.filter(v=>/^de/i.test(v.lang)).map(v=>({v,s:voiceScore(v)})).sort((a,b)=>b.s-a.s).map(o=>o.v); }
   function germanVoice(){
-    if(!voices.length) loadVoices();
     if(S.settings.voice){ const v=voices.find(v=>v.name===S.settings.voice); if(v) return v; }
-    return voices.find(v=>/de[-_]DE/i.test(v.lang)) || voices.find(v=>/^de/i.test(v.lang)) || null;
+    return rankedVoices()[0] || null;
   }
   function speak(text, opts={}){
     if(!window.speechSynthesis) return false;
@@ -1755,12 +2046,13 @@ const Audio_ = (function(){
       speechSynthesis.cancel();
       const u = new SpeechSynthesisUtterance(text);
       u.lang='de-DE'; const v=germanVoice(); if(v) u.voice=v;
-      u.rate = opts.rate!=null? opts.rate : 0.92; u.pitch = 1;
+      u.rate = opts.rate!=null? opts.rate : 0.88; u.pitch = 1.0; u.volume = 1;   // a touch slower = clearer
       speechSynthesis.speak(u); return true;
     }catch(e){ return false; }
   }
-  function listVoices(){ if(!voices.length) loadVoices(); return voices.filter(v=>/^de/i.test(v.lang)); }
-  return { play, speak, ensure, listVoices, hasTTS:()=>!!window.speechSynthesis };
+  function listVoices(){ return rankedVoices(); }                                 // ranked best-first for the picker
+  function bestVoiceName(){ const v=rankedVoices()[0]; return v? v.name : ''; }
+  return { play, speak, ensure, listVoices, bestVoiceName, hasTTS:()=>!!window.speechSynthesis };
 })();
 
 /* ============================================================================
@@ -2715,14 +3007,18 @@ function render(){
 }
 function renderNav(){
   const nav=$('#nav'); if(!nav) return;
-  const hide=['lesson','results','onboarding','placement'].includes(CURRENT.screen);
+  const hide=['lesson','results','onboarding','placement','examRun','examWrite','examSpeak'].includes(CURRENT.screen);
   nav.style.display=hide?'none':'flex'; if(hide){ nav.innerHTML=''; return; }
-  const tabs=[['home','🏠','nav_learn'],['path','🗺️','nav_learn'],['league','🏆','nav_league'],['grammar','📚','nav_grammar'],['profile','👤','nav_profile']];
-  const labels={home:'nav_learn', path:'section_units', league:'nav_league', grammar:'nav_grammar', profile:'nav_profile'};
   nav.innerHTML='';
-  [['home','🏠','nav_learn'],['path','🗺️','section_units'],['league','🏆','nav_league'],['grammar','📚','nav_grammar'],['profile','👤','nav_profile']]
+  // which nav tab lights up for the current screen
+  const groupOf={ home:'home', tutor:'home', roleplay:'home', paywall:'home',
+    path:'path', placement:'path', league:'league',
+    exams:'exams', examLevel:'exams', examMod:'exams',
+    profile:'profile', settings:'profile', dictionary:'profile', grammar:'profile', grammardetail:'profile' };
+  const active=groupOf[CURRENT.screen]||CURRENT.screen;
+  [['home','🏠','nav_learn'],['path','🗺️','section_units'],['exams','📝','nav_exams'],['league','🏆','nav_league'],['profile','👤','nav_profile']]
     .forEach(([scr,ic,key])=>{
-      const b=el('button',{class:'navbtn'+(CURRENT.screen===scr?' on':''), 'aria-label':t(key), onclick:()=>{ Audio_.play('click'); route(scr); }},
+      const b=el('button',{class:'navbtn'+(active===scr?' on':''), 'aria-label':t(key), onclick:()=>{ Audio_.play('click'); route(scr); }},
         el('span',{class:'ni', text:ic}), el('span',{text:t(key)}));
       nav.append(b);
     });
@@ -2800,6 +3096,13 @@ SCREENS.lesson = function(){ return Lesson.screen(); };
 SCREENS.home = function(){
   const wrap=el('div',{class:'screen'});
   wrap.append(topbar());
+  // Language-pair chooser: sets which native language shows in questions & answers (only one at a time, next to German)
+  wrap.append(el('div',{class:'card', style:'padding:11px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap'},
+    el('div',{class:'small', style:'font-weight:800'}, LANG==='bs'?'Jezik pitanja i odgovora':'Question & answer language'),
+    (()=>{ const seg=el('div',{class:'seg'});
+      [['bs','🇧🇦 BS + DE'],['en','🇬🇧 EN + DE']].forEach(([v,l])=> seg.append(el('button',{class:(S.settings.lang===v?'on':''), 'aria-pressed':S.settings.lang===v, onclick:()=>{ if(S.settings.lang===v) return; S.settings.lang=v; LANG=v; applySettings(); save(); Audio_.play('click'); toast((v==='bs'?'🇧🇦 Bosanski':'🇬🇧 English')+' + 🇩🇪'); render(); }, text:l})));
+      return seg; })()
+  ));
   const li=levelInfo(S.xp);
   const goalXp=GOALS[S.goal].xp, goalPct=clamp(S.today.xp/goalXp,0,1);
   const nl=nextLesson();
@@ -2859,12 +3162,20 @@ SCREENS.home = function(){
       )));
   }
 
+  // Exam prep — prominent entry (separate from the learning path)
+  wrap.append(el('button',{class:'card', style:'display:flex;gap:12px;align-items:center;width:100%;text-align:left;margin-top:14px;background:linear-gradient(135deg, color-mix(in srgb,var(--accent) 15%, var(--surface)), var(--surface));border-color:var(--accent)', onclick:()=>route('exams')},
+    el('span',{style:'font-size:1.9rem',text:'📝'}),
+    el('div',{style:'flex:1'}, el('div',{style:'font-weight:900',text:t('exam_prep')}), el('div',{class:'small muted',text:'Goethe · telc · ÖSD · A1–B2'})),
+    el('span',{style:'font-size:1.3rem;color:var(--accent)',text:'›'})
+  ));
+
   // Quick tiles
   wrap.append(el('div',{class:'sec-h'}, el('h2',{text:t('quick')})));
   const dueN=dueCardIds().length;
   wrap.append(el('div',{class:'quicktiles'},
     tile('🔄', t('review_mistakes'), dueN? (dueN+' '+t('due_review').toLowerCase()):'', ()=>startReview()),
     tile('🎯', t('practice_weak'), '', ()=>startWeak()),
+    tile('📚', t('grammar_ref'), '', ()=>route('grammar')),
     tile('🦊', t('ai_tutor'), AI_ENABLED?t('with_ai'):t('mock'), ()=>route('tutor')),
     tile('💬', t('roleplay'), '', ()=>route('roleplay'))
   ));
@@ -3100,14 +3411,18 @@ SCREENS.settings = function(){
   card.append(toggleRow('🔊', t('sound'), '', S.settings.sound, v=>{ S.settings.sound=v; save(); if(v) Audio_.play('click'); }));
   card.append(segRow('🎨', t('theme'), [['light',t('light')],['dark',t('dark')],['auto',t('system')]], S.settings.theme, v=>{ S.settings.theme=v; applySettings(); save(); }));
   card.append(segRow('🌐', t('interface_lang'), [['bs','BS'],['en','EN']], S.settings.lang, v=>{ S.settings.lang=v; LANG=v; applySettings(); save(); render(); }));
-  // voice picker
+  // voice picker (ranked best-first; the app auto-uses the clearest voice)
   const voices=Audio_.listVoices();
-  if(voices.length){
-    const sel=el('select',{class:'type-in', style:'padding:10px', onchange:e=>{ S.settings.voice=e.target.value; save(); Audio_.speak('Hallo, ich bin Fritz.'); }});
-    sel.append(el('option',{value:'', text:'— auto (de-DE) —'}));
-    voices.forEach(v=> sel.append(el('option',{value:v.name, text:v.name+' ('+v.lang+')', selected:S.settings.voice===v.name})));
-    card.append(el('div',{class:'setting-row'}, el('span',{style:'font-size:1.3rem',text:'🗣️'}), el('div',{class:'sr-main'}, el('div',{class:'sr-t',text:t('voice')}), sel)));
+  const vmain=el('div',{class:'sr-main'}, el('div',{class:'sr-t',text:t('voice')}));
+  if(!voices.length){
+    vmain.append(el('div',{class:'sr-d', text: LANG==='bs'?'Ovaj browser nema njemački glas. Za najjasniji zvuk koristi Chrome (ima „Google Deutsch“).':'This browser has no German voice. For the clearest audio use Chrome (has “Google Deutsch”).'}));
+  } else {
+    const sel=el('select',{class:'type-in', style:'padding:10px', onchange:e=>{ S.settings.voice=e.target.value; save(); Audio_.speak('Guten Tag! Ich bin Fritz, dein Deutschlehrer.'); }});
+    sel.append(el('option',{value:'', text:'— '+(LANG==='bs'?'automatski (najbolji glas)':'automatic (best voice)')+' —', selected:!S.settings.voice}));
+    voices.forEach((v,i)=> sel.append(el('option',{value:v.name, text:(i===0?'★ ':'')+v.name+' ('+v.lang+')', selected:S.settings.voice===v.name})));
+    vmain.append(sel, el('button',{class:'btn sm ghost', style:'margin-top:6px', onclick:()=>Audio_.speak('Guten Tag! Das Wetter ist heute schön. Ich lerne gern Deutsch.'), html:'🔊 '+(LANG==='bs'?'Probaj glas':'Test voice')}));
   }
+  card.append(el('div',{class:'setting-row'}, el('span',{style:'font-size:1.3rem',text:'🗣️'}), vmain));
   card.append(toggleRow('🔠', t('larger_text'), '', S.settings.textsize==='large', v=>{ S.settings.textsize=v?'large':'normal'; applySettings(); save(); }));
   card.append(toggleRow('🔤', t('dyslexia'), '', S.settings.dyslexia, v=>{ S.settings.dyslexia=v; applySettings(); save(); }));
   card.append(toggleRow('🎬', t('reduce_motion'), '', S.settings.reduce, v=>{ S.settings.reduce=v; applySettings(); save(); }));
@@ -3352,6 +3667,173 @@ SCREENS.roleplay = function(){
   return wrap;
 };
 
+/* ===================== EXAM PREP SCREENS (separate from learning path) ===== */
+SCREENS.exams = function(){
+  const wrap=el('div',{class:'screen'}); wrap.append(topbar());
+  wrap.append(el('div',{class:'sec-h'}, el('h2',{text:'📝 '+t('exam_prep')})));
+  wrap.append(el('div',{class:'info-note', text:t('exam_intro')}));
+  wrap.append(el('div',{class:'sec-h'}, el('h2',{style:'font-size:1rem', text:t('exam_pick_body')})));
+  Object.entries(EXAM_BODIES).forEach(([id,b])=>{
+    wrap.append(el('button',{class:'card', style:'display:flex;gap:12px;align-items:center;width:100%;text-align:left;border-left:5px solid '+b.color, onclick:()=>route('examLevel',{body:id})},
+      el('span',{style:'font-size:2rem',text:b.flag}),
+      el('div',{style:'flex:1'}, el('div',{style:'font-weight:900',text:b.name}), el('div',{class:'small muted',text:b.org}), el('div',{class:'small muted',style:'margin-top:4px',text:b.note[LANG]||b.note.en})),
+      el('span',{style:'font-size:1.3rem;color:var(--ink-3)',text:'›'})));
+  });
+  return wrap;
+};
+SCREENS.examLevel = function(p){
+  const b=EXAM_BODIES[p.body]; const wrap=el('div',{class:'screen'});
+  wrap.append(el('div',{class:'sec-h'}, el('span',{class:'link', onclick:()=>route('exams'), text:'‹ '+t('exam_prep')}), el('span',{class:'pill-tag', text:b.name})));
+  wrap.append(el('div',{class:'row', style:'gap:10px;margin:6px 4px'}, el('span',{style:'font-size:1.7rem',text:b.flag}), el('h2',{text:b.name})));
+  wrap.append(el('div',{class:'sec-h'}, el('h2',{style:'font-size:1rem', text:t('exam_pick_level')})));
+  EXAM_LEVELS.forEach(lvl=>{
+    const st=EXAM_STRUCTURE[p.body][lvl];
+    wrap.append(el('button',{class:'card', style:'display:flex;gap:12px;align-items:center;width:100%;text-align:left', onclick:()=>route('examMod',{body:p.body, level:lvl})},
+      el('span',{class:'lb-tag lb-'+lvl.toLowerCase(), style:'padding:8px 12px', text:lvl}),
+      el('div',{style:'flex:1'}, el('div',{style:'font-weight:800', text:b.name+' '+lvl}), el('div',{class:'small muted', text:st.modules.map(m=>m.name).join(' · ')})),
+      el('span',{style:'font-size:1.3rem;color:var(--ink-3)',text:'›'})));
+  });
+  return wrap;
+};
+SCREENS.examMod = function(p){
+  const b=EXAM_BODIES[p.body]; const st=EXAM_STRUCTURE[p.body][p.level]; const wrap=el('div',{class:'screen'});
+  wrap.append(el('div',{class:'sec-h'}, el('span',{class:'link', onclick:()=>route('examLevel',{body:p.body}), text:'‹ '+b.name}), el('span',{class:'lb-tag lb-'+p.level.toLowerCase(), style:'padding:5px 10px', text:p.level})));
+  wrap.append(el('div',{class:'row',style:'gap:10px;margin:4px'}, el('span',{style:'font-size:1.6rem',text:b.flag}), el('h2',{text:b.name+' '+p.level})));
+  const info=el('div',{class:'card'});
+  info.append(el('div',{class:'card-title', text:'ℹ️ '+t('exam_structure')}));
+  info.append(el('div',{class:'kv'}, el('span',{class:'k',text:t('exam_time')}), el('b',{text:(typeof st.totalMin==='number'?st.totalMin+' min':'—')})));
+  info.append(el('div',{class:'kv'}, el('span',{class:'k',text:t('exam_pass')}), el('b',{text:st.passPct+'%'})));
+  info.append(el('div',{class:'kv'}, el('span',{class:'k',text:t('exam_speaking')}), el('b',{text:t('exam_'+st.speaking)})));
+  info.append(el('div',{class:'small muted', style:'margin-top:6px', text:st.note[LANG]||st.note.en}));
+  wrap.append(info);
+  st.modules.forEach(m=>{
+    const has=examTasks(p.level, m.practice).length>0;
+    const card=el('div',{class:'card'});
+    card.append(el('div',{class:'row', style:'justify-content:space-between;align-items:flex-start'},
+      el('div',{class:'row', style:'align-items:flex-start'}, el('span',{style:'font-size:1.4rem',text:m.icon}),
+        el('div',{}, el('b',{text:m.name}), el('div',{class:'small muted', text:m.parts+' '+t('exam_parts')+(typeof m.min==='number'?(' · '+m.min+' min'):'')}))),
+      el('span',{class:'pill-tag', text:''+m.pts})));
+    card.append(el('div',{class:'small muted', style:'margin:8px 0', text:m.desc[LANG]||m.desc.en}));
+    if(has) card.append(el('button',{class:'btn primary block', onclick:()=>{
+        if(m.key==='schreiben') route('examWrite',{level:p.level, body:p.body});
+        else if(m.key==='sprechen') route('examSpeak',{level:p.level, body:p.body});
+        else ExamRun.start(p.body, p.level, m.key);
+      }, text:'▶ '+t('exam_practice')+' · '+m.name}));
+    wrap.append(card);
+  });
+  return wrap;
+};
+
+// Auto-graded exam module runner (Lesen / Hören / Sprachbausteine), timed + scored
+const ExamRun = {
+  body:null, level:null, moduleKey:null, task:null, qs:[], answers:[], submitted:false, passed:false, score:0, timeLeft:0, timerId:null,
+  start(body, level, moduleKey){
+    const tasks=examTasks(level, moduleKey); if(!tasks.length){ toast('—'); return; }
+    this.task=pick(tasks); this.body=body; this.level=level; this.moduleKey=moduleKey; this.submitted=false; this.passed=false; this.score=0;
+    this.qs = moduleKey==='sprachbausteine' ? this.task.items.map(it=>({q:it.q, opts:it.opts, a:it.a})) : this.task.qs;
+    this.answers = this.qs.map(()=>null);
+    const mod=EXAM_STRUCTURE[body][level].modules.find(m=>m.key===moduleKey);
+    this.timeLeft = (mod&&typeof mod.min==='number'? mod.min : 10)*60;
+    route('examRun'); this._tick();
+  },
+  _tick(){ this._stop(); this.timerId=setInterval(()=>{ if(CURRENT.screen!=='examRun'){ this._stop(); return; } this.timeLeft--; const e=$('#exam-timer'); if(e) e.textContent=fmtMs(this.timeLeft*1000); if(this.timeLeft<=0){ this._stop(); if(!this.submitted){ toast(t('exam_time_up')); this.submit(); } } },1000); },
+  _stop(){ if(this.timerId){ clearInterval(this.timerId); this.timerId=null; } },
+  screen(){
+    const mod=EXAM_STRUCTURE[this.body][this.level].modules.find(m=>m.key===this.moduleKey);
+    const wrap=el('div',{class:'screen'});
+    wrap.append(el('div',{class:'lesson-top'},
+      el('button',{class:'xbtn', onclick:()=>{ this._stop(); route('examMod',{body:this.body,level:this.level}); }, html:'✕'}),
+      el('div',{class:'lesson-bar'}, el('b',{text:mod.icon+' '+mod.name+' · '+this.level})),
+      el('div',{class:'stat', style:'color:var(--bad)'}, el('span',{class:'ic',text:'⏱️'}), el('b',{id:'exam-timer', text:fmtMs(this.timeLeft*1000)}))));
+    if(this.moduleKey==='lesen') wrap.append(el('div',{class:'card', style:'white-space:pre-wrap;line-height:1.65'}, el('div',{class:'q-instr',text:t('exam_read_text')+(this.task.title?(' · '+this.task.title):'')}), el('div',{text:this.task.text})));
+    if(this.moduleKey==='hoeren'){ wrap.append(el('div',{class:'card center'}, el('div',{class:'q-instr',text:this.task.title||''}),
+        el('button',{class:'btn accent lg pill', onclick:()=>Audio_.speak(this.task.script,{rate:0.9}), html:'🔊 '+t('exam_listen_audio')}),
+        el('div',{class:'small muted',style:'margin-top:8px;cursor:pointer', onclick:()=>Audio_.speak(this.task.script,{rate:0.72}), text:'🐢 0.7× · '+t('exam_replay')})));
+      setTimeout(()=>Audio_.speak(this.task.script,{rate:0.9}),450); }
+    if(this.moduleKey==='sprachbausteine') wrap.append(el('div',{class:'q-instr', style:'margin:4px', text:this.task.title||'Sprachbausteine'}));
+    this.qs.forEach((q,qi)=>{
+      const card=el('div',{class:'card'});
+      card.append(el('div',{style:'font-weight:700;margin-bottom:8px'}, el('span',{class:'muted small',text:(qi+1)+'. '}), q.q));
+      const opts=el('div',{class:'options', style:'margin-top:0'});
+      q.opts.forEach((o,oi)=>{
+        const btn=el('button',{class:'opt', onclick:()=>{ if(this.submitted) return; this.answers[qi]=oi; $$('.opt',opts).forEach(x=>x.classList.remove('sel')); btn.classList.add('sel'); Audio_.play('click'); }}, el('span',{text:o}));
+        if(this.submitted){ btn.style.pointerEvents='none'; if(oi===q.a) btn.classList.add('correct'); else if(this.answers[qi]===oi) btn.classList.add('wrong'); }
+        else if(this.answers[qi]===oi) btn.classList.add('sel');
+        opts.append(btn);
+      });
+      card.append(opts); wrap.append(card);
+    });
+    if(!this.submitted){
+      wrap.append(el('button',{class:'btn primary block lg', style:'margin-top:12px', onclick:()=>this.submit(), text:t('check')+' →'}));
+    } else {
+      const pct=Math.round(this.score/this.qs.length*100);
+      wrap.append(el('div',{class:'card center', style:'background:'+(this.passed?'color-mix(in srgb,var(--good) 16%,var(--surface))':'color-mix(in srgb,var(--bad) 12%,var(--surface))')},
+        el('div',{html:fritz(this.passed?'cheer':'think',72)}),
+        el('h2',{text:this.passed? t('exam_passed'):t('exam_failed')}),
+        el('div',{class:'result-stats', style:'margin-top:10px'},
+          el('div',{class:'rs'}, el('div',{class:'rs-v', text:this.score+'/'+this.qs.length}), el('div',{class:'rs-l',text:t('exam_result')})),
+          el('div',{class:'rs'}, el('div',{class:'rs-v', text:pct+'%'}), el('div',{class:'rs-l',text:t('accuracy')})),
+          el('div',{class:'rs'}, el('div',{class:'rs-v', text:EXAM_STRUCTURE[this.body][this.level].passPct+'%'}), el('div',{class:'rs-l',text:t('exam_pass')})))));
+      wrap.append(el('button',{class:'btn primary block lg', style:'margin-top:10px', onclick:()=>route('examMod',{body:this.body,level:this.level}), text:t('cont')}));
+      wrap.append(el('button',{class:'btn ghost block', style:'margin-top:8px', onclick:()=>ExamRun.start(this.body,this.level,this.moduleKey), text:'🔄 '+t('exam_practice')}));
+    }
+    return wrap;
+  },
+  submit(){
+    if(this.submitted) return; this.submitted=true; this._stop();
+    this.score=this.qs.reduce((s,q,i)=>s+(this.answers[i]===q.a?1:0),0);
+    this.passed=(this.score/this.qs.length*100) >= EXAM_STRUCTURE[this.body][this.level].passPct;
+    if(this.passed){ Audio_.play('complete'); FX.fire({y:innerHeight*0.4}); addXp(8); } else Audio_.play('wrong');
+    route('examRun');
+  }
+};
+SCREENS.examRun = ()=> ExamRun.screen();
+
+SCREENS.examWrite = function(p){
+  const task=examTasks(p.level,'schreiben')[0]; const wrap=el('div',{class:'screen'});
+  wrap.append(el('div',{class:'lesson-top'}, el('button',{class:'xbtn', onclick:()=>route('examMod',{body:p.body,level:p.level}), html:'✕'}), el('div',{class:'lesson-bar'}, el('b',{text:'✍️ Schreiben · '+p.level}))));
+  wrap.append(el('div',{class:'card'}, el('div',{class:'q-instr',text:t('exam_task')}), el('div',{style:'font-weight:600', text:task.task[LANG]||task.task.en}),
+    el('div',{class:'small muted', style:'margin-top:8px', text:t('exam_content_points')+': '+task.points.join(' · ')+(task.min?(' · min. '+task.min+' '+t('exam_words')):'')})));
+  const ta=el('textarea',{class:'type-in', rows:'7', style:'resize:vertical;font-weight:500;font-size:1rem', placeholder:t('exam_write_here')});
+  const wc=el('div',{class:'small muted', style:'text-align:right;margin-top:4px', text:'0 '+t('exam_words')});
+  ta.addEventListener('input',()=>{ const n=ta.value.trim()? ta.value.trim().split(/\s+/).length:0; wc.textContent=n+' '+t('exam_words')+(task.min?(' / '+task.min):''); });
+  wrap.append(ta, wc);
+  const out=el('div',{style:'margin-top:10px'});
+  wrap.append(el('div',{class:'grid2', style:'margin-top:10px'},
+    el('button',{class:'btn', onclick:()=>{ out.innerHTML=''; out.append(el('div',{class:'card'}, el('div',{class:'card-title',text:'✅ '+t('exam_model')}), el('div',{style:'white-space:pre-wrap', text:task.model}))); }, text:'📄 '+t('exam_show_model')}),
+    el('button',{class:'btn accent', onclick:async(e)=>{ if(!ta.value.trim()){ toast('—'); return; } const btn=e.target; btn.disabled=true; out.innerHTML=''; out.append(el('div',{class:'muted small',text:t('ai_thinking')})); const r=await aiWritingFeedback(task, ta.value, p.level); out.innerHTML=''; out.append(el('div',{class:'card'}, el('div',{class:'card-title',text:'🦊 '+t('exam_ai_check')}), el('div',{style:'white-space:pre-wrap', text:r.text}), r.offline?el('div',{class:'small muted',style:'margin-top:6px',text:'· '+t('mock')}):null)); btn.disabled=false; }, text:'🦊 '+t('exam_ai_check')})));
+  wrap.append(out);
+  wrap.append(el('div',{class:'info-note', style:'margin-top:10px'}, el('b',{text:'💡 '+t('exam_tips')+': '}), (task.tips[LANG]||task.tips.en)));
+  return wrap;
+};
+async function aiWritingFeedback(task, text, level){
+  S._aiUsed=true; checkAchievements();
+  const fb=()=>{ const n=text.trim().split(/\s+/).length; const L2=[];
+    L2.push((n>=(task.min||0)?'✅':'⚠️')+' '+n+' '+t('exam_words')+(task.min?(' ('+(LANG==='bs'?'cilj':'target')+': '+task.min+')'):''));
+    L2.push((/\b(hallo|liebe|lieber|sehr geehrte|guten (tag|morgen))/i.test(text)?'✅':'⚠️')+' '+(LANG==='bs'?'Pozdrav na početku':'Greeting at the start'));
+    L2.push((/(gruß|grüße|grüsse|hochachtungsvoll|bis bald)/i.test(text)?'✅':'⚠️')+' '+(LANG==='bs'?'Pozdrav na kraju':'Closing'));
+    L2.push('📄 '+(LANG==='bs'?'Uporedi svoj tekst sa primjerom odgovora.':'Compare your text with the model answer.'));
+    return L2.join('\n'); };
+  if(!AI_ENABLED || aiQuotaLeft()<=0) return {text:fb(), offline:true};
+  try{ const txt=await askClaude('Du bist ein erfahrener Deutschprüfer (Niveau '+level+'). Bewerte den Schülertext kurz und konstruktiv: 2 positive Punkte, 2-3 wichtige Fehler mit Korrektur, und ob die Aufgabe erfüllt ist. Antworte '+(LANG==='bs'?'auf Bosnisch':'in English')+', maximal 8 Zeilen.', 'Aufgabe: '+task.task.en+'\n\nText:\n'+text, {maxTokens:420}); aiConsume(); return {text:txt}; }
+  catch(e){ return {text:fb(), offline:true}; }
+}
+SCREENS.examSpeak = function(p){
+  const task=examTasks(p.level,'sprechen')[0]; const wrap=el('div',{class:'screen'});
+  wrap.append(el('div',{class:'lesson-top'}, el('button',{class:'xbtn', onclick:()=>route('examMod',{body:p.body,level:p.level}), html:'✕'}), el('div',{class:'lesson-bar'}, el('b',{text:'🗣️ Sprechen · '+p.level}))));
+  wrap.append(el('div',{class:'card'}, el('div',{class:'q-instr',text:t('exam_task')}), el('div',{style:'font-weight:600', text:task.task[LANG]||task.task.en}),
+    el('div',{class:'small muted',style:'margin-top:8px', text:task.parts.join(' · ')})));
+  wrap.append(el('div',{class:'info-note', text:t('exam_self_rate')}));
+  const model=el('div',{style:'margin-top:10px'});
+  wrap.append(el('div',{class:'grid2'},
+    el('button',{class:'btn accent', onclick:()=>Audio_.speak(task.model,{rate:0.9}), html:'🔊 '+(LANG==='bs'?'Poslušaj primjer':'Hear the model')}),
+    el('button',{class:'btn', onclick:()=>{ model.innerHTML=''; model.append(el('div',{class:'card'}, el('div',{class:'card-title',text:'✅ '+t('exam_model')}), el('div',{text:task.model}))); }, text:'📄 '+t('exam_show_model')})));
+  wrap.append(model);
+  wrap.append(el('div',{class:'info-note', style:'margin-top:10px'}, el('b',{text:'💡 '+t('exam_tips')+': '}), (task.tips[LANG]||task.tips.en)));
+  wrap.append(el('button',{class:'btn good block lg', style:'margin-top:12px', onclick:()=>{ addXp(5); Audio_.play('coin'); toast('👏 +5 XP'); route('examMod',{body:p.body,level:p.level}); }, text:'✅ '+t('exam_done_speaking')}));
+  return wrap;
+};
+
 /* RESULTS */
 SCREENS.results = function(p){
   const wrap=el('div',{class:'screen'});
@@ -3502,7 +3984,8 @@ function init(){
   // expose for debugging / self-test
   window.LF={S, VOCAB, GRAMMAR, UNITS, VOCAB_BY_ID, route, addXp, startLesson, buildLesson, Lesson, EX,
     gen:{genPic,genTrans,genGender,genCase,genConj,genListen,genMemory,genBuild,genCloze,genSpeak,genListenSentence},
-    pick, sentencesByLevel, vocabByLevel};
+    pick, sentencesByLevel, vocabByLevel, nativeOf, get LANG(){return LANG;},
+    ExamRun, EXAM_STRUCTURE, EXAM_BODIES, EXAM_TASKS, examTasks, Audio_};
 }
 
 // Boot when DOM is ready
