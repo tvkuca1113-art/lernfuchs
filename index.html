@@ -1151,6 +1151,108 @@ RAW_VOCAB.push(
   {de:'Rücksicht nehmen', bs:'imati obzira', en:'to show consideration', pos:'phrase', nvv:true, topic:'b2nvv', lvl:'B2'},
 );
 
+RAW_VOCAB.push(
+  /* ---- A1 proširenje (dodatne riječi u postojeće teme) ------------------ */
+  // Zahlen 14–90 + Million
+  {de:'vierzehn', bs:'četrnaest', en:'fourteen', pos:'num', topic:'numbers', lvl:'A1'},
+  {de:'fünfzehn', bs:'petnaest', en:'fifteen', pos:'num', topic:'numbers', lvl:'A1'},
+  {de:'sechzehn', bs:'šesnaest', en:'sixteen', pos:'num', topic:'numbers', lvl:'A1'},
+  {de:'siebzehn', bs:'sedamnaest', en:'seventeen', pos:'num', topic:'numbers', lvl:'A1'},
+  {de:'achtzehn', bs:'osamnaest', en:'eighteen', pos:'num', topic:'numbers', lvl:'A1'},
+  {de:'neunzehn', bs:'devetnaest', en:'nineteen', pos:'num', topic:'numbers', lvl:'A1'},
+  {de:'vierzig', bs:'četrdeset', en:'forty', pos:'num', topic:'numbers', lvl:'A1'},
+  {de:'fünfzig', bs:'pedeset', en:'fifty', pos:'num', topic:'numbers', lvl:'A1'},
+  {de:'sechzig', bs:'šezdeset', en:'sixty', pos:'num', topic:'numbers', lvl:'A1'},
+  {de:'siebzig', bs:'sedamdeset', en:'seventy', pos:'num', topic:'numbers', lvl:'A1'},
+  {de:'achtzig', bs:'osamdeset', en:'eighty', pos:'num', topic:'numbers', lvl:'A1'},
+  {de:'neunzig', bs:'devedeset', en:'ninety', pos:'num', topic:'numbers', lvl:'A1'},
+  {de:'Million', art:'die', pl:'Millionen', bs:'milion', en:'million', pos:'noun', topic:'numbers', lvl:'A1'},
+  // Familie
+  {de:'Onkel', art:'der', pl:'Onkel', bs:'ujak / stric', en:'uncle', pos:'noun', emoji:'👨', topic:'family', lvl:'A1'},
+  {de:'Tante', art:'die', pl:'Tanten', bs:'tetka', en:'aunt', pos:'noun', emoji:'👩', topic:'family', lvl:'A1'},
+  {de:'Cousin', art:'der', pl:'Cousins', bs:'rođak', en:'cousin (m)', pos:'noun', topic:'family', lvl:'A1'},
+  {de:'Enkel', art:'der', pl:'Enkel', bs:'unuk', en:'grandson', pos:'noun', topic:'family', lvl:'A1'},
+  {de:'verheiratet', bs:'oženjen / udata', en:'married', pos:'adj', topic:'family', lvl:'A1'},
+  {de:'ledig', bs:'neoženjen / neudata', en:'single', pos:'adj', topic:'family', lvl:'A1'},
+  // Essen & Trinken
+  {de:'Butter', art:'die', pl:'—', bs:'puter / maslac', en:'butter', pos:'noun', emoji:'🧈', topic:'food', lvl:'A1'},
+  {de:'Wurst', art:'die', pl:'Würste', bs:'kobasica', en:'sausage', pos:'noun', emoji:'🌭', topic:'food', lvl:'A1'},
+  {de:'Kuchen', art:'der', pl:'Kuchen', bs:'kolač', en:'cake', pos:'noun', emoji:'🍰', topic:'food', lvl:'A1'},
+  {de:'Schokolade', art:'die', pl:'Schokoladen', bs:'čokolada', en:'chocolate', pos:'noun', emoji:'🍫', topic:'food', lvl:'A1'},
+  {de:'Orange', art:'die', pl:'Orangen', bs:'narandža', en:'orange', pos:'noun', emoji:'🍊', topic:'food', lvl:'A1'},
+  {de:'Zitrone', art:'die', pl:'Zitronen', bs:'limun', en:'lemon', pos:'noun', emoji:'🍋', topic:'food', lvl:'A1'},
+  {de:'Salat', art:'der', pl:'Salate', bs:'salata', en:'salad', pos:'noun', emoji:'🥗', topic:'food', lvl:'A1'},
+  {de:'Pizza', art:'die', pl:'Pizzas', bs:'pica', en:'pizza', pos:'noun', emoji:'🍕', topic:'food', lvl:'A1'},
+  {de:'Eis', art:'das', pl:'—', bs:'sladoled / led', en:'ice cream / ice', pos:'noun', emoji:'🍦', topic:'food', lvl:'A1'},
+  {de:'Nudeln', art:'die', pl:'Nudeln', bs:'tjestenina', en:'pasta / noodles', pos:'noun', emoji:'🍝', topic:'food', lvl:'A1'},
+  // Tiere
+  {de:'Elefant', art:'der', pl:'Elefanten', bs:'slon', en:'elephant', pos:'noun', emoji:'🐘', topic:'animals', lvl:'A1'},
+  {de:'Affe', art:'der', pl:'Affen', bs:'majmun', en:'monkey', pos:'noun', emoji:'🐵', topic:'animals', lvl:'A1'},
+  {de:'Ente', art:'die', pl:'Enten', bs:'patka', en:'duck', pos:'noun', emoji:'🦆', topic:'animals', lvl:'A1'},
+  {de:'Huhn', art:'das', pl:'Hühner', bs:'kokoš', en:'chicken', pos:'noun', emoji:'🐔', topic:'animals', lvl:'A1'},
+  {de:'Frosch', art:'der', pl:'Frösche', bs:'žaba', en:'frog', pos:'noun', emoji:'🐸', topic:'animals', lvl:'A1'},
+  {de:'Biene', art:'die', pl:'Bienen', bs:'pčela', en:'bee', pos:'noun', emoji:'🐝', topic:'animals', lvl:'A1'},
+  // Körper
+  {de:'Gesicht', art:'das', pl:'Gesichter', bs:'lice', en:'face', pos:'noun', topic:'body', lvl:'A1'},
+  {de:'Rücken', art:'der', pl:'Rücken', bs:'leđa', en:'back', pos:'noun', topic:'body', lvl:'A1'},
+  {de:'Finger', art:'der', pl:'Finger', bs:'prst', en:'finger', pos:'noun', emoji:'👆', topic:'body', lvl:'A1'},
+  {de:'Herz', art:'das', pl:'Herzen', bs:'srce', en:'heart', pos:'noun', emoji:'❤️', topic:'body', lvl:'A1'},
+  {de:'Hals', art:'der', pl:'Hälse', bs:'vrat / grlo', en:'neck / throat', pos:'noun', topic:'body', lvl:'A1'},
+  {de:'Knie', art:'das', pl:'Knie', bs:'koljeno', en:'knee', pos:'noun', topic:'body', lvl:'A1'},
+  // Kleidung
+  {de:'Pullover', art:'der', pl:'Pullover', bs:'džemper', en:'sweater', pos:'noun', emoji:'🧶', topic:'clothes', lvl:'A1'},
+  {de:'Handschuh', art:'der', pl:'Handschuhe', bs:'rukavica', en:'glove', pos:'noun', emoji:'🧤', topic:'clothes', lvl:'A1'},
+  {de:'Schal', art:'der', pl:'Schals', bs:'šal', en:'scarf', pos:'noun', emoji:'🧣', topic:'clothes', lvl:'A1'},
+  {de:'Stiefel', art:'der', pl:'Stiefel', bs:'čizma', en:'boot', pos:'noun', emoji:'🥾', topic:'clothes', lvl:'A1'},
+  // Haus & Dinge
+  {de:'Kühlschrank', art:'der', pl:'Kühlschränke', bs:'frižider', en:'fridge', pos:'noun', emoji:'🧊', topic:'home', lvl:'A1'},
+  {de:'Dusche', art:'die', pl:'Duschen', bs:'tuš', en:'shower', pos:'noun', emoji:'🚿', topic:'home', lvl:'A1'},
+  {de:'Sofa', art:'das', pl:'Sofas', bs:'sofa / kauč', en:'sofa', pos:'noun', emoji:'🛋️', topic:'home', lvl:'A1'},
+  {de:'Spiegel', art:'der', pl:'Spiegel', bs:'ogledalo', en:'mirror', pos:'noun', emoji:'🪞', topic:'home', lvl:'A1'},
+  {de:'Wand', art:'die', pl:'Wände', bs:'zid', en:'wall', pos:'noun', topic:'home', lvl:'A1'},
+  {de:'Treppe', art:'die', pl:'Treppen', bs:'stepenice', en:'stairs', pos:'noun', topic:'home', lvl:'A1'},
+  // Stadt & Orte
+  {de:'Museum', art:'das', pl:'Museen', bs:'muzej', en:'museum', pos:'noun', emoji:'🏛️', topic:'city', lvl:'A1'},
+  {de:'Brücke', art:'die', pl:'Brücken', bs:'most', en:'bridge', pos:'noun', emoji:'🌉', topic:'city', lvl:'A1'},
+  {de:'Bäckerei', art:'die', pl:'Bäckereien', bs:'pekara', en:'bakery', pos:'noun', emoji:'🥖', topic:'city', lvl:'A1'},
+  {de:'Zoo', art:'der', pl:'Zoos', bs:'zoološki vrt', en:'zoo', pos:'noun', emoji:'🦓', topic:'city', lvl:'A1'},
+  {de:'Theater', art:'das', pl:'Theater', bs:'pozorište', en:'theatre', pos:'noun', emoji:'🎭', topic:'city', lvl:'A1'},
+  {de:'Post', art:'die', pl:'—', bs:'pošta', en:'post office', pos:'noun', emoji:'📮', topic:'city', lvl:'A1'},
+  // Zeit
+  {de:'Minute', art:'die', pl:'Minuten', bs:'minuta', en:'minute', pos:'noun', topic:'time', lvl:'A1'},
+  {de:'Morgen', art:'der', pl:'Morgen', bs:'jutro', en:'morning', pos:'noun', topic:'time', lvl:'A1'},
+  {de:'Abend', art:'der', pl:'Abende', bs:'veče', en:'evening', pos:'noun', topic:'time', lvl:'A1'},
+  {de:'Nacht', art:'die', pl:'Nächte', bs:'noć', en:'night', pos:'noun', emoji:'🌙', topic:'time', lvl:'A1'},
+  {de:'früh', bs:'rano', en:'early', pos:'adv', topic:'time', lvl:'A1'},
+  {de:'spät', bs:'kasno', en:'late', pos:'adv', topic:'time', lvl:'A1'},
+  // Verben
+  {de:'bringen', bs:'donijeti', en:'to bring', pos:'verb', topic:'verbs', lvl:'A1'},
+  {de:'tragen', bs:'nositi', en:'to carry / wear', pos:'verb', topic:'verbs', lvl:'A1'},
+  {de:'öffnen', bs:'otvoriti', en:'to open', pos:'verb', topic:'verbs', lvl:'A1'},
+  {de:'schließen', bs:'zatvoriti', en:'to close', pos:'verb', topic:'verbs', lvl:'A1'},
+  {de:'suchen', bs:'tražiti', en:'to search', pos:'verb', topic:'verbs', lvl:'A1'},
+  {de:'warten', bs:'čekati', en:'to wait', pos:'verb', topic:'verbs', lvl:'A1'},
+  {de:'fragen', bs:'pitati', en:'to ask', pos:'verb', topic:'verbs', lvl:'A1'},
+  {de:'antworten', bs:'odgovoriti', en:'to answer', pos:'verb', topic:'verbs', lvl:'A1'},
+  {de:'helfen', bs:'pomoći', en:'to help', pos:'verb', topic:'verbs', lvl:'A1', ex:'Kannst du mir helfen?', exbs:'Možeš li mi pomoći?', exen:'Can you help me?'},
+  {de:'zeigen', bs:'pokazati', en:'to show', pos:'verb', topic:'verbs', lvl:'A1'},
+  {de:'bezahlen', bs:'platiti', en:'to pay', pos:'verb', topic:'verbs', lvl:'A1'},
+  {de:'bleiben', bs:'ostati', en:'to stay', pos:'verb', topic:'verbs', lvl:'A1'},
+  {de:'treffen', bs:'sresti', en:'to meet', pos:'verb', topic:'verbs', lvl:'A1'},
+  {de:'denken', bs:'misliti', en:'to think', pos:'verb', topic:'verbs', lvl:'A1'},
+  // Adjektive
+  {de:'voll', bs:'pun', en:'full', pos:'adj', topic:'adjs', lvl:'A1'},
+  {de:'leer', bs:'prazan', en:'empty', pos:'adj', topic:'adjs', lvl:'A1'},
+  {de:'laut', bs:'glasan', en:'loud', pos:'adj', topic:'adjs', lvl:'A1'},
+  {de:'leise', bs:'tih', en:'quiet', pos:'adj', topic:'adjs', lvl:'A1'},
+  {de:'sauber', bs:'čist', en:'clean', pos:'adj', topic:'adjs', lvl:'A1'},
+  {de:'schmutzig', bs:'prljav', en:'dirty', pos:'adj', topic:'adjs', lvl:'A1'},
+  {de:'stark', bs:'jak', en:'strong', pos:'adj', topic:'adjs', lvl:'A1'},
+  {de:'schwach', bs:'slab', en:'weak', pos:'adj', topic:'adjs', lvl:'A1'},
+  {de:'richtig', bs:'tačan / ispravan', en:'correct', pos:'adj', topic:'adjs', lvl:'A1'},
+  {de:'falsch', bs:'pogrešan', en:'wrong', pos:'adj', topic:'adjs', lvl:'A1'}
+);
+
 /* ---- Finalize vocab: stable ids + fast lookup indexes ------------------- */
 (function finalizeVocab(){
   const used = Object.create(null);
@@ -1868,7 +1970,7 @@ function DEFAULT_STATE(){
   return {
     v: SCHEMA_VERSION,
     profile: { name:'', joined:today, onboarded:false },
-    settings: { sound:true, theme:'auto', voice:'', textsize:'normal', dyslexia:false, reduce:false, lang:'bs' },
+    settings: { sound:true, theme:'auto', voice:'', naturalVoice:true, netVoice:'Vicki', textsize:'normal', dyslexia:false, reduce:false, lang:'bs' },
     xp: 0,
     gems: 30,
     hearts: { count:MAX_HEARTS, max:MAX_HEARTS, lastRegen: now() },
@@ -2019,40 +2121,78 @@ const Audio_ = (function(){
   };
   function play(name){ try{ (sfx[name]||(()=>{}))(); }catch(e){} }
 
-  // German TTS — pick the CLEAREST available voice, not the first (default is
-  // often the robotic eSpeak/Compact one). Ranking prefers natural/cloud voices.
-  let voices = [];
-  function loadVoices(){ voices = (window.speechSynthesis? speechSynthesis.getVoices():[]) || []; }
-  if(window.speechSynthesis){ loadVoices(); speechSynthesis.onvoiceschanged = loadVoices; }
+  /* ---- German TTS — TIERED for natural, human-sounding audio -------------
+     Tier 1 (default, needs internet): a NATURAL neural voice via Amazon Polly,
+       served free through the StreamElements endpoint. Sounds like a real
+       speaker — this is what replaces the robotic system voice.
+     Tier 2 (offline / if Tier 1 fails): Web Speech API with the best-ranked
+       local voice, seamless fallback.
+     Production (Part B): proxy a premium neural TTS (Azure Neural, Google
+       WaveNet/Neural2, ElevenLabs, or Polly Neural) through your own backend,
+       or use recorded native-speaker audio like Duolingo/Babbel. Swap the
+       ONE url() line below to point at your proxy.
+     -------------------------------------------------------------------------*/
+  let voices=[];
+  function loadVoices(){ voices=(window.speechSynthesis? speechSynthesis.getVoices():[])||[]; }
+  if(window.speechSynthesis){ loadVoices(); speechSynthesis.onvoiceschanged=loadVoices; }
   function voiceScore(v){
     const n=(v.name||'').toLowerCase(); let s=0;
-    if(/de[-_]de/i.test(v.lang)) s+=40; else if(/^de/i.test(v.lang)) s+=20; else return -1;   // German only
-    if(/google/.test(n)) s+=55;                                                   // "Google Deutsch" — very natural
-    if(/natural|neural|online|premium|enhanced|wavenet|siri/.test(n)) s+=48;      // modern high-quality engines
+    if(/de[-_]de/i.test(v.lang)) s+=40; else if(/^de/i.test(v.lang)) s+=20; else return -1;
+    if(/google/.test(n)) s+=55;
+    if(/natural|neural|online|premium|enhanced|wavenet|siri/.test(n)) s+=48;
     if(/(katja|hedda|conrad|amala|seraphina|louisa|vicki|marlene|petra|markus|anna|christoph|florian|ingrid|gisela)/.test(n)) s+=16;
     if(/microsoft/.test(n)) s+=10;
-    if(/(espeak|compact|e-speak|pico)/.test(n)) s-=70;                            // robotic — push to bottom
-    if(v.localService===false) s+=8;                                             // cloud voices are usually clearer
+    if(/(espeak|compact|e-speak|pico)/.test(n)) s-=70;
+    if(v.localService===false) s+=8;
     return s;
   }
   function rankedVoices(){ if(!voices.length) loadVoices(); return voices.filter(v=>/^de/i.test(v.lang)).map(v=>({v,s:voiceScore(v)})).sort((a,b)=>b.s-a.s).map(o=>o.v); }
-  function germanVoice(){
-    if(S.settings.voice){ const v=voices.find(v=>v.name===S.settings.voice); if(v) return v; }
-    return rankedVoices()[0] || null;
-  }
-  function speak(text, opts={}){
+  function germanVoice(){ if(S.settings.voice){ const v=voices.find(v=>v.name===S.settings.voice); if(v) return v; } return rankedVoices()[0]||null; }
+  function webSpeak(text, opts={}){
     if(!window.speechSynthesis) return false;
-    try{
-      speechSynthesis.cancel();
-      const u = new SpeechSynthesisUtterance(text);
-      u.lang='de-DE'; const v=germanVoice(); if(v) u.voice=v;
-      u.rate = opts.rate!=null? opts.rate : 0.88; u.pitch = 1.0; u.volume = 1;   // a touch slower = clearer
-      speechSynthesis.speak(u); return true;
+    try{ speechSynthesis.cancel();
+      const u=new SpeechSynthesisUtterance(text); u.lang='de-DE'; const v=germanVoice(); if(v) u.voice=v;
+      u.rate=opts.rate!=null?opts.rate:0.9; u.pitch=1; u.volume=1; speechSynthesis.speak(u); return true;
     }catch(e){ return false; }
   }
-  function listVoices(){ return rankedVoices(); }                                 // ranked best-first for the picker
-  function bestVoiceName(){ const v=rankedVoices()[0]; return v? v.name : ''; }
-  return { play, speak, ensure, listVoices, bestVoiceName, hasTTS:()=>!!window.speechSynthesis };
+  // --- Natural neural voice (Amazon Polly de-DE via StreamElements) ---
+  const NET_VOICES=['Vicki','Daniel','Marlene','Hans'];   // Polly German voices
+  const netCache=new Map(); let netAudio=null, netUnlocked=false;
+  function netUrl(text, voice){ return 'https://api.streamelements.com/kappa/v2/speech?voice='+encodeURIComponent(voice||'Vicki')+'&text='+encodeURIComponent(String(text).slice(0,300)); }
+  async function netSrc(text, voice){
+    // fetch → blob (StreamElements sends CORS *). Cached blobs also replay offline.
+    const key=(voice||'Vicki')+'|'+text; if(netCache.has(key)) return netCache.get(key);
+    const r=await fetch(netUrl(text,voice)); if(!r.ok) throw new Error('http'+r.status);
+    const bl=await r.blob(); if(bl.size<200) throw new Error('empty');
+    const u=URL.createObjectURL(bl); netCache.set(key,u); return u;
+  }
+  function netSpeak(text, opts={}){
+    return new Promise(async(resolve,reject)=>{
+      if(!navigator.onLine) return reject('offline');
+      let src; try{ src=await netSrc(text, S.settings.netVoice); }catch(e){ return reject('src'); }
+      const a=netAudio||(netAudio=new Audio());
+      a.playbackRate = opts.rate==null? 1.0 : clamp(opts.rate/0.9, 0.65, 1.1);
+      let settled=false; const done=(fn)=>{ if(settled) return; settled=true; clearTimeout(to); fn(); };
+      const to=setTimeout(()=>done(()=>reject('timeout')), 4200);
+      a.onplaying=()=>done(resolve); a.onerror=()=>done(()=>reject('error'));
+      try{ if(window.speechSynthesis) speechSynthesis.cancel(); a.src=src; const pr=a.play(); if(pr&&pr.catch) pr.catch(()=>done(()=>reject('blocked'))); }
+      catch(e){ done(()=>reject('exc')); }
+    });
+  }
+  function speak(text, opts={}){
+    if(!text) return false;
+    if(S.settings.naturalVoice!==false && navigator.onLine){
+      netSpeak(text, opts).catch(()=>webSpeak(text, opts));    // natural first, seamless offline fallback
+      return true;
+    }
+    return webSpeak(text, opts);
+  }
+  // Unlock the audio element on first user gesture so later programmatic plays aren't blocked
+  function primeAudio(){ if(netUnlocked) return; netUnlocked=true; try{ const a=netAudio||(netAudio=new Audio()); a.muted=true; const pr=a.play&&a.play(); if(pr&&pr.then) pr.then(()=>{a.pause();a.muted=false;}).catch(()=>{a.muted=false;}); }catch(e){} }
+  function listVoices(){ return rankedVoices(); }
+  function bestVoiceName(){ const v=rankedVoices()[0]; return v?v.name:''; }
+  function netVoiceList(){ return NET_VOICES; }
+  return { play, speak, webSpeak, ensure, listVoices, bestVoiceName, netVoiceList, primeAudio, hasTTS:()=>!!window.speechSynthesis };
 })();
 
 /* ============================================================================
@@ -3411,18 +3551,29 @@ SCREENS.settings = function(){
   card.append(toggleRow('🔊', t('sound'), '', S.settings.sound, v=>{ S.settings.sound=v; save(); if(v) Audio_.play('click'); }));
   card.append(segRow('🎨', t('theme'), [['light',t('light')],['dark',t('dark')],['auto',t('system')]], S.settings.theme, v=>{ S.settings.theme=v; applySettings(); save(); }));
   card.append(segRow('🌐', t('interface_lang'), [['bs','BS'],['en','EN']], S.settings.lang, v=>{ S.settings.lang=v; LANG=v; applySettings(); save(); render(); }));
-  // voice picker (ranked best-first; the app auto-uses the clearest voice)
-  const voices=Audio_.listVoices();
-  const vmain=el('div',{class:'sr-main'}, el('div',{class:'sr-t',text:t('voice')}));
-  if(!voices.length){
-    vmain.append(el('div',{class:'sr-d', text: LANG==='bs'?'Ovaj browser nema njemački glas. Za najjasniji zvuk koristi Chrome (ima „Google Deutsch“).':'This browser has no German voice. For the clearest audio use Chrome (has “Google Deutsch”).'}));
-  } else {
-    const sel=el('select',{class:'type-in', style:'padding:10px', onchange:e=>{ S.settings.voice=e.target.value; save(); Audio_.speak('Guten Tag! Ich bin Fritz, dein Deutschlehrer.'); }});
-    sel.append(el('option',{value:'', text:'— '+(LANG==='bs'?'automatski (najbolji glas)':'automatic (best voice)')+' —', selected:!S.settings.voice}));
-    voices.forEach((v,i)=> sel.append(el('option',{value:v.name, text:(i===0?'★ ':'')+v.name+' ('+v.lang+')', selected:S.settings.voice===v.name})));
-    vmain.append(sel, el('button',{class:'btn sm ghost', style:'margin-top:6px', onclick:()=>Audio_.speak('Guten Tag! Das Wetter ist heute schön. Ich lerne gern Deutsch.'), html:'🔊 '+(LANG==='bs'?'Probaj glas':'Test voice')}));
+  // Audio quality — natural neural voice (online) + offline system fallback
+  card.append(toggleRow('🎙️', LANG==='bs'?'Prirodni glas (online)':'Natural voice (online)',
+    LANG==='bs'?'Pravi ljudski (neuralni) glas kad si online. Offline koristi glas sistema.':'Real human (neural) voice when online. Uses the system voice offline.',
+    S.settings.naturalVoice!==false, v=>{ S.settings.naturalVoice=v; save(); if(v) setTimeout(()=>Audio_.speak('Guten Tag! Ich bin Fritz, dein Deutschlehrer.'),150); }));
+  if(S.settings.naturalVoice!==false){
+    const nsel=el('select',{class:'type-in', style:'padding:10px', onchange:e=>{ S.settings.netVoice=e.target.value; save(); Audio_.speak('Hallo! Das Wetter ist heute schön. Ich lerne gern Deutsch.'); }});
+    Audio_.netVoiceList().forEach(v=> nsel.append(el('option',{value:v, text:v+((v==='Vicki'||v==='Daniel')?' ★':''), selected:S.settings.netVoice===v})));
+    card.append(el('div',{class:'setting-row'}, el('span',{style:'font-size:1.3rem',text:'🗣️'}),
+      el('div',{class:'sr-main'}, el('div',{class:'sr-t',text:(LANG==='bs'?'Prirodni glas':'Natural voice')+' (Amazon Polly)'}), nsel,
+        el('button',{class:'btn sm accent', style:'margin-top:6px', onclick:()=>Audio_.speak('Guten Tag! Das Wetter ist heute schön, und ich lerne sehr gern Deutsch.'), html:'🔊 '+(LANG==='bs'?'Probaj prirodni glas':'Test natural voice')}))));
   }
-  card.append(el('div',{class:'setting-row'}, el('span',{style:'font-size:1.3rem',text:'🗣️'}), vmain));
+  // Offline (system) voice picker
+  const voices=Audio_.listVoices();
+  const vmain=el('div',{class:'sr-main'}, el('div',{class:'sr-t',text:(LANG==='bs'?'Offline glas (sistem)':'Offline voice (system)')}));
+  if(!voices.length){ vmain.append(el('div',{class:'sr-d', text: LANG==='bs'?'Nema sistemskog njemačkog glasa u ovom browseru.':'No system German voice in this browser.'})); }
+  else {
+    const sel=el('select',{class:'type-in', style:'padding:10px', onchange:e=>{ S.settings.voice=e.target.value; save(); Audio_.webSpeak('Guten Tag! Ich bin Fritz.'); }});
+    sel.append(el('option',{value:'', text:'— '+(LANG==='bs'?'automatski (najbolji)':'automatic (best)')+' —', selected:!S.settings.voice}));
+    voices.forEach((v,i)=> sel.append(el('option',{value:v.name, text:(i===0?'★ ':'')+v.name, selected:S.settings.voice===v.name})));
+    vmain.append(sel, el('button',{class:'btn sm ghost', style:'margin-top:6px', onclick:()=>Audio_.webSpeak('Das Wetter ist heute schön.'), html:'🔊 '+(LANG==='bs'?'Probaj':'Test')}));
+  }
+  card.append(el('div',{class:'setting-row'}, el('span',{style:'font-size:1.3rem',text:'💻'}), vmain));
+  card.append(el('div',{class:'info-note', style:'margin-top:6px', text: LANG==='bs'?'💡 Ako zvuči robotski: uključi „Prirodni glas“ i budi online. U produkciji se koristi vlastiti neuralni TTS ili snimljeni glas govornika (vidi Part B).':'💡 If it sounds robotic: turn on “Natural voice” and be online. Production uses your own neural TTS or recorded native audio (see Part B).'}));
   card.append(toggleRow('🔠', t('larger_text'), '', S.settings.textsize==='large', v=>{ S.settings.textsize=v?'large':'normal'; applySettings(); save(); }));
   card.append(toggleRow('🔤', t('dyslexia'), '', S.settings.dyslexia, v=>{ S.settings.dyslexia=v; applySettings(); save(); }));
   card.append(toggleRow('🎬', t('reduce_motion'), '', S.settings.reduce, v=>{ S.settings.reduce=v; applySettings(); save(); }));
@@ -3973,7 +4124,7 @@ function init(){
   ensureQuests(); ensureLeague();
   save();
   // Resume audio on first user gesture (autoplay policy)
-  const resume=()=>{ Audio_.ensure&&Audio_.ensure(); document.removeEventListener('pointerdown',resume); document.removeEventListener('keydown',resume); };
+  const resume=()=>{ Audio_.ensure&&Audio_.ensure(); Audio_.primeAudio&&Audio_.primeAudio(); document.removeEventListener('pointerdown',resume); document.removeEventListener('keydown',resume); };
   document.addEventListener('pointerdown',resume); document.addEventListener('keydown',resume);
   // Live timers
   setInterval(tickTimers, 1000);
