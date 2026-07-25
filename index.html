@@ -317,8 +317,8 @@ input,select,textarea{ font-family:inherit; font-size:inherit; }
 .noun-card{ margin:16px auto; max-width:260px; padding:20px; border-radius:18px; background:var(--surface); border:1px solid var(--line); box-shadow:var(--shadow); text-align:center; font-size:1.5rem; font-weight:900; }
 
 /* Memory grid */
-.memgrid{ display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-top:16px; }
-.mcard{ aspect-ratio:3/4; border-radius:12px; background:linear-gradient(180deg,var(--brand-2),var(--brand)); border:none; box-shadow:0 3px 0 #c9560a; display:grid; place-items:center; color:#fff; font-weight:800; font-size:.8rem; padding:4px; text-align:center; transition:transform .3s var(--spring); transform-style:preserve-3d; }
+.memgrid{ display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:7px; margin-top:16px; }
+.mcard{ min-width:0; min-height:78px; border-radius:12px; background:linear-gradient(180deg,var(--brand-2),var(--brand)); border:none; box-shadow:0 3px 0 #c9560a; display:grid; place-items:center; color:#fff; font-weight:800; font-size:.66rem; line-height:1.12; padding:6px 3px; text-align:center; overflow:hidden; word-break:break-word; hyphens:auto; }
 .mcard.flip{ background:var(--surface); color:var(--ink); border:1px solid var(--line); box-shadow:var(--shadow-sm); }
 .mcard.matched{ background:color-mix(in srgb,var(--good) 22%, var(--surface)); color:var(--good-ink); box-shadow:none; opacity:.85; }
 .mcard .qm{ font-size:1.6rem; }
@@ -2228,6 +2228,95 @@ EXAM_TASKS.B2.sprachbausteine.push(
     {q:'Sie legt großen Wert ___ Pünktlichkeit.', opts:['auf','an','für'], a:0} ] }
 );
 
+/* ---- Još ispitnih zadataka (bogatije vježbe) --------------------------- */
+EXAM_TASKS.A1.sprachbausteine.push(
+  { title:'Grammatik A1 (3)', items:[
+    {q:'___ ist dein Name?', opts:['Wie','Was','Wo'], a:0},
+    {q:'Ich möchte ___ Wasser, bitte.', opts:['ein','einen','eine'], a:0},
+    {q:'Wo ___ ihr?', opts:['wohnt','wohnen','wohne'], a:0},
+    {q:'Das ist ___ Tasche.', opts:['eine','ein','einen'], a:0},
+    {q:'Er ___ einen Hund.', opts:['hat','habt','habe'], a:0},
+    {q:'Wir gehen ___ Kino.', opts:['ins','im','in'], a:0} ] }
+);
+EXAM_TASKS.A1.lesen.push(
+  { title:'Busfahrplan', text:'Bus Linie 5 — Abfahrt vom Marktplatz:\nMontag–Freitag: alle 10 Minuten\nSamstag: alle 20 Minuten\nSonntag und Feiertage: alle 30 Minuten',
+    qs:[ {q:'Am Sonntag fährt der Bus alle 30 Minuten.', opts:['Richtig','Falsch'], a:0},
+         {q:'Am Montag fährt der Bus alle 20 Minuten.', opts:['Richtig','Falsch'], a:1},
+         {q:'Wie oft fährt der Bus am Samstag?', opts:['alle 10 Minuten','alle 20 Minuten','alle 30 Minuten'], a:1} ] }
+);
+EXAM_TASKS.A1.hoeren.push(
+  { title:'Ansage: Sprachschule', script:'Willkommen bei der Sprachschule. Der Deutschkurs für Anfänger beginnt am Montag um neun Uhr in Raum zwölf. Bitte bringen Sie ein Wörterbuch mit.',
+    qs:[ {q:'Wann beginnt der Kurs?', opts:['Montag um 9 Uhr','Dienstag um 9 Uhr','Montag um 12 Uhr'], a:0},
+         {q:'Was sollen die Teilnehmer mitbringen?', opts:['ein Buch','ein Wörterbuch','einen Stift'], a:1},
+         {q:'In welchem Raum ist der Kurs?', opts:['Raum 10','Raum 11','Raum 12'], a:2} ] }
+);
+EXAM_TASKS.A2.sprachbausteine.push(
+  { title:'Grammatik A2 (3)', items:[
+    {q:'Ich habe gestern einen Brief ___.', opts:['geschrieben','geschreibt','schreiben'], a:0},
+    {q:'Wir freuen uns ___ die Ferien.', opts:['auf','für','an'], a:0},
+    {q:'Das Buch liegt ___ dem Tisch.', opts:['auf','an','in'], a:0},
+    {q:'Er ist krank, ___ bleibt er zu Hause.', opts:['deshalb','weil','dass'], a:0},
+    {q:'Ich fahre ___ Österreich.', opts:['nach','in','zu'], a:0},
+    {q:'Kannst du ___ Fenster aufmachen?', opts:['das','dem','der'], a:0} ] }
+);
+EXAM_TASKS.A2.lesen.push(
+  { title:'E-Mail: Termin absagen', text:'Sehr geehrter Herr Klein,\nleider muss ich unseren Termin am Dienstag absagen, weil ich krank bin. Können wir ihn auf nächste Woche verschieben? Donnerstag um 14 Uhr würde mir gut passen. Bitte geben Sie mir Bescheid.\nMit freundlichen Grüßen, Frau Berg',
+    qs:[ {q:'Frau Berg möchte den Termin verschieben.', opts:['Richtig','Falsch'], a:0},
+         {q:'Sie schlägt Montag als neuen Termin vor.', opts:['Richtig','Falsch'], a:1},
+         {q:'Warum sagt sie den Termin ab?', opts:['Urlaub','Krankheit','Arbeit'], a:1},
+         {q:'Welchen neuen Termin schlägt sie vor?', opts:['Do um 14 Uhr','Di um 14 Uhr','Do um 16 Uhr'], a:0} ] }
+);
+EXAM_TASKS.A2.hoeren.push(
+  { title:'Ansage: Autowerkstatt', script:'Guten Tag, hier ist die Autowerkstatt Müller. Ihr Auto ist fertig. Sie können es ab morgen früh abholen. Die Reparatur hat zweihundertfünfzig Euro gekostet. Bitte bringen Sie den Fahrzeugschein mit.',
+    qs:[ {q:'Was ist fertig?', opts:['das Auto','das Fahrrad','der Computer'], a:0},
+         {q:'Wie viel kostet die Reparatur?', opts:['150 Euro','250 Euro','520 Euro'], a:1},
+         {q:'Was soll der Kunde mitbringen?', opts:['Geld','den Fahrzeugschein','einen Ausweis'], a:1} ] }
+);
+EXAM_TASKS.B1.sprachbausteine.push(
+  { title:'Grammatik B1 (3)', items:[
+    {q:'Ich weiß nicht, ___ er heute kommt.', opts:['ob','wenn','als'], a:0},
+    {q:'Die Frau, ___ Auto hier steht, ist meine Chefin.', opts:['deren','die','der'], a:0},
+    {q:'Wenn ich reich ___, würde ich viel reisen.', opts:['wäre','bin','war'], a:0},
+    {q:'Er hat den Bus verpasst, ___ kam er zu spät.', opts:['deshalb','obwohl','damit'], a:0},
+    {q:'Das Problem muss schnell ___ werden.', opts:['gelöst','lösen','gelöste'], a:0},
+    {q:'Sie sucht eine Wohnung, ___ nicht zu teuer ist.', opts:['die','der','das'], a:0} ] }
+);
+EXAM_TASKS.B1.lesen.push(
+  { title:'Anzeige: Wohnung', text:'Zu vermieten: helle 2-Zimmer-Wohnung im Zentrum, 60 m², dritter Stock mit Aufzug. Miete 750 Euro plus Nebenkosten. Die Wohnung ist ab dem 1. März frei. Haustiere sind leider nicht erlaubt. Interessenten melden sich bitte per E-Mail.',
+    qs:[ {q:'Die Wohnung hat einen Aufzug.', opts:['Richtig','Falsch'], a:0},
+         {q:'Haustiere sind in der Wohnung erlaubt.', opts:['Richtig','Falsch'], a:1},
+         {q:'Ab wann ist die Wohnung frei?', opts:['ab 1. März','ab 1. Mai','sofort'], a:0},
+         {q:'Wie groß ist die Wohnung?', opts:['60 m²','16 m²','6 m²'], a:0} ] }
+);
+EXAM_TASKS.B1.hoeren.push(
+  { title:'Nachrichten: Straßensperrung', script:'In den Nachrichten: Wegen Bauarbeiten ist die Hauptstraße ab morgen für eine Woche gesperrt. Autofahrer sollten die Umleitung über die Bahnhofstraße nehmen. Die Buslinien drei und sieben fallen in dieser Zeit aus.',
+    qs:[ {q:'Warum ist die Straße gesperrt?', opts:['ein Unfall','Bauarbeiten','eine Demonstration'], a:1},
+         {q:'Wie lange ist die Straße gesperrt?', opts:['einen Tag','eine Woche','einen Monat'], a:1},
+         {q:'Welche Buslinien fallen aus?', opts:['1 und 5','3 und 7','2 und 4'], a:1} ] }
+);
+EXAM_TASKS.B2.sprachbausteine.push(
+  { title:'Grammatik B2 (3)', items:[
+    {q:'___ er sich sehr bemühte, bestand er die Prüfung nicht.', opts:['Obwohl','Weil','Damit'], a:0},
+    {q:'Es wird empfohlen, mehr Gemüse ___.', opts:['zu essen','essen','gegessen'], a:0},
+    {q:'Der Bericht, ___ Ergebnisse überraschten, wurde veröffentlicht.', opts:['dessen','deren','den'], a:0},
+    {q:'Je höher die Nachfrage, ___ höher der Preis.', opts:['desto','als','wie'], a:0},
+    {q:'Man geht davon ___, dass die Preise steigen.', opts:['aus','an','auf'], a:0},
+    {q:'Die Maßnahme trägt ___ Verbesserung bei.', opts:['zur','für die','an der'], a:0} ] }
+);
+EXAM_TASKS.B2.lesen.push(
+  { title:'Kommentar: Rad in der Stadt', text:'Immer mehr Städte fördern den Radverkehr, indem sie neue Radwege bauen. Befürworter argumentieren, dass dies die Luftqualität verbessert und Staus reduziert. Kritiker bemängeln jedoch, dass dadurch Parkplätze für Autos wegfallen. Fest steht: Eine erfolgreiche Verkehrswende erfordert Kompromisse von allen Seiten.',
+    qs:[ {q:'Städte bauen neue Radwege, um den Radverkehr zu fördern.', opts:['Richtig','Falsch'], a:0},
+         {q:'Kritiker freuen sich über weniger Parkplätze.', opts:['Richtig','Falsch'], a:1},
+         {q:'Welchen Vorteil nennen Befürworter?', opts:['bessere Luft','mehr Parkplätze','schnellere Autos'], a:0},
+         {q:'Was erfordert die Verkehrswende laut Text?', opts:['Kompromisse','mehr Geld','neue Autos'], a:0} ] }
+);
+EXAM_TASKS.B2.hoeren.push(
+  { title:'Wirtschaftsmagazin: Homeoffice', script:'In unserem Wirtschaftsmagazin geht es heute um Homeoffice. Eine Studie zeigt, dass die Produktivität vieler Angestellter zu Hause sogar gestiegen ist. Allerdings klagen manche über fehlende soziale Kontakte. Experten empfehlen daher ein hybrides Modell.',
+    qs:[ {q:'Was zeigt die Studie über die Produktivität?', opts:['sie ist gestiegen','sie ist gesunken','sie ist gleich'], a:0},
+         {q:'Worüber klagen manche Angestellte?', opts:['zu viel Arbeit','fehlende soziale Kontakte','schlechte Technik'], a:1},
+         {q:'Was empfehlen die Experten?', opts:['nur Büro','nur Homeoffice','ein hybrides Modell'], a:2} ] }
+);
+
 const examTasks=(lvl,key)=> (EXAM_TASKS[lvl] && EXAM_TASKS[lvl][key]) || [];
 
 /* ============================================================================
@@ -2446,43 +2535,50 @@ const Audio_ = (function(){
     list.push('https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=de&total=1&idx=0&textlen='+len+'&q='+q); // Google (natural)
     return list;
   }
+  // speakSeq guards against overlap: every speak()/stop() bumps it; any in-flight
+  // playback whose captured seq is stale immediately pauses instead of double-playing.
+  let speakSeq=0;
+  function stopAll(){ try{ netAudio&&netAudio.pause(); }catch(e){} try{ window.speechSynthesis&&speechSynthesis.cancel(); }catch(e){} }
   // Play a URL directly (no fetch → keeps a.play() inside the tap gesture, which iOS requires).
-  function playUrl(url, rate){
+  function playUrl(url, rate, seq){
     return new Promise((resolve,reject)=>{
       const a=netAudio||(netAudio=new Audio()); a.playbackRate=rate;
-      let s=false; const done=(fn)=>{ if(s) return; s=true; clearTimeout(to); fn(); };
-      const to=setTimeout(()=>done(()=>reject('to')), 3800);
-      a.onplaying=()=>done(resolve); a.onerror=()=>done(()=>reject('err'));
-      try{ if(window.speechSynthesis) speechSynthesis.cancel(); a.src=url; const pr=a.play(); if(pr&&pr.catch) pr.catch(()=>done(()=>reject('blocked'))); }
+      let s=false; const done=(fn)=>{ if(s) return; s=true; clearTimeout(to); a.onplaying=null; a.onerror=null; fn(); };
+      const to=setTimeout(()=>{ try{a.pause();}catch(e){} done(()=>reject('to')); }, 3800);
+      a.onplaying=()=>{ if(seq!==speakSeq){ try{a.pause();}catch(e){} return done(()=>reject('stale')); } done(resolve); };
+      a.onerror=()=>done(()=>reject('err'));
+      try{ a.src=url; const pr=a.play(); if(pr&&pr.catch) pr.catch(()=>done(()=>reject('blocked'))); }
       catch(e){ done(()=>reject('exc')); }
     });
   }
-  function netSpeak(text, opts={}){
+  function netSpeak(text, opts, seq){
     return new Promise((resolve,reject)=>{
       if(!navigator.onLine) return reject('offline');
       const rate = opts.rate==null? 1.0 : clamp(opts.rate/0.9, 0.65, 1.1);
       const list=ttsUrls(text, S.settings.netVoice);
       const order=(ttsWinner!=null && ttsWinner<list.length) ? [ttsWinner, ...list.map((_,i)=>i).filter(i=>i!==ttsWinner)] : list.map((_,i)=>i);
       let k=0;
-      const attempt=()=>{ if(k>=order.length) return reject('all'); const i=order[k++];
-        playUrl(list[i], rate).then(()=>{ ttsWinner=i; resolve(); }).catch(()=>attempt()); };
+      const attempt=()=>{ if(seq!==speakSeq) return reject('stale'); if(k>=order.length) return reject('all'); const i=order[k++];
+        playUrl(list[i], rate, seq).then(()=>{ ttsWinner=i; resolve(); }).catch(()=>attempt()); };
       attempt();   // first attempt runs synchronously → a.play() stays inside the user gesture (iOS-safe)
     });
   }
   function speak(text, opts={}){
     if(!text) return false;
+    const seq=++speakSeq; stopAll();   // cancel anything from before → no overlap/repeat
     if(S.settings.naturalVoice!==false && navigator.onLine){
-      netSpeak(text, opts).catch(()=>webSpeak(text, opts));    // natural first, seamless fallback to system voice
+      netSpeak(text, opts, seq).catch(()=>{ if(seq===speakSeq) webSpeak(text, opts); });
       return true;
     }
     return webSpeak(text, opts);
   }
+  function stop(){ ++speakSeq; stopAll(); }
   // Unlock the audio element on first user gesture so later programmatic plays aren't blocked
   function primeAudio(){ if(netUnlocked) return; netUnlocked=true; try{ const a=netAudio||(netAudio=new Audio()); a.muted=true; const pr=a.play&&a.play(); if(pr&&pr.then) pr.then(()=>{a.pause();a.muted=false;}).catch(()=>{a.muted=false;}); }catch(e){} }
   function listVoices(){ return rankedVoices(); }
   function bestVoiceName(){ const v=rankedVoices()[0]; return v?v.name:''; }
   function netVoiceList(){ return NET_VOICES; }
-  return { play, speak, webSpeak, ensure, listVoices, bestVoiceName, netVoiceList, primeAudio, hasTTS:()=>!!window.speechSynthesis };
+  return { play, speak, stop, webSpeak, ensure, listVoices, bestVoiceName, netVoiceList, primeAudio, hasTTS:()=>!!window.speechSynthesis };
 })();
 
 /* ============================================================================
@@ -3347,7 +3443,7 @@ const Lesson = {
   syncCheck(){ if(this._checkBtn && this._ex && this._ex.ready) this._checkBtn.disabled=!this._ex.ready(); },
   _wasNew(id){ return id && VOCAB_BY_ID[id] && !S.learned[id]; },
   submit(res){
-    if(this.phase==='fb') return; this.phase='fb';
+    if(this.phase==='fb') return; this.phase='fb'; Audio_.stop();
     const graded = !res.teach;
     if(graded){
       this.total++;
@@ -3377,7 +3473,7 @@ const Lesson = {
     announce((ok?t('correct'):t('not_quite'))+' '+(res.correctText||''));
   },
   _focusContinue(){ setTimeout(()=>{ const b=this._dock.querySelector('button:last-child'); b&&b.focus(); },30); },
-  next(){ this.phase='q'; this.i++; if(this.i>=this.items.length) this.finish(); else route('lesson'); },
+  next(){ Audio_.stop(); this.phase='q'; this.i++; if(this.i>=this.items.length) this.finish(); else route('lesson'); },
   outOfHearts(){ openOutOfHearts(()=>{ this.courtesy=true; }); },
   confirmQuit(){
     openModal(el('div',{}, el('h2',{text:LANG==='bs'?'Prekinuti lekciju?':'Quit the lesson?'}),
@@ -4172,42 +4268,52 @@ SCREENS.examMod = function(p){
 
 // Auto-graded exam module runner (Lesen / Hören / Sprachbausteine), timed + scored
 const ExamRun = {
-  body:null, level:null, moduleKey:null, task:null, qs:[], answers:[], submitted:false, passed:false, score:0, timeLeft:0, timerId:null,
+  body:null, level:null, moduleKey:null, blocks:[], qs:[], answers:[], submitted:false, passed:false, score:0, timeLeft:0, timerId:null,
   start(body, level, moduleKey){
     const tasks=examTasks(level, moduleKey); if(!tasks.length){ toast('—'); return; }
-    this.task=pick(tasks); this.body=body; this.level=level; this.moduleKey=moduleKey; this.submitted=false; this.passed=false; this.score=0;
-    this.qs = moduleKey==='sprachbausteine' ? this.task.items.map(it=>({q:it.q, opts:it.opts, a:it.a})) : this.task.qs;
-    this.answers = this.qs.map(()=>null);
+    this.body=body; this.level=level; this.moduleKey=moduleKey; this.submitted=false; this.passed=false; this.score=0;
+    const chosen=shuffle(tasks).slice(0,4);           // combine several tasks → a proper, longer session
+    if(moduleKey==='sprachbausteine'){
+      const items=shuffle(chosen.flatMap(t=>t.items)).slice(0,18);
+      this.blocks=[{ sb:true, title:(chosen[0]&&chosen[0].title)||'Sprachbausteine', qs:items.map(it=>({q:it.q,opts:it.opts,a:it.a})) }];
+    } else {
+      this.blocks=chosen.map(t=>({ title:t.title, text:t.text, script:t.script, qs:t.qs.map(q=>({q:q.q,opts:q.opts,a:q.a})) }));
+    }
+    this.qs=[]; this.blocks.forEach(bl=>bl.qs.forEach(q=>{ q.gi=this.qs.length; this.qs.push(q); }));
+    this.answers=this.qs.map(()=>null);
     const mod=EXAM_STRUCTURE[body][level].modules.find(m=>m.key===moduleKey);
-    this.timeLeft = (mod&&typeof mod.min==='number'? mod.min : 10)*60;
+    this.timeLeft=(mod&&typeof mod.min==='number'? mod.min : 10)*60;
     route('examRun'); this._tick();
   },
   _tick(){ this._stop(); this.timerId=setInterval(()=>{ if(CURRENT.screen!=='examRun'){ this._stop(); return; } this.timeLeft--; const e=$('#exam-timer'); if(e) e.textContent=fmtMs(this.timeLeft*1000); if(this.timeLeft<=0){ this._stop(); if(!this.submitted){ toast(t('exam_time_up')); this.submit(); } } },1000); },
   _stop(){ if(this.timerId){ clearInterval(this.timerId); this.timerId=null; } },
+  _qcard(q){
+    const card=el('div',{class:'card'});
+    card.append(el('div',{style:'font-weight:700;margin-bottom:8px'}, el('span',{class:'muted small',text:(q.gi+1)+'. '}), q.q));
+    const opts=el('div',{class:'options', style:'margin-top:0'});
+    q.opts.forEach((o,oi)=>{
+      const btn=el('button',{class:'opt', onclick:()=>{ if(this.submitted) return; this.answers[q.gi]=oi; $$('.opt',opts).forEach(x=>x.classList.remove('sel')); btn.classList.add('sel'); Audio_.play('click'); }}, el('span',{text:o}));
+      if(this.submitted){ btn.style.pointerEvents='none'; if(oi===q.a) btn.classList.add('correct'); else if(this.answers[q.gi]===oi) btn.classList.add('wrong'); }
+      else if(this.answers[q.gi]===oi) btn.classList.add('sel');
+      opts.append(btn);
+    });
+    card.append(opts); return card;
+  },
   screen(){
-    const mod=EXAM_STRUCTURE[this.body][this.level].modules.find(m=>m.key===this.moduleKey);
+    const mod=EXAM_STRUCTURE[this.body][this.level].modules.find(m=>m.key===this.moduleKey) || {icon:'📝', name:this.moduleKey};
     const wrap=el('div',{class:'screen'});
     wrap.append(el('div',{class:'lesson-top'},
-      el('button',{class:'xbtn', onclick:()=>{ this._stop(); route('examMod',{body:this.body,level:this.level}); }, html:'✕'}),
-      el('div',{class:'lesson-bar'}, el('b',{text:mod.icon+' '+mod.name+' · '+this.level})),
+      el('button',{class:'xbtn', onclick:()=>{ this._stop(); Audio_.stop(); route('examMod',{body:this.body,level:this.level}); }, html:'✕'}),
+      el('div',{class:'lesson-bar'}, el('b',{text:mod.icon+' '+mod.name+' · '+this.level+' · '+this.qs.length+' '+t('exam_items')})),
       el('div',{class:'stat', style:'color:var(--bad)'}, el('span',{class:'ic',text:'⏱️'}), el('b',{id:'exam-timer', text:fmtMs(this.timeLeft*1000)}))));
-    if(this.moduleKey==='lesen') wrap.append(el('div',{class:'card', style:'white-space:pre-wrap;line-height:1.65'}, el('div',{class:'q-instr',text:t('exam_read_text')+(this.task.title?(' · '+this.task.title):'')}), el('div',{text:this.task.text})));
-    if(this.moduleKey==='hoeren'){ wrap.append(el('div',{class:'card center'}, el('div',{class:'q-instr',text:this.task.title||''}),
-        el('button',{class:'btn accent lg pill', onclick:()=>Audio_.speak(this.task.script,{rate:0.9}), html:'🔊 '+t('exam_listen_audio')}),
-        el('div',{class:'small muted',style:'margin-top:8px;cursor:pointer', onclick:()=>Audio_.speak(this.task.script,{rate:0.72}), text:'🐢 0.7× · '+t('exam_replay')})));
-      setTimeout(()=>Audio_.speak(this.task.script,{rate:0.9}),450); }
-    if(this.moduleKey==='sprachbausteine') wrap.append(el('div',{class:'q-instr', style:'margin:4px', text:this.task.title||'Sprachbausteine'}));
-    this.qs.forEach((q,qi)=>{
-      const card=el('div',{class:'card'});
-      card.append(el('div',{style:'font-weight:700;margin-bottom:8px'}, el('span',{class:'muted small',text:(qi+1)+'. '}), q.q));
-      const opts=el('div',{class:'options', style:'margin-top:0'});
-      q.opts.forEach((o,oi)=>{
-        const btn=el('button',{class:'opt', onclick:()=>{ if(this.submitted) return; this.answers[qi]=oi; $$('.opt',opts).forEach(x=>x.classList.remove('sel')); btn.classList.add('sel'); Audio_.play('click'); }}, el('span',{text:o}));
-        if(this.submitted){ btn.style.pointerEvents='none'; if(oi===q.a) btn.classList.add('correct'); else if(this.answers[qi]===oi) btn.classList.add('wrong'); }
-        else if(this.answers[qi]===oi) btn.classList.add('sel');
-        opts.append(btn);
-      });
-      card.append(opts); wrap.append(card);
+    this.blocks.forEach((bl,bi)=>{
+      if(this.moduleKey==='lesen') wrap.append(el('div',{class:'card', style:'white-space:pre-wrap;line-height:1.65'}, el('div',{class:'q-instr',text:t('exam_read_text')+(bl.title?(' · '+bl.title):'')}), el('div',{text:bl.text})));
+      else if(this.moduleKey==='hoeren'){ wrap.append(el('div',{class:'card center'}, el('div',{class:'q-instr',text:bl.title||('Hörtext '+(bi+1))}),
+          el('button',{class:'btn accent lg pill', onclick:()=>Audio_.speak(bl.script,{rate:0.9}), html:'🔊 '+t('exam_listen_audio')}),
+          el('div',{class:'small muted',style:'margin-top:8px;cursor:pointer', onclick:()=>Audio_.speak(bl.script,{rate:0.72}), text:'🐢 0.7× · '+t('exam_replay')})));
+        if(bi===0 && !this.submitted) setTimeout(()=>{ if(CURRENT.screen==='examRun' && !this.submitted) Audio_.speak(bl.script,{rate:0.9}); },500); }
+      else if(this.moduleKey==='sprachbausteine' && bi===0) wrap.append(el('div',{class:'q-instr', style:'margin:4px', text:bl.title||'Sprachbausteine'}));
+      bl.qs.forEach(q=> wrap.append(this._qcard(q)));
     });
     if(!this.submitted){
       wrap.append(el('button',{class:'btn primary block lg', style:'margin-top:12px', onclick:()=>this.submit(), text:t('check')+' →'}));
@@ -4226,7 +4332,7 @@ const ExamRun = {
     return wrap;
   },
   submit(){
-    if(this.submitted) return; this.submitted=true; this._stop();
+    if(this.submitted) return; this.submitted=true; this._stop(); Audio_.stop();
     this.score=this.qs.reduce((s,q,i)=>s+(this.answers[i]===q.a?1:0),0);
     this.passed=(this.score/this.qs.length*100) >= EXAM_STRUCTURE[this.body][this.level].passPct;
     if(this.passed){ Audio_.play('complete'); FX.fire({y:innerHeight*0.4}); addXp(8); } else Audio_.play('wrong');
