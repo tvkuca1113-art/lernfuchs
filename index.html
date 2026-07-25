@@ -662,6 +662,11 @@ const I18N = {
     exam_task:'Zadatak', exam_start:'Počni', exam_result:'Rezultat', exam_correct_of:'tačno od', exam_time_up:'Vrijeme je isteklo!',
     exam_read_text:'Pročitaj tekst', exam_listen_audio:'Poslušaj (klik za reprodukciju)', exam_replay:'Ponovi audio', exam_intro:'Vježbaj module pravih ispita s tajmerom i bodovanjem — odvojeno od puta učenja.',
     exam_self_rate:'Kad završiš govor, uporedi s primjerom i ocijeni se.', exam_done_speaking:'Završio/la sam',
+    mock_title:'Probni ispit', mock_desc:'Svi moduli u nizu — kao pravi dan ispita, jedan rezultat.', mock_start:'Počni probni ispit',
+    mock_module_of:'Modul {n}/{m}', mock_next_module:'Sljedeći modul →', mock_cert:'Rezultat ispita', mock_quit:'Prekinuti probni ispit?',
+    readiness:'Spremnost', readiness_desc:'Procjena prema tvojim najboljim rezultatima po modulu (prag {p}%).', readiness_none:'Odradi module ili probni ispit da vidiš spremnost.',
+    self_rate_q:'Kako procjenjuješ svoj odgovor?', self_good:'Dobro', self_ok:'Osrednje', self_weak:'Slabo',
+    munja_title:'Munja', munja_desc:'Brzi krug — koliko tačnih za 60 s? (greška = −3 s)', munja_start:'Igraj Munju', munja_best:'Najbolje', munja_score:'Poeni', time_left:'Vrijeme',
   },
   en:{
     app_tagline:'Learn German with joy — A1 to B2',
@@ -735,6 +740,11 @@ const I18N = {
     exam_task:'Task', exam_start:'Start', exam_result:'Result', exam_correct_of:'correct of', exam_time_up:'Time is up!',
     exam_read_text:'Read the text', exam_listen_audio:'Listen (click to play)', exam_replay:'Replay audio', exam_intro:'Practice real exam modules with a timer and scoring — separate from the learning path.',
     exam_self_rate:'When you finish speaking, compare with the model and rate yourself.', exam_done_speaking:'I\'m done',
+    mock_title:'Mock exam', mock_desc:'All modules in a row — like the real exam day, one result.', mock_start:'Start mock exam',
+    mock_module_of:'Module {n}/{m}', mock_next_module:'Next module →', mock_cert:'Exam result', mock_quit:'Quit the mock exam?',
+    readiness:'Readiness', readiness_desc:'Estimate from your best score per module (pass {p}%).', readiness_none:'Do some modules or a mock exam to see readiness.',
+    self_rate_q:'How do you rate your answer?', self_good:'Good', self_ok:'OK', self_weak:'Weak',
+    munja_title:'Lightning', munja_desc:'Fast round — how many correct in 60s? (wrong = −3s)', munja_start:'Play Lightning', munja_best:'Best', munja_score:'Score', time_left:'Time',
   }
 };
 function t(key, vars){
@@ -2404,6 +2414,8 @@ function DEFAULT_STATE(){
     quests: null,                   // {date, list:[...]}
     subscription: { plan:'free', trial:false, since:'', status:'', interval:'', until:'' },
     billing: { email:'' },     // Stripe identity (email) for real subscriptions
+    examBest: {},              // "body|level|moduleKey" -> best % (readiness)
+    munjaBest: 0,              // Lightning game high score
     stats: { answers:0, correct:0, lessons:0, perfect:0 },
     placementDone: false,
     ai: { date:today, count:0 },
@@ -3866,7 +3878,8 @@ SCREENS.home = function(){
     tile('🎯', t('practice_weak'), '', ()=>startWeak()),
     tile('📚', t('grammar_ref'), '', ()=>route('grammar')),
     tile('🐱', t('ai_tutor'), AI_ENABLED?t('with_ai'):t('mock'), ()=>route('tutor')),
-    tile('💬', t('roleplay'), '', ()=>route('roleplay'))
+    tile('💬', t('roleplay'), '', ()=>route('roleplay')),
+    tile('⚡', t('munja_title'), t('munja_best')+': '+(S.munjaBest||0), ()=>Munja.start())
   ));
 
   // Daily quests
@@ -4406,6 +4419,9 @@ SCREENS.examMod = function(p){
   info.append(el('div',{class:'kv'}, el('span',{class:'k',text:t('exam_speaking')}), el('b',{text:t('exam_'+st.speaking)})));
   info.append(el('div',{class:'small muted', style:'margin-top:6px', text:st.note[LANG]||st.note.en}));
   wrap.append(info);
+  wrap.append(el('button',{class:'btn accent block lg', style:'margin:4px 0 6px', onclick:()=>Mock.start(p.body,p.level), html:'🎯 '+t('mock_start')+' — '+st.modules.length+' '+t('exam_parts')}));
+  wrap.append(readinessCard(p.body, p.level));
+  wrap.append(el('div',{class:'sec-h'}, el('h2',{style:'font-size:1rem', text:t('exam_practice')})));
   st.modules.forEach(m=>{
     const has=examTasks(p.level, m.practice).length>0;
     const card=el('div',{class:'card'});
@@ -4427,9 +4443,9 @@ SCREENS.examMod = function(p){
 // Auto-graded exam module runner (Lesen / Hören / Sprachbausteine), timed + scored
 const ExamRun = {
   body:null, level:null, moduleKey:null, blocks:[], qs:[], answers:[], submitted:false, passed:false, score:0, timeLeft:0, timerId:null,
-  start(body, level, moduleKey){
-    const tasks=examTasks(level, moduleKey); if(!tasks.length){ toast('—'); return; }
-    this.body=body; this.level=level; this.moduleKey=moduleKey; this.submitted=false; this.passed=false; this.score=0;
+  start(body, level, moduleKey, onDone){
+    const tasks=examTasks(level, moduleKey); if(!tasks.length){ if(onDone){ onDone(null); return; } toast('—'); return; }
+    this.body=body; this.level=level; this.moduleKey=moduleKey; this.submitted=false; this.passed=false; this.score=0; this.onDone=onDone||null; this.lastPct=0;
     const chosen=shuffle(tasks).slice(0,4);           // combine several tasks → a proper, longer session
     if(moduleKey==='sprachbausteine'){
       const items=shuffle(chosen.flatMap(t=>t.items)).slice(0,18);
@@ -4461,7 +4477,7 @@ const ExamRun = {
     const mod=EXAM_STRUCTURE[this.body][this.level].modules.find(m=>m.key===this.moduleKey) || {icon:'📝', name:this.moduleKey};
     const wrap=el('div',{class:'screen'});
     wrap.append(el('div',{class:'lesson-top'},
-      el('button',{class:'xbtn', onclick:()=>{ this._stop(); Audio_.stop(); route('examMod',{body:this.body,level:this.level}); }, html:'✕'}),
+      el('button',{class:'xbtn', onclick:()=>{ this._stop(); Audio_.stop(); if(this.onDone){ this.onDone=null; Mock.cancel(); } else route('examMod',{body:this.body,level:this.level}); }, html:'✕'}),
       el('div',{class:'lesson-bar'}, el('b',{text:mod.icon+' '+mod.name+' · '+this.level+' · '+this.qs.length+' '+t('exam_items')})),
       el('div',{class:'stat', style:'color:var(--bad)'}, el('span',{class:'ic',text:'⏱️'}), el('b',{id:'exam-timer', text:fmtMs(this.timeLeft*1000)}))));
     this.blocks.forEach((bl,bi)=>{
@@ -4484,16 +4500,23 @@ const ExamRun = {
           el('div',{class:'rs'}, el('div',{class:'rs-v', text:this.score+'/'+this.qs.length}), el('div',{class:'rs-l',text:t('exam_result')})),
           el('div',{class:'rs'}, el('div',{class:'rs-v', text:pct+'%'}), el('div',{class:'rs-l',text:t('accuracy')})),
           el('div',{class:'rs'}, el('div',{class:'rs-v', text:EXAM_STRUCTURE[this.body][this.level].passPct+'%'}), el('div',{class:'rs-l',text:t('exam_pass')})))));
-      wrap.append(el('button',{class:'btn primary block lg', style:'margin-top:10px', onclick:()=>route('examMod',{body:this.body,level:this.level}), text:t('cont')}));
-      wrap.append(el('button',{class:'btn ghost block', style:'margin-top:8px', onclick:()=>ExamRun.start(this.body,this.level,this.moduleKey), text:'🔄 '+t('exam_practice')}));
+      if(this.onDone){
+        wrap.append(el('button',{class:'btn primary block lg', style:'margin-top:10px', onclick:()=>{ const cb=this.onDone; this.onDone=null; cb(this.lastPct); }, text:t('mock_next_module')}));
+      } else {
+        wrap.append(el('button',{class:'btn primary block lg', style:'margin-top:10px', onclick:()=>route('examMod',{body:this.body,level:this.level}), text:t('cont')}));
+        wrap.append(el('button',{class:'btn ghost block', style:'margin-top:8px', onclick:()=>ExamRun.start(this.body,this.level,this.moduleKey), text:'🔄 '+t('exam_practice')}));
+      }
     }
     return wrap;
   },
   submit(){
     if(this.submitted) return; this.submitted=true; this._stop(); Audio_.stop();
     this.score=this.qs.reduce((s,q,i)=>s+(this.answers[i]===q.a?1:0),0);
-    this.passed=(this.score/this.qs.length*100) >= EXAM_STRUCTURE[this.body][this.level].passPct;
-    if(this.passed){ Audio_.play('complete'); FX.fire({y:innerHeight*0.4}); addXp(8); } else Audio_.play('wrong');
+    this.lastPct=Math.round(this.score/Math.max(1,this.qs.length)*100);
+    this.passed=this.lastPct >= EXAM_STRUCTURE[this.body][this.level].passPct;
+    examSetBest(this.body,this.level,this.moduleKey,this.lastPct);
+    if(!this.onDone){ if(this.passed){ Audio_.play('complete'); FX.fire({y:innerHeight*0.4}); addXp(8); } else Audio_.play('wrong'); }
+    else Audio_.play(this.passed?'complete':'click');
     route('examRun');
   }
 };
@@ -4543,6 +4566,146 @@ SCREENS.examSpeak = function(p){
   wrap.append(el('button',{class:'btn good block lg', style:'margin-top:12px', onclick:()=>{ addXp(5); Audio_.play('coin'); toast('👏 +5 XP'); route('examMod',{body:p.body,level:p.level}); }, text:'✅ '+t('exam_done_speaking')}));
   return wrap;
 };
+
+/* ============================================================================
+   11c. FAZA 2 — Readiness gauge, full Mock exam, and the Munja (Lightning) game
+   ========================================================================== */
+function examSetBest(body, level, key, pct){
+  if(pct==null || !isFinite(pct)) return;
+  const k=body+'|'+level+'|'+key;
+  S.examBest[k]=Math.max(S.examBest[k]||0, Math.round(pct)); save();
+}
+function examReadiness(body, level){
+  const st=EXAM_STRUCTURE[body][level]; const per={}; let have=false, weakest=100;
+  st.modules.forEach(m=>{ const v=S.examBest[body+'|'+level+'|'+m.key]; if(v!=null){ per[m.key]=v; have=true; weakest=Math.min(weakest,v); } });
+  return { per, have, weakest: have?weakest:null, pass:st.passPct };
+}
+function readinessCard(body, level){
+  const st=EXAM_STRUCTURE[body][level]; const r=examReadiness(body,level); const card=el('div',{class:'card'});
+  card.append(el('div',{class:'row', style:'justify-content:space-between'},
+    el('div',{class:'card-title', style:'margin:0', text:'📊 '+t('readiness')}),
+    r.have? el('span',{class:'pill-tag'+(r.weakest>=r.pass?' plus':''), text:r.weakest+'% / '+r.pass+'%'}) : null));
+  if(!r.have){ card.append(el('div',{class:'small muted', text:t('readiness_none')})); return card; }
+  card.append(el('div',{class:'small muted', style:'margin:2px 0 8px', text:t('readiness_desc',{p:r.pass})}));
+  st.modules.forEach(m=>{
+    const v=r.per[m.key]; const pct=v==null?0:v; const ok=v!=null && v>=r.pass;
+    card.append(el('div',{style:'margin-top:8px'},
+      el('div',{class:'row', style:'justify-content:space-between'}, el('span',{class:'small', text:m.icon+' '+m.name}), el('span',{class:'small muted', text: v==null?'—':(v+'%')})),
+      el('div',{style:'height:8px;border-radius:6px;background:var(--surface-3);overflow:hidden;margin-top:3px'},
+        el('i',{style:'display:block;height:100%;width:'+pct+'%;background:'+(v==null?'var(--line-strong)':(ok?'var(--good)':'var(--brand)'))}))));
+  });
+  return card;
+}
+function selfRateRow(cb){
+  return el('div',{class:'row', style:'gap:8px;margin-top:8px'},
+    el('button',{class:'btn good', style:'flex:1', onclick:()=>cb(85), text:'😃 '+t('self_good')}),
+    el('button',{class:'btn', style:'flex:1', onclick:()=>cb(60), text:'😐 '+t('self_ok')}),
+    el('button',{class:'btn', style:'flex:1', onclick:()=>cb(35), text:'😕 '+t('self_weak')}));
+}
+/* Full mock exam: every module in sequence → one certificate + readiness */
+const Mock = {
+  body:null, level:null, seq:[], idx:0, results:{}, _awarded:false,
+  start(body, level){ this.body=body; this.level=level; this.results={}; this.idx=0; this._awarded=false;
+    this.seq=EXAM_STRUCTURE[body][level].modules.map(m=>m.key); this._runCurrent(); },
+  progressLabel(){ return t('mock_module_of',{n:Math.min(this.idx+1,this.seq.length), m:this.seq.length}); },
+  cancel(){ route('examMod',{body:this.body, level:this.level}); },
+  moduleDone(key, pct, rated){ this.results[key]={pct, rated:!!rated}; if(pct!=null) examSetBest(this.body,this.level,key,pct); this.idx++; this._runCurrent(); },
+  _runCurrent(){
+    if(this.idx>=this.seq.length){ if(!this._awarded){ this._awarded=true; addXp(15); Audio_.play('complete'); if(!reduceMotion()) FX.fire({big:true}); } route('mockResult'); return; }
+    const key=this.seq[this.idx];
+    if(key==='schreiben'){ route('mockWrite'); }
+    else if(key==='sprechen'){ route('mockSpeak'); }
+    else { if(!examTasks(this.level,key).length){ this.results[key]={pct:null, skip:true}; this.idx++; return this._runCurrent(); }
+      ExamRun.start(this.body, this.level, key, (pct)=>{ this.results[key]={pct}; this.idx++; this._runCurrent(); }); }
+  }
+};
+SCREENS.mockWrite = function(){
+  const task=examTasks(Mock.level,'schreiben')[0]; const wrap=el('div',{class:'screen'});
+  wrap.append(el('div',{class:'lesson-top'}, el('button',{class:'xbtn', onclick:()=>Mock.cancel(), html:'✕'}), el('div',{class:'lesson-bar'}, el('b',{text:'✍️ Schreiben · '+Mock.progressLabel()}))));
+  if(!task){ setTimeout(()=>Mock.moduleDone('schreiben',null),0); return wrap; }
+  wrap.append(el('div',{class:'card'}, el('div',{class:'q-instr',text:t('exam_task')}), el('div',{style:'font-weight:600', text:task.task[LANG]||task.task.en}),
+    el('div',{class:'small muted', style:'margin-top:8px', text:t('exam_content_points')+': '+task.points.join(' · ')+(task.min?(' · min. '+task.min+' '+t('exam_words')):'')})));
+  const ta=el('textarea',{class:'type-in', rows:'6', style:'resize:vertical;font-size:1rem', placeholder:t('exam_write_here')});
+  const wc=el('div',{class:'small muted', style:'text-align:right;margin-top:4px', text:'0 '+t('exam_words')});
+  ta.addEventListener('input',()=>{ const n=ta.value.trim()?ta.value.trim().split(/\s+/).length:0; wc.textContent=n+' '+t('exam_words')+(task.min?(' / '+task.min):''); });
+  wrap.append(ta, wc);
+  const out=el('div',{style:'margin-top:8px'});
+  wrap.append(el('button',{class:'btn block', onclick:()=>{ out.innerHTML=''; out.append(el('div',{class:'card'}, el('div',{class:'card-title',text:'✅ '+t('exam_model')}), el('div',{style:'white-space:pre-wrap', text:task.model}))); }, text:'📄 '+t('exam_show_model')}));
+  wrap.append(out);
+  wrap.append(el('div',{class:'card', style:'margin-top:10px'}, el('div',{class:'q-instr', text:t('self_rate_q')}), selfRateRow(pct=>Mock.moduleDone('schreiben',pct,true))));
+  return wrap;
+};
+SCREENS.mockSpeak = function(){
+  const task=examTasks(Mock.level,'sprechen')[0]; const wrap=el('div',{class:'screen'});
+  wrap.append(el('div',{class:'lesson-top'}, el('button',{class:'xbtn', onclick:()=>Mock.cancel(), html:'✕'}), el('div',{class:'lesson-bar'}, el('b',{text:'🗣️ Sprechen · '+Mock.progressLabel()}))));
+  if(!task){ setTimeout(()=>Mock.moduleDone('sprechen',null),0); return wrap; }
+  wrap.append(el('div',{class:'card'}, el('div',{class:'q-instr',text:t('exam_task')}), el('div',{style:'font-weight:600', text:task.task[LANG]||task.task.en}),
+    task.parts? el('div',{class:'small muted',style:'margin-top:8px', text:task.parts.join(' · ')}):null));
+  const model=el('div',{style:'margin-top:8px'});
+  wrap.append(el('div',{class:'grid2'},
+    el('button',{class:'btn accent', onclick:()=>Audio_.speak(task.model,{rate:0.9}), html:'🔊 '+(LANG==='bs'?'Poslušaj primjer':'Hear the model')}),
+    el('button',{class:'btn', onclick:()=>{ model.innerHTML=''; model.append(el('div',{class:'card'}, el('div',{class:'card-title',text:'✅ '+t('exam_model')}), el('div',{text:task.model}))); }, text:'📄 '+t('exam_show_model')})));
+  wrap.append(model);
+  wrap.append(el('div',{class:'info-note', style:'margin-top:8px', text:t('exam_self_rate')}));
+  wrap.append(el('div',{class:'card', style:'margin-top:10px'}, el('div',{class:'q-instr', text:t('self_rate_q')}), selfRateRow(pct=>Mock.moduleDone('sprechen',pct,true))));
+  return wrap;
+};
+SCREENS.mockResult = function(){
+  const st=EXAM_STRUCTURE[Mock.body][Mock.level]; const b=EXAM_BODIES[Mock.body]; const wrap=el('div',{class:'screen'});
+  const rows=st.modules.map(m=>{ const r=Mock.results[m.key]||{}; return {m, pct:(r.pct==null?null:r.pct), rated:r.rated}; });
+  const objective=rows.filter(r=>!r.rated && r.pct!=null);
+  const overall = objective.length? objective.every(r=>r.pct>=st.passPct) : false;
+  wrap.append(el('div',{class:'sec-h'}, el('span',{class:'pill-tag', text:b.name+' '+Mock.level}), el('span',{class:'link', onclick:()=>route('examMod',{body:Mock.body,level:Mock.level}), text:'✕'})));
+  wrap.append(el('div',{class:'card center', style:'background:'+(overall?'color-mix(in srgb,var(--good) 16%,var(--surface))':'color-mix(in srgb,var(--bad) 12%,var(--surface))')},
+    el('div',{html:maco(overall?'cheer':'think',72)}), el('h2',{text: overall? t('exam_passed'):t('exam_failed')}), el('div',{class:'muted small', style:'margin-top:2px', text:t('mock_cert')})));
+  const card=el('div',{class:'card'});
+  rows.forEach(r=>{ const done=r.pct!=null; const ok=done && r.pct>=st.passPct;
+    card.append(el('div',{class:'row', style:'justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--line)'},
+      el('span',{class:'small', style:'font-weight:700', text:r.m.icon+' '+r.m.name+(r.rated?' *':'')}),
+      el('span',{class:'pill-tag'+(ok?' plus':''), text: done? (r.pct+'%') : '—'}))); });
+  card.append(el('div',{class:'small muted', style:'margin-top:8px', text:'* '+t('exam_self_rate')}));
+  wrap.append(card);
+  wrap.append(readinessCard(Mock.body, Mock.level));
+  wrap.append(el('button',{class:'btn primary block lg', style:'margin-top:10px', onclick:()=>Mock.start(Mock.body,Mock.level), text:'🔄 '+t('mock_start')}));
+  wrap.append(el('button',{class:'btn ghost block', style:'margin-top:8px', onclick:()=>route('examMod',{body:Mock.body,level:Mock.level}), text:t('back')}));
+  return wrap;
+};
+/* Munja (Lightning): fast vocab round against the clock */
+const Munja = {
+  score:0, timeLeft:0, timerId:null, q:null, pool:[],
+  start(){ this.score=0; this.timeLeft=60; this.pool=VOCAB.filter(w=>w.head && nativeOf(w)); this._next(); route('munja'); this._tick(); },
+  _tick(){ this._stop(); this.timerId=setInterval(()=>{ if(CURRENT.screen!=='munja'){ this._stop(); return; } this.timeLeft--; const e=$('#munja-timer'); if(e) e.textContent=this.timeLeft+'s'; if(this.timeLeft<=0){ this._stop(); this._end(); } },1000); },
+  _stop(){ if(this.timerId){ clearInterval(this.timerId); this.timerId=null; } },
+  _next(){ const w=pick(this.pool); const distr=otherWords(w, this.pool, 3, x=>x.pos===w.pos); let opts=shuffle([w, ...distr]).slice(0,4); if(!opts.includes(w)) opts[0]=w; this.q={ w, opts:shuffle(opts) }; },
+  answer(o){ const ok=o.id===this.q.w.id;
+    if(ok){ this.score++; Audio_.play('correct'); if(navigator.vibrate) navigator.vibrate(8); }
+    else { Audio_.play('wrong'); this.timeLeft=Math.max(0,this.timeLeft-3); if(navigator.vibrate) navigator.vibrate(24); }
+    if(this.timeLeft<=0){ this._stop(); return this._end(); } this._next(); route('munja'); },
+  _end(){ S.munjaBest=Math.max(S.munjaBest||0, this.score); addXp(Math.min(20, this.score)); Audio_.play('complete'); if(this.score>0 && !reduceMotion()) FX.fire({big:this.score>=15}); save(); route('munjaEnd'); },
+  screen(){ const wrap=el('div',{class:'screen'}); const q=this.q;
+    wrap.append(el('div',{class:'lesson-top'},
+      el('button',{class:'xbtn', onclick:()=>{ this._stop(); route('home'); }, html:'✕'}),
+      el('div',{class:'lesson-bar'}, el('b',{text:'⚡ '+this.score})),
+      el('div',{class:'stat', style:'color:var(--bad)'}, el('span',{class:'ic',text:'⏱️'}), el('b',{id:'munja-timer', text:this.timeLeft+'s'}))));
+    wrap.append(el('div',{class:'card center', style:'margin-top:10px'},
+      el('div',{class:'small muted', text:'⚡ '+t('munja_title')}),
+      el('div',{style:'font-size:1.9rem;font-weight:900;margin-top:6px', text:q.w.head}),
+      el('button',{class:'btn ghost pill', style:'margin-top:6px', onclick:()=>Audio_.speak(q.w.de), html:'🔊'})));
+    const opts=el('div',{class:'options'});
+    q.opts.forEach(o=> opts.append(el('button',{class:'opt', onclick:()=>this.answer(o)}, el('span',{text:nativeOf(o)}))));
+    wrap.append(opts); return wrap; },
+  endScreen(){ const wrap=el('div',{class:'screen'});
+    wrap.append(el('div',{class:'sec-h'}, el('h2',{text:'⚡ '+t('munja_title')})));
+    wrap.append(el('div',{class:'card center'}, el('div',{html:maco(this.score>=15?'cheer':'happy',80)}),
+      el('div',{class:'result-stats', style:'margin-top:10px'},
+        el('div',{class:'rs'}, el('div',{class:'rs-v', text:''+this.score}), el('div',{class:'rs-l', text:t('munja_score')})),
+        el('div',{class:'rs'}, el('div',{class:'rs-v', text:''+(S.munjaBest||0)}), el('div',{class:'rs-l', text:t('munja_best')})))));
+    wrap.append(el('button',{class:'btn primary block lg', style:'margin-top:10px', onclick:()=>Munja.start(), text:'🔄 '+t('munja_start')}));
+    wrap.append(el('button',{class:'btn ghost block', style:'margin-top:8px', onclick:()=>route('home'), text:t('back')}));
+    return wrap; }
+};
+SCREENS.munja = ()=> Munja.screen();
+SCREENS.munjaEnd = ()=> Munja.endScreen();
 
 /* RESULTS */
 SCREENS.results = function(p){
@@ -4704,7 +4867,8 @@ function init(){
   window.LF={S, VOCAB, GRAMMAR, UNITS, VOCAB_BY_ID, route, addXp, startLesson, buildLesson, Lesson, EX,
     gen:{genPic,genTrans,genGender,genCase,genConj,genListen,genMemory,genBuild,genCloze,genSpeak,genListenSentence},
     pick, sentencesByLevel, vocabByLevel, nativeOf, get LANG(){return LANG;},
-    ExamRun, EXAM_STRUCTURE, EXAM_BODIES, EXAM_TASKS, examTasks, Audio_, Billing};
+    ExamRun, EXAM_STRUCTURE, EXAM_BODIES, EXAM_TASKS, examTasks, Audio_, Billing,
+    Mock, Munja, examReadiness, examSetBest};
 }
 
 // Boot when DOM is ready
