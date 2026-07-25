@@ -338,6 +338,8 @@ input,select,textarea{ font-family:inherit; font-size:inherit; }
 /* Combo flash */
 .combo{ position:fixed; top:22%; left:50%; transform:translateX(-50%); z-index:60; font-weight:900; font-size:1.6rem; color:var(--brand); text-shadow:0 2px 10px rgba(225,145,43,.35); pointer-events:none; animation:comboPop .8s var(--spring) both; }
 @keyframes comboPop{ 0%{ opacity:0; transform:translate(-50%,10px) scale(.6);} 30%{ opacity:1; transform:translate(-50%,0) scale(1.1);} 100%{ opacity:0; transform:translate(-50%,-26px) scale(1);} }
+.shake{ animation:shake .32s both; }
+@keyframes shake{ 0%,100%{transform:translateX(0)} 20%{transform:translateX(-7px)} 40%{transform:translateX(6px)} 60%{transform:translateX(-4px)} 80%{transform:translateX(3px)} }
 
 /* ---- Modals / sheets ---------------------------------------------------- */
 .scrim{ position:fixed; inset:0; z-index:80; background:rgba(6,9,20,.55); backdrop-filter:blur(3px); display:grid; place-items:end center; animation:fade .2s ease both; }
@@ -635,6 +637,11 @@ const I18N = {
     quest_lesson:'Završi {n} lekciju', quest_perfect:'Savršena lekcija', quest_words:'Nauči {n} nove riječi',
     reward:'Nagrada', claim:'Preuzmi', new_badge:'Novi bedž!', keep_going:'Samo nastavi!',
     demo_billing:'Demo — prava naplata (Stripe/RevenueCat) dolazi u produkciji.',
+    plus_active:'Merak Plus je aktivan!', plan_active:'Aktivan plan',
+    email_title:'Tvoj email', email_desc:'Koristimo ga da povežemo tvoju pretplatu. Upiši isti email i pri plaćanju.',
+    subscribe:'Pretplati se', manage_sub:'Upravljaj pretplatom', restore_sub:'Već imam pretplatu',
+    pay_secure:'Sigurno plaćanje preko Stripe-a. Otkaži bilo kada.',
+    checkout_ok:'Uspješno! Aktiviram tvoj Merak Plus…', checkout_cancel:'Plaćanje otkazano.',
     section_units:'Put učenja', crowns:'krune', tap_start:'Dodirni za početak',
     combo_x:'Kombo ×{n}!', perfect_lesson:'Savršena lekcija! Bonus +{n} XP', no_mistakes:'Bez greške!',
     review_title:'Ponavljanje', review_desc:'Kartice koje treba osvježiti danas.', start_review:'Počni ponavljanje',
@@ -703,6 +710,11 @@ const I18N = {
     quest_lesson:'Finish {n} lesson', quest_perfect:'A perfect lesson', quest_words:'Learn {n} new words',
     reward:'Reward', claim:'Claim', new_badge:'New badge!', keep_going:'Keep going!',
     demo_billing:'Demo — real billing (Stripe/RevenueCat) ships in production.',
+    plus_active:'Merak Plus is active!', plan_active:'Active plan',
+    email_title:'Your email', email_desc:'We use it to link your subscription. Enter the same email at checkout.',
+    subscribe:'Subscribe', manage_sub:'Manage subscription', restore_sub:'I already subscribed',
+    pay_secure:'Secure payment via Stripe. Cancel anytime.',
+    checkout_ok:'Success! Activating your Merak Plus…', checkout_cancel:'Checkout canceled.',
     section_units:'Learning path', crowns:'crowns', tap_start:'Tap to start',
     combo_x:'Combo ×{n}!', perfect_lesson:'Perfect lesson! Bonus +{n} XP', no_mistakes:'No mistakes!',
     review_title:'Review', review_desc:'Cards due to refresh today.', start_review:'Start review',
@@ -1808,6 +1820,45 @@ const SENTENCES = [
   {de:'Obwohl er müde war, ging er zur Arbeit.', bs:'Iako je bio umoran, otišao je na posao.', en:'Although he was tired, he went to work.', lvl:'B1', blank:'war', rule:{bs:'obwohl → glagol na kraj zavisne rečenice.', en:'obwohl → verb at the end of the subordinate clause.'}},
   {de:'Wir müssen eine wichtige Entscheidung treffen.', bs:'Moramo donijeti važnu odluku.', en:'We have to make an important decision.', lvl:'B2', blank:'treffen', rule:{bs:'Nomen-Verb: „Entscheidung treffen“.', en:'Noun-verb collocation: “Entscheidung treffen”.'}},
   {de:'Der Minister sagte, er habe nichts davon gewusst.', bs:'Ministar je rekao da ništa o tome nije znao.', en:'The minister said he had known nothing about it.', lvl:'B2', blank:'habe', rule:{bs:'Konjunktiv I za indirektni govor (habe).', en:'Konjunktiv I for reported speech (habe).'}},
+  // ---- expanded pool (anti-repetition) ----
+  {de:'Ich heiße Anna und komme aus Bosnien.', bs:'Zovem se Anna i dolazim iz Bosne.', en:'My name is Anna and I come from Bosnia.', lvl:'A1', blank:'heiße', rule:{bs:'heißen za predstavljanje; glagol na 2. mjestu.', en:'heißen to introduce yourself; verb in position 2.'}},
+  {de:'Am Montag arbeite ich nicht.', bs:'Ponedjeljkom ne radim.', en:'On Monday I do not work.', lvl:'A1', blank:'arbeite', rule:{bs:'Odredba vremena na početku → inverzija.', en:'Time phrase first → inversion.'}},
+  {de:'Das Kind spielt im Garten.', bs:'Dijete se igra u vrtu.', en:'The child plays in the garden.', lvl:'A1', blank:'spielt', rule:{bs:'Subjekt + glagol na 2.', en:'Subject + verb in position 2.'}},
+  {de:'Wir kaufen Brot und Milch.', bs:'Kupujemo hljeb i mlijeko.', en:'We buy bread and milk.', lvl:'A1', blank:'kaufen', rule:{bs:'wir + glagol -en.', en:'wir + verb -en.'}},
+  {de:'Ich komme aus Sarajevo.', bs:'Dolazim iz Sarajeva.', en:'I come from Sarajevo.', lvl:'A1', blank:'komme', rule:{bs:'kommen aus + mjesto.', en:'kommen aus + place.'}},
+  {de:'Hast du heute Zeit?', bs:'Imaš li danas vremena?', en:'Do you have time today?', lvl:'A1', blank:'Hast', rule:{bs:'Da/ne pitanje: glagol na početku.', en:'Yes/no question: verb first.'}},
+  {de:'Ich habe gestern lange geschlafen.', bs:'Jučer sam dugo spavao.', en:'Yesterday I slept for a long time.', lvl:'A2', blank:'geschlafen', rule:{bs:'Perfekt: haben + Partizip na kraj.', en:'Perfect: haben + participle at the end.'}},
+  {de:'Wenn ich Zeit habe, besuche ich dich.', bs:'Kad budem imao vremena, posjetit ću te.', en:'When I have time, I will visit you.', lvl:'A2', blank:'habe', rule:{bs:'wenn šalje glagol (habe) na kraj.', en:'wenn sends the verb (habe) to the end.'}},
+  {de:'Ich freue mich auf das Wochenende.', bs:'Radujem se vikendu.', en:'I am looking forward to the weekend.', lvl:'A2', blank:'freue', rule:{bs:'sich freuen auf + Akkusativ.', en:'sich freuen auf + accusative.'}},
+  {de:'Er fährt jeden Tag mit dem Fahrrad zur Arbeit.', bs:'On svaki dan ide biciklom na posao.', en:'He rides his bike to work every day.', lvl:'A2', blank:'mit', rule:{bs:'mit + Dativ (dem Fahrrad).', en:'mit + dative (dem Fahrrad).'}},
+  {de:'Du sollst mehr Wasser trinken.', bs:'Trebao bi piti više vode.', en:'You should drink more water.', lvl:'A2', blank:'sollst', rule:{bs:'Modal na 2., infinitiv (trinken) na kraj.', en:'Modal in position 2, infinitive at the end.'}},
+  {de:'Ich habe mir einen neuen Mantel gekauft.', bs:'Kupio sam sebi novi kaput.', en:'I bought myself a new coat.', lvl:'A2', blank:'mir', rule:{bs:'Dativ povratne zamjenice (mir) uz Akkusativ objekat.', en:'Reflexive dative (mir) with an accusative object.'}},
+  {de:'Ich suche eine Stelle als Krankenpfleger in Deutschland.', bs:'Tražim posao medicinskog tehničara u Njemačkoj.', en:'I am looking for a job as a nurse in Germany.', lvl:'B1', blank:'als', rule:{bs:'als + zanimanje (bez člana).', en:'als + profession (no article).'}},
+  {de:'Um einen guten Job zu finden, lerne ich Deutsch.', bs:'Da bih našao dobar posao, učim njemački.', en:'In order to find a good job, I learn German.', lvl:'B1', blank:'zu', rule:{bs:'um … zu + infinitiv (namjera).', en:'um … zu + infinitive (purpose).'}},
+  {de:'Nachdem ich die Prüfung bestanden hatte, war ich sehr froh.', bs:'Nakon što sam položio ispit, bio sam veoma sretan.', en:'After I had passed the exam, I was very glad.', lvl:'B1', blank:'bestanden', rule:{bs:'nachdem + Plusquamperfekt (bestanden hatte).', en:'nachdem + past perfect (bestanden hatte).'}},
+  {de:'Je mehr ich übe, desto besser verstehe ich.', bs:'Što više vježbam, to bolje razumijem.', en:'The more I practice, the better I understand.', lvl:'B1', blank:'desto', rule:{bs:'je … desto za srazmjer; desto + komparativ + glagol.', en:'je … desto for proportion; desto + comparative + verb.'}},
+  {de:'Ich hätte gern mehr Informationen über die Ausbildung.', bs:'Želio bih više informacija o obuci (Ausbildung).', en:'I would like more information about the apprenticeship.', lvl:'B1', blank:'hätte', rule:{bs:'Konjunktiv II (hätte) za učtivost.', en:'Konjunktiv II (hätte) for politeness.'}},
+  {de:'Der Termin wurde auf nächste Woche verschoben.', bs:'Termin je pomjeren na sljedeću sedmicu.', en:'The appointment was moved to next week.', lvl:'B1', blank:'wurde', rule:{bs:'Pasiv prošlosti: wurde + Partizip II.', en:'Past passive: wurde + past participle.'}},
+  {de:'Trotz des schlechten Wetters gehen wir spazieren.', bs:'Uprkos lošem vremenu idemo u šetnju.', en:'Despite the bad weather we go for a walk.', lvl:'B1', blank:'Trotz', rule:{bs:'trotz + Genitiv.', en:'trotz + genitive.'}},
+  {de:'Ich interessiere mich für eine Stelle im Krankenhaus.', bs:'Zanima me posao u bolnici.', en:'I am interested in a job at the hospital.', lvl:'B1', blank:'für', rule:{bs:'sich interessieren für + Akkusativ.', en:'sich interessieren für + accusative.'}},
+  {de:'Können Sie mir sagen, wo das Rathaus ist?', bs:'Možete li mi reći gdje je gradska vijećnica?', en:'Can you tell me where the town hall is?', lvl:'B1', blank:'wo', rule:{bs:'Indirektno pitanje: glagol (ist) na kraj.', en:'Indirect question: verb (ist) at the end.'}},
+  {de:'Wenn ich reich wäre, würde ich viel reisen.', bs:'Kad bih bio bogat, mnogo bih putovao.', en:'If I were rich, I would travel a lot.', lvl:'B1', blank:'wäre', rule:{bs:'Konjunktiv II irealno: wäre … würde + infinitiv.', en:'Unreal Konjunktiv II: wäre … würde + infinitive.'}},
+  {de:'Das ist der Kollege, dem ich geholfen habe.', bs:'To je kolega kojem sam pomogao.', en:'That is the colleague I helped.', lvl:'B1', blank:'dem', rule:{bs:'Relativna zamjenica u Dativu (helfen + Dativ).', en:'Relative pronoun in dative (helfen + dative).'}},
+  {de:'Ich habe vor, nächstes Jahr nach Deutschland zu ziehen.', bs:'Planiram se sljedeće godine preseliti u Njemačku.', en:'I plan to move to Germany next year.', lvl:'B1', blank:'vor', rule:{bs:'vorhaben (odvojiv): vor … zu + infinitiv.', en:'vorhaben (separable): vor … zu + infinitive.'}},
+  {de:'Bevor ich schlafen gehe, lese ich ein Buch.', bs:'Prije nego što odem spavati, čitam knjigu.', en:'Before I go to sleep, I read a book.', lvl:'B1', blank:'Bevor', rule:{bs:'bevor → glagol na kraj zavisne rečenice.', en:'bevor → verb at the end of the clause.'}},
+  {de:'Sie hat sich um die Stelle beworben.', bs:'Ona se prijavila za posao.', en:'She applied for the position.', lvl:'B1', blank:'beworben', rule:{bs:'sich bewerben um + Akkusativ (Perfekt).', en:'sich bewerben um + accusative (perfect).'}},
+  {de:'Es wäre besser, wenn wir früher anfangen würden.', bs:'Bilo bi bolje kad bismo počeli ranije.', en:'It would be better if we started earlier.', lvl:'B2', blank:'wäre', rule:{bs:'Konjunktiv II za prijedlog/hipotezu.', en:'Konjunktiv II for suggestion/hypothesis.'}},
+  {de:'Er tut so, als ob er alles verstanden hätte.', bs:'Pravi se kao da je sve razumio.', en:'He acts as if he had understood everything.', lvl:'B2', blank:'als', rule:{bs:'als ob + Konjunktiv (hätte) na kraj.', en:'als ob + Konjunktiv (hätte) at the end.'}},
+  {de:'Die Entscheidung hängt von mehreren Faktoren ab.', bs:'Odluka zavisi od više faktora.', en:'The decision depends on several factors.', lvl:'B2', blank:'von', rule:{bs:'abhängen von + Dativ (odvojiv: ab na kraj).', en:'abhängen von + dative (separable: ab at the end).'}},
+  {de:'Wir sollten die Risiken sorgfältig berücksichtigen.', bs:'Trebali bismo pažljivo uzeti u obzir rizike.', en:'We should carefully consider the risks.', lvl:'B2', blank:'berücksichtigen', rule:{bs:'Infinitiv na kraju iza modala (sollten).', en:'Infinitive at the end after the modal (sollten).'}},
+  {de:'Je nach Situation muss man flexibel reagieren.', bs:'Zavisno od situacije, treba reagovati fleksibilno.', en:'Depending on the situation, one must react flexibly.', lvl:'B2', blank:'reagieren', rule:{bs:'man + modal; infinitiv na kraj.', en:'man + modal; infinitive at the end.'}},
+  {de:'Der Bericht, der gestern veröffentlicht wurde, ist umstritten.', bs:'Izvještaj koji je jučer objavljen je sporan.', en:'The report that was published yesterday is controversial.', lvl:'B2', blank:'wurde', rule:{bs:'Relativna rečenica + pasiv (wurde) na kraj.', en:'Relative clause + passive (wurde) at the end.'}},
+  {de:'Man geht davon aus, dass die Preise steigen werden.', bs:'Pretpostavlja se da će cijene rasti.', en:'It is assumed that prices will rise.', lvl:'B2', blank:'dass', rule:{bs:'davon ausgehen, dass … (glagol na kraj).', en:'davon ausgehen, dass … (verb at the end).'}},
+  {de:'Ich lege großen Wert auf Pünktlichkeit.', bs:'Veliku važnost pridajem tačnosti.', en:'I attach great importance to punctuality.', lvl:'B2', blank:'Wert', rule:{bs:'Nomen-Verb: Wert legen auf + Akkusativ.', en:'Noun-verb: Wert legen auf + accusative.'}},
+  {de:'Die Firma plant, neue Mitarbeiter einzustellen.', bs:'Firma planira zaposliti nove radnike.', en:'The company plans to hire new employees.', lvl:'B2', blank:'einzustellen', rule:{bs:'zu + odvojivi glagol: ein-zu-stellen.', en:'zu + separable verb: ein-zu-stellen.'}},
+  {de:'Angesichts der Lage müssen Maßnahmen getroffen werden.', bs:'S obzirom na stanje, moraju se poduzeti mjere.', en:'Given the situation, measures must be taken.', lvl:'B2', blank:'getroffen', rule:{bs:'Maßnahmen treffen + pasiv s modalom.', en:'Maßnahmen treffen + passive with modal.'}},
+  {de:'Es kommt darauf an, wie viel Erfahrung man hat.', bs:'Zavisi od toga koliko iskustva imaš.', en:'It depends on how much experience one has.', lvl:'B2', blank:'darauf', rule:{bs:'ankommen auf: es kommt darauf an, …', en:'ankommen auf: es kommt darauf an, …'}},
+  {de:'Sie bestand darauf, die Wahrheit zu erfahren.', bs:'Insistirala je da sazna istinu.', en:'She insisted on learning the truth.', lvl:'B2', blank:'bestand', rule:{bs:'bestehen auf (Dativ) + zu-infinitiv.', en:'bestehen auf (dative) + zu-infinitive.'}},
 ];
 const sentencesByLevel = (lvl)=> SENTENCES.filter(s=>s.lvl===lvl);
 
@@ -2351,7 +2402,8 @@ function DEFAULT_STATE(){
     achievements: {},               // id -> unlocked timestamp
     league: null,                   // {division, weekStart, myXp, bots:[]}
     quests: null,                   // {date, list:[...]}
-    subscription: { plan:'free', trial:false, since:'' },
+    subscription: { plan:'free', trial:false, since:'', status:'', interval:'', until:'' },
+    billing: { email:'' },     // Stripe identity (email) for real subscriptions
     stats: { answers:0, correct:0, lessons:0, perfect:0 },
     placementDone: false,
     ai: { date:today, count:0 },
@@ -2780,9 +2832,76 @@ function checkAchievements(){
   if(any) save();
 }
 
-/* ---- Subscription (mock; real billing wired in Part B) ---- */
-function startTrial(){ S.subscription={plan:'plus', trial:true, since:dateKey()}; S.hearts.count=S.hearts.max; save(); }
-function cancelPlus(){ S.subscription={plan:'free', trial:false, since:''}; save(); }
+/* ---- Subscription ---- */
+function startTrial(){ S.subscription={plan:'plus', trial:true, since:dateKey(), status:'demo', interval:''}; S.hearts.count=S.hearts.max; save(); }
+function cancelPlus(){ S.subscription={plan:'free', trial:false, since:'', status:'', interval:''}; save(); }
+
+/* ---- Real billing via Stripe (live when deployed; demo flag when local) ---- */
+const Billing = {
+  live(){ return /^https?:$/.test(location.protocol) && !/^(localhost|127\.|0\.0\.0\.0|\[)/.test(location.hostname); },
+  validEmail(e){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e||''); },
+  async startCheckout(plan){
+    if(!this.live()){ startTrial(); Audio_.play('levelup'); FX.fire({big:true}); toast('👑 '+t('plus_title')+' ('+t('mock')+')','win'); setTimeout(()=>route('home'),300); return; }
+    const email = this.validEmail(S.billing.email) ? S.billing.email : await askEmail();
+    if(!email) return;
+    S.billing.email=email; save();
+    try{
+      const r=await fetch('/api/create-checkout',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({plan, email})});
+      const d=await r.json();
+      if(d.url){ location.href=d.url; } else { toast('⚠️ '+(d.error||'Stripe')); }
+    }catch(e){ toast('⚠️ '+(LANG==='bs'?'Greška pri plaćanju':'Payment error')); }
+  },
+  async refresh(){
+    if(!this.live() || !this.validEmail(S.billing.email)) return false;
+    try{
+      const r=await fetch('/api/subscription-status?email='+encodeURIComponent(S.billing.email));
+      const d=await r.json();
+      const wasPlus=isPlus();
+      S.subscription.plan = d.active? 'plus':'free';
+      S.subscription.status = d.status||''; S.subscription.interval = d.plan||'';
+      S.subscription.until = d.current_period_end || '';
+      if(d.active){ S.hearts.count=S.hearts.max; }
+      save();
+      if(d.active && !wasPlus){ Audio_.play('levelup'); toast('👑 '+t('plus_active'),'win'); }
+      return d.active;
+    }catch(e){ return false; }
+  },
+  async portal(){
+    if(!this.live()){ cancelPlus(); render(); return; }
+    if(!this.validEmail(S.billing.email)){ const e=await askEmail(); if(!e) return; S.billing.email=e; save(); }
+    try{ const r=await fetch('/api/portal?email='+encodeURIComponent(S.billing.email)); const d=await r.json(); if(d.url) location.href=d.url; else toast('⚠️ '+(d.error||'')); }catch(e){ toast('⚠️'); }
+  },
+  async restore(){
+    if(!this.live()){ toast(LANG==='bs'?'Nema kupovina za vraćanje (demo)':'No purchases to restore (demo)'); return; }
+    if(!this.validEmail(S.billing.email)){ const e=await askEmail(); if(!e) return; S.billing.email=e; save(); }
+    toast('⏳'); const active=await this.refresh();
+    if(active){ render(); } else { toast(LANG==='bs'?'Nema aktivne pretplate za taj email.':'No active subscription for that email.'); }
+  },
+};
+function askEmail(){
+  return new Promise(resolve=>{
+    let settled=false; const finish=v=>{ if(settled) return; settled=true; resolve(v); };
+    const input=el('input',{class:'type-in', type:'email', inputmode:'email', autocomplete:'email', placeholder:'ime@primjer.com', value:S.billing.email||''});
+    const close=openModal(el('div',{},
+      el('h2',{text:'📧 '+t('email_title')}),
+      el('p',{class:'muted small', style:'margin:6px 0 12px', text:t('email_desc')}),
+      input,
+      el('button',{class:'btn primary block lg', style:'margin-top:14px', onclick:()=>{ const v=input.value.trim().toLowerCase(); if(!Billing.validEmail(v)){ input.style.borderColor='var(--bad)'; return; } close(); finish(v); }, text:t('cont')}),
+      el('button',{class:'btn ghost block', style:'margin-top:8px', onclick:()=>{ close(); finish(''); }, text:t('cancel')})
+    ), {center:true, onClose:()=>finish('')});
+    setTimeout(()=>input.focus(),60);
+  });
+}
+function handleCheckoutReturn(){
+  let q; try{ q=new URLSearchParams(location.search); }catch(e){ return; }
+  const c=q.get('checkout'); if(!c) return;
+  try{ history.replaceState(null,'', location.pathname); }catch(e){}
+  if(c==='success'){
+    toast('✅ '+t('checkout_ok'),'win');
+    setTimeout(()=>Billing.refresh(), 1200);
+    setTimeout(()=>Billing.refresh(), 4000);
+  } else if(c==='cancel'){ toast(t('checkout_cancel')); }
+}
 
 /* ---- Unit / crown progress ---- */
 function unitState(id){ if(!S.units[id]) S.units[id]={done:[], crown:0, xp:0}; return S.units[id]; }
@@ -2852,7 +2971,7 @@ const FX = (function(){
     resize();
     const cx=opts.x!=null?opts.x:innerWidth/2, cy=opts.y!=null?opts.y:innerHeight*0.4;
     const big=opts.big;
-    spawn(cx,cy, big?120:60, big?9:6);
+    spawn(cx,cy, big?120:(opts.small?22:60), big?9:(opts.small?4.6:6));
     if(big){ spawn(cx-90,cy+20,50,8); spawn(cx+90,cy+20,50,8); }
     if(!raf) loop();
   }
@@ -2880,6 +2999,18 @@ function comboFlash(n){
   if(reduceMotion()) return;
   const c=el('div',{class:'combo', text:t('combo_x',{n})});
   document.body.append(c); setTimeout(()=>c.remove(),800);
+}
+/* per-answer "juice": haptics + escalating confetti on correct, shake on wrong */
+function juice(ok, combo){
+  try{
+    if(ok){
+      if(navigator.vibrate) navigator.vibrate(10);
+      if(!reduceMotion() && combo>=3) FX.fire({ y:innerHeight*0.52, big: combo>=6, small: combo<6 });
+    } else {
+      if(navigator.vibrate) navigator.vibrate(28);
+      if(!reduceMotion()){ document.body.classList.add('shake'); setTimeout(()=>document.body.classList.remove('shake'),320); }
+    }
+  }catch(e){}
 }
 
 /* ---- Badge popup ---- */
@@ -3363,6 +3494,25 @@ function genConj(w, tense){
 }
 
 /* ---- buildLesson: assemble 8–12 exercises from a unit's content --------- */
+/* recently-seen memory so consecutive lessons stop serving the same items */
+const _seen = { s:[], w:[] };
+function _fresh(pool, kind, keyFn){
+  if(!pool || pool.length<=4) return pool||[];
+  const recent=new Set(_seen[kind]);
+  const fresh=pool.filter(x=>!recent.has(keyFn(x)));
+  return fresh.length>=4 ? fresh : pool;
+}
+function _mark(kind, key){ if(key==null) return; const b=_seen[kind]; b.push(key); const cap= kind==='s'?16:56; while(b.length>cap) b.shift(); }
+/* greedy reorder so no two consecutive exercises share the same mode */
+function _interleave(items){
+  const out=[], rest=items.slice();
+  while(rest.length){
+    let idx=rest.findIndex(it=> !out.length || it.mode!==out[out.length-1].mode);
+    if(idx<0) idx=0;
+    out.push(rest.splice(idx,1)[0]);
+  }
+  return out;
+}
 function buildLesson(unitId, idx){
   const u=UNIT_BY_ID[unitId];
   const words=unitVocab(u).filter(w=>w.pos!=='prep');
@@ -3373,9 +3523,9 @@ function buildLesson(unitId, idx){
   if(idx===0 && gids.length) items.push({mode:'teach', gid:gids[0]});
 
   const cand=[];
-  shuffle(words).slice(0,5).forEach((w,k)=> cand.push(genTrans(w, words, k%2? 'nat2de':'de2nat')));
+  shuffle(_fresh(words,'w',w=>w.id)).slice(0,5).forEach((w,k)=>{ cand.push(genTrans(w, words, k%2? 'nat2de':'de2nat')); _mark('w',w.id); });
   shuffle(nouns.filter(w=>w.emoji)).slice(0,2).forEach(w=> cand.push(genPic(w,lvl)));
-  shuffle(words).slice(0,2).forEach(w=> cand.push(genListen(w)));
+  shuffle(_fresh(words,'w',w=>w.id)).slice(0,2).forEach(w=> cand.push(genListen(w)));
   if(words.length>=4) cand.push(genMemory(words));
   shuffle(words).slice(0,1).forEach(w=> cand.push(genSpeak(w)));
 
@@ -3389,10 +3539,11 @@ function buildLesson(unitId, idx){
     const vpool = verbs.length? verbs : VOCAB.filter(w=>w.pos==='verb' && (CONJ[w.de]||SEP_BASE[w.de]));
     shuffle(vpool).slice(0,3).forEach(w=> cand.push(genConj(w,tense)));
   }
-  const sPool = sentencesByLevel(lvl).length? sentencesByLevel(lvl) : SENTENCES;
-  shuffle(sPool).slice(0,2).forEach(s=> cand.push(genBuild(s)));
-  shuffle(sPool).slice(0,2).forEach(s=> cand.push(genCloze(s,lvl)));
-  cand.push(genListenSentence(pick(sPool)));
+  const sAll = sentencesByLevel(lvl).length? sentencesByLevel(lvl) : SENTENCES;
+  const sPool = _fresh(sAll,'s',s=>s.de);
+  shuffle(sPool).slice(0,2).forEach(s=>{ cand.push(genBuild(s)); _mark('s',s.de); });
+  shuffle(_fresh(sAll,'s',s=>s.de)).slice(0,2).forEach(s=>{ cand.push(genCloze(s,lvl)); _mark('s',s.de); });
+  { const s=pick(sPool)||pick(sAll); if(s){ cand.push(genListenSentence(s)); _mark('s',s.de); } }
 
   let chosen = shuffle(cand.filter(Boolean));
   // guarantee at least one listening exercise (variety + daily quest)
@@ -3404,7 +3555,7 @@ function buildLesson(unitId, idx){
     const w=pick(vocabByLevel(lvl).length?vocabByLevel(lvl):VOCAB);
     chosen.push(genTrans(w, VOCAB, Math.random()<0.5?'de2nat':'nat2de'));
   }
-  return items.concat(chosen.filter(Boolean));
+  return items.concat(_interleave(chosen.filter(Boolean)));
 }
 
 /* ============================================================================
@@ -3457,6 +3608,7 @@ const Lesson = {
       if(res.correct){ this.correct++; this.combo++; this.maxCombo=Math.max(this.maxCombo,this.combo);
         Audio_.play('correct'); if(this.combo>=2) comboFlash(this.combo); }
       else { this.combo=0; Audio_.play('wrong'); loseHeart(); this.mistakes.push(res); }
+      juice(res.correct, this.combo);
       if(res.cardId) reviewCard(res.cardId, res.quality!=null?res.quality:(res.correct?4:1));
       if(res.correct && this.items[this.i].mode==='listen'){ S.today.listening++; questProgress('listening',1); }
       if(newWord){ S.today.newWords++; questProgress('words',1); }
@@ -3935,7 +4087,7 @@ SCREENS.profile = function(){
     el('button',{class:'btn block', style:'justify-content:space-between;margin-top:8px', onclick:()=>route('settings')}, el('span',{text:'⚙️ '+t('settings')}), el('span',{text:'›'}))
   ));
   if(!isPlus()) wrap.append(el('button',{class:'btn accent block lg', style:'margin-top:12px', onclick:()=>route('paywall'), html:'👑 '+t('plus_title')}));
-  else wrap.append(el('button',{class:'btn ghost block', style:'margin-top:12px', onclick:()=>{ cancelPlus(); toast('Free'); render(); }, text:LANG==='bs'?'Pređi na Free (demo)':'Switch to Free (demo)'}));
+  else wrap.append(el('button',{class:'btn block lg', style:'margin-top:12px', onclick:()=>route('paywall'), html:'👑 '+t('manage_sub')}));
   return wrap;
 };
 function stat(v,l){ return el('div',{class:'rs'}, el('div',{class:'rs-v', text:String(v)}), el('div',{class:'rs-l', text:l})); }
@@ -4465,12 +4617,17 @@ SCREENS.paywall = function(p){
       el('div',{class:'p-price'}, PRICE.monthly, el('small',{text:t('per_month')})))
   );
   [yearly,monthly].forEach(pl=> pl.onclick=()=>{ planPick=pl.getAttribute('data-plan'); yearly.classList.toggle('pick',planPick==='yearly'); monthly.classList.toggle('pick',planPick==='monthly'); Audio_.play('click'); });
-  plans.append(yearly, monthly); wrap.append(plans);
+  const isP=isPlus();
+  if(!isP){ plans.append(yearly, monthly); wrap.append(plans); }
 
-  wrap.append(el('button',{class:'btn primary block lg', style:'margin-top:6px', onclick:()=>{
-    startTrial(); Audio_.play('levelup'); FX.fire({big:true}); toast('👑 '+t('plus_title')+' ✓','win'); setTimeout(()=>route('home'),300);
-  }, text:'✨ '+t('start_trial')}));
-  wrap.append(el('div',{class:'center small muted', style:'margin-top:8px', text:t('trial_note')}));
+  if(isP){
+    let until=''; try{ if(S.subscription.until) until=new Date(S.subscription.until*1000).toLocaleDateString(LANG==='bs'?'bs-BA':'en-GB'); }catch(e){}
+    wrap.append(el('div',{class:'info-note center', style:'margin-top:6px', html:'👑 <b>'+t('plus_active')+'</b>'+(S.subscription.interval?(' · '+t(S.subscription.interval==='yearly'?'yearly':'monthly')):'')+(until?('<br><span class="small muted">'+(LANG==='bs'?'Obnova':'Renews')+': '+until+'</span>'):'')}));
+    wrap.append(el('button',{class:'btn primary block lg', style:'margin-top:10px', onclick:()=>Billing.portal(), html:'⚙️ '+t('manage_sub')}));
+  } else {
+    wrap.append(el('button',{class:'btn primary block lg', style:'margin-top:6px', onclick:()=>Billing.startCheckout(planPick), html:'✨ '+t('start_trial')}));
+    wrap.append(el('div',{class:'center small muted', style:'margin-top:8px', text:t('trial_note')}));
+  }
 
   // Feature comparison
   const feats=[
@@ -4488,8 +4645,8 @@ SCREENS.paywall = function(p){
   feats.forEach(([f,a,b])=> tb.append(el('tr',{}, el('td',{text:f}), el('td',{class:'c', html:a==='✓'?'<span class="yes">✓</span>':'<span class="no">'+escapeHtml(a)+'</span>'}), el('td',{class:'c', html:'<span class="yes">'+escapeHtml(b)+'</span>'}))));
   table.append(tb); wrap.append(el('div',{class:'card', style:'margin-top:16px'}, el('div',{class:'card-title', text:'⚖️ Free vs Plus'}), table));
 
-  wrap.append(el('button',{class:'btn ghost block', style:'margin-top:12px', onclick:()=>toast(LANG==='bs'?'Nema kupovina za vraćanje (demo)':'No purchases to restore (demo)'), text:t('restore')}));
-  wrap.append(el('div',{class:'info-note', style:'margin-top:10px', text:'💳 '+t('demo_billing')}));
+  if(!isP) wrap.append(el('button',{class:'btn ghost block', style:'margin-top:12px', onclick:()=>Billing.restore(), text:t('restore_sub')}));
+  wrap.append(el('div',{class:'info-note', style:'margin-top:10px', text: Billing.live()? ('🔒 '+t('pay_secure')) : ('💳 '+t('demo_billing'))}));
   return wrap;
 };
 
@@ -4537,13 +4694,17 @@ function init(){
   setInterval(tickTimers, 1000);
   setInterval(()=>{ regenHearts(); save(); }, 30000);
   document.addEventListener('visibilitychange',()=>{ if(!document.hidden){ regenHearts(); if(S.today.date!==dateKey()) rolloverDay(); if(['lesson','results'].indexOf(CURRENT.screen)<0) render(); } });
+  // Return from Stripe Checkout (?checkout=success|cancel)
+  handleCheckoutReturn();
+  // Re-verify subscription against Stripe in the background (Stripe is source of truth)
+  if(Billing.live() && Billing.validEmail(S.billing.email)) setTimeout(()=>Billing.refresh(), 500);
   // First run → onboarding
   route(S.profile.onboarded? 'home' : 'onboarding');
   // expose for debugging / self-test
   window.LF={S, VOCAB, GRAMMAR, UNITS, VOCAB_BY_ID, route, addXp, startLesson, buildLesson, Lesson, EX,
     gen:{genPic,genTrans,genGender,genCase,genConj,genListen,genMemory,genBuild,genCloze,genSpeak,genListenSentence},
     pick, sentencesByLevel, vocabByLevel, nativeOf, get LANG(){return LANG;},
-    ExamRun, EXAM_STRUCTURE, EXAM_BODIES, EXAM_TASKS, examTasks, Audio_};
+    ExamRun, EXAM_STRUCTURE, EXAM_BODIES, EXAM_TASKS, examTasks, Audio_, Billing};
 }
 
 // Boot when DOM is ready
