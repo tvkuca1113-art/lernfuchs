@@ -2434,32 +2434,45 @@ const Audio_ = (function(){
   }
   // --- Natural neural voice (Amazon Polly de-DE via StreamElements) ---
   const NET_VOICES=['Vicki','Daniel','Marlene','Hans'];   // Polly German voices
-  const netCache=new Map(); let netAudio=null, netUnlocked=false;
-  function netUrl(text, voice){ return 'https://api.streamelements.com/kappa/v2/speech?voice='+encodeURIComponent(voice||'Vicki')+'&text='+encodeURIComponent(String(text).slice(0,300)); }
-  async function netSrc(text, voice){
-    // fetch → blob (StreamElements sends CORS *). Cached blobs also replay offline.
-    const key=(voice||'Vicki')+'|'+text; if(netCache.has(key)) return netCache.get(key);
-    const r=await fetch(netUrl(text,voice)); if(!r.ok) throw new Error('http'+r.status);
-    const bl=await r.blob(); if(bl.size<200) throw new Error('empty');
-    const u=URL.createObjectURL(bl); netCache.set(key,u); return u;
+  let netAudio=null, netUnlocked=false, ttsWinner=null;
+  // Ordered natural sources. #1 = your own Vercel proxy (add /api/tts.js — best
+  // & most reliable, esp. on iOS). #2 = Amazon Polly (StreamElements, free).
+  // #3 = Google Translate voice (free). First that plays wins and is reused.
+  function ttsUrls(text, voice){
+    const t=String(text).slice(0,300); const q=encodeURIComponent(t); const v=encodeURIComponent(voice||'Vicki'); const len=t.length;
+    const list=[];
+    if(/^https?:$/.test(location.protocol)) list.push('/api/tts?tl=de&voice='+v+'&text='+q);   // same-origin proxy (if deployed)
+    list.push('https://api.streamelements.com/kappa/v2/speech?voice='+v+'&text='+q);            // Amazon Polly (natural)
+    list.push('https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=de&total=1&idx=0&textlen='+len+'&q='+q); // Google (natural)
+    return list;
+  }
+  // Play a URL directly (no fetch → keeps a.play() inside the tap gesture, which iOS requires).
+  function playUrl(url, rate){
+    return new Promise((resolve,reject)=>{
+      const a=netAudio||(netAudio=new Audio()); a.playbackRate=rate;
+      let s=false; const done=(fn)=>{ if(s) return; s=true; clearTimeout(to); fn(); };
+      const to=setTimeout(()=>done(()=>reject('to')), 3800);
+      a.onplaying=()=>done(resolve); a.onerror=()=>done(()=>reject('err'));
+      try{ if(window.speechSynthesis) speechSynthesis.cancel(); a.src=url; const pr=a.play(); if(pr&&pr.catch) pr.catch(()=>done(()=>reject('blocked'))); }
+      catch(e){ done(()=>reject('exc')); }
+    });
   }
   function netSpeak(text, opts={}){
-    return new Promise(async(resolve,reject)=>{
+    return new Promise((resolve,reject)=>{
       if(!navigator.onLine) return reject('offline');
-      let src; try{ src=await netSrc(text, S.settings.netVoice); }catch(e){ return reject('src'); }
-      const a=netAudio||(netAudio=new Audio());
-      a.playbackRate = opts.rate==null? 1.0 : clamp(opts.rate/0.9, 0.65, 1.1);
-      let settled=false; const done=(fn)=>{ if(settled) return; settled=true; clearTimeout(to); fn(); };
-      const to=setTimeout(()=>done(()=>reject('timeout')), 4200);
-      a.onplaying=()=>done(resolve); a.onerror=()=>done(()=>reject('error'));
-      try{ if(window.speechSynthesis) speechSynthesis.cancel(); a.src=src; const pr=a.play(); if(pr&&pr.catch) pr.catch(()=>done(()=>reject('blocked'))); }
-      catch(e){ done(()=>reject('exc')); }
+      const rate = opts.rate==null? 1.0 : clamp(opts.rate/0.9, 0.65, 1.1);
+      const list=ttsUrls(text, S.settings.netVoice);
+      const order=(ttsWinner!=null && ttsWinner<list.length) ? [ttsWinner, ...list.map((_,i)=>i).filter(i=>i!==ttsWinner)] : list.map((_,i)=>i);
+      let k=0;
+      const attempt=()=>{ if(k>=order.length) return reject('all'); const i=order[k++];
+        playUrl(list[i], rate).then(()=>{ ttsWinner=i; resolve(); }).catch(()=>attempt()); };
+      attempt();   // first attempt runs synchronously → a.play() stays inside the user gesture (iOS-safe)
     });
   }
   function speak(text, opts={}){
     if(!text) return false;
     if(S.settings.naturalVoice!==false && navigator.onLine){
-      netSpeak(text, opts).catch(()=>webSpeak(text, opts));    // natural first, seamless offline fallback
+      netSpeak(text, opts).catch(()=>webSpeak(text, opts));    // natural first, seamless fallback to system voice
       return true;
     }
     return webSpeak(text, opts);
@@ -3167,9 +3180,14 @@ function grammarCard(g, compact){
   node.append(el('div',{class:'muted small', style:'margin:-6px 0 10px', text:g.sub[LANG]||g.sub.en}));
   node.append(el('div',{html:g.sum[LANG]||g.sum.en}));
   if(g.table){
+    // If a table carries BOTH a Bosanski and an English column, show only the
+    // active interface language next to Deutsch (never both native languages).
+    let head=g.table.head.slice(), rows=g.table.rows.map(r=>r.slice());
+    const bi=head.indexOf('Bosanski'), ei=head.indexOf('English');
+    if(bi>=0 && ei>=0){ const drop=(LANG==='en')?bi:ei; head.splice(drop,1); rows=rows.map(r=>{ r.splice(drop,1); return r; }); }
     const tbl=el('table',{class:'gtable'});
-    tbl.innerHTML='<caption>'+escapeHtml(g.table.cap)+'</caption><tr>'+g.table.head.map(h=>'<th>'+escapeHtml(h)+'</th>').join('')+'</tr>'+
-      g.table.rows.map(r=>'<tr>'+r.map(c=>'<td>'+escapeHtml(c)+'</td>').join('')+'</tr>').join('');
+    tbl.innerHTML='<caption>'+escapeHtml(g.table.cap)+'</caption><tr>'+head.map(h=>'<th>'+escapeHtml(h)+'</th>').join('')+'</tr>'+
+      rows.map(r=>'<tr>'+r.map(c=>'<td>'+escapeHtml(c)+'</td>').join('')+'</tr>').join('');
     node.append(tbl);
   }
   if(g.examples){ node.append(el('div',{class:'mt-s'}, ...g.examples.map(ex=>el('div',{class:'kv', style:'border-bottom:1px dashed var(--line)'},
