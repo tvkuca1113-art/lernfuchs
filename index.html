@@ -3,63 +3,64 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=5.0" />
-<meta name="theme-color" content="#ff7a1a" media="(prefers-color-scheme: light)" />
-<meta name="theme-color" content="#0f1220" media="(prefers-color-scheme: dark)" />
-<meta name="description" content="Lernfuchs — gejmifikovana aplikacija za učenje njemačkog jezika od A1 do B2." />
+<meta name="theme-color" content="#e1912b" media="(prefers-color-scheme: light)" />
+<meta name="theme-color" content="#16120c" media="(prefers-color-scheme: dark)" />
+<meta name="description" content="Merak — gejmifikovana aplikacija za učenje njemačkog jezika od A1 do B2." />
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-<meta name="apple-mobile-web-app-title" content="Lernfuchs" />
+<meta name="apple-mobile-web-app-title" content="Merak" />
 <meta name="mobile-web-app-capable" content="yes" />
-<title>Lernfuchs — Uči njemački (A1–B2)</title>
+<title>Merak — Uči njemački (A1–B2)</title>
 <!-- PWA manifest is injected as a data: URL at runtime (see PWA module) -->
 <link rel="manifest" id="app-manifest" />
 <link rel="icon" id="app-favicon" />
 <style>
 /* ============================================================================
-   LERNFUCHS — DESIGN SYSTEM
+   MERAK — DESIGN SYSTEM  ("Uči njemački s merakom")
    All styling inline. Mobile-first, responsive, light/dark, accessible.
+   Palette: warm honey-amber + deep teal on cozy cream.
    ========================================================================== */
 
 /* ---- Design tokens (light theme defaults) ------------------------------- */
 :root{
   /* Brand palette */
-  --brand:#ff7a1a;          /* fox orange */
-  --brand-2:#ff9d4d;
-  --brand-ink:#7a3800;
-  --accent:#5b6cff;         /* playful violet-blue */
-  --accent-2:#00c2a8;       /* teal */
-  --gold:#ffb020;
-  --silver:#b9c2d0;
+  --brand:#e1912b;          /* honey amber */
+  --brand-2:#f5b44e;        /* light amber */
+  --brand-ink:#5b3908;
+  --accent:#0fa3a0;         /* deep teal */
+  --accent-2:#12b39a;       /* teal-green */
+  --gold:#f4b73a;
+  --silver:#b9a98f;
   --bronze:#cd7f32;
-  --good:#28c76f;
+  --good:#2bbd6b;
   --good-ink:#0f7a41;
-  --bad:#ff4d5e;
+  --bad:#ef4d5e;
   --bad-ink:#a01523;
   --heart:#ff4d6d;
-  --gem:#33d6ff;
-  --xp:#ffc531;
-  --streak:#ff7a1a;
+  --gem:#12b3c9;
+  --xp:#f4b52a;
+  --streak:#e1912b;
 
-  /* Surfaces */
-  --bg:#f3f5fb;
-  --bg-2:#e9edf7;
+  /* Surfaces (warm cream) */
+  --bg:#faf5ec;
+  --bg-2:#f2e9d9;
   --surface:#ffffff;
-  --surface-2:#f6f8fe;
-  --surface-3:#eef1fb;
-  --line:#e2e7f3;
-  --line-strong:#cfd6ea;
+  --surface-2:#fbf6ee;
+  --surface-3:#f4ebdc;
+  --line:#ece1cf;
+  --line-strong:#dccbb0;
 
-  /* Text */
-  --ink:#1c2333;
-  --ink-2:#4a5570;
-  --ink-3:#7d88a3;
+  /* Text (warm-tinted neutrals) */
+  --ink:#2a2016;
+  --ink-2:#5c5142;
+  --ink-3:#948976;
   --ink-inv:#ffffff;
 
   /* Effects */
   --shadow-sm:0 1px 2px rgba(20,25,50,.06), 0 1px 3px rgba(20,25,50,.08);
   --shadow:0 4px 14px rgba(25,32,66,.10), 0 2px 4px rgba(25,32,66,.06);
   --shadow-lg:0 18px 50px rgba(25,32,66,.22), 0 6px 16px rgba(25,32,66,.12);
-  --ring:0 0 0 3px rgba(91,108,255,.35);
+  --ring:0 0 0 3px rgba(15,163,160,.35);
   --radius:18px;
   --radius-sm:12px;
   --radius-lg:26px;
@@ -80,30 +81,29 @@
   --nav-h: 68px;
 }
 
-/* Dark theme */
+/* Dark theme (warm charcoal to complement amber) */
 :root[data-theme="dark"]{
-  --bg:#0d1020;
-  --bg-2:#0a0d19;
-  --surface:#161b2e;
-  --surface-2:#1c2338;
-  --surface-3:#232c46;
-  --line:#2a3350;
-  --line-strong:#3a4568;
-  --ink:#eef1fb;
-  --ink-2:#b6c0dc;
-  --ink-3:#8391b4;
-  --ink-inv:#0d1020;
+  --bg:#16120c;
+  --bg-2:#100d08;
+  --surface:#221c14;
+  --surface-2:#2a231a;
+  --surface-3:#332b20;
+  --line:#3a3122;
+  --line-strong:#4c4030;
+  --ink:#f6efe3;
+  --ink-2:#d0c4ad;
+  --ink-3:#9c9079;
+  --ink-inv:#16120c;
   --shadow-sm:0 1px 2px rgba(0,0,0,.4);
   --shadow:0 6px 20px rgba(0,0,0,.45);
   --shadow-lg:0 24px 60px rgba(0,0,0,.6);
-  --surface:#161b2e;
 }
 /* Follow system when theme=auto */
 @media (prefers-color-scheme: dark){
   :root[data-theme="auto"]{
-    --bg:#0d1020; --bg-2:#0a0d19; --surface:#161b2e; --surface-2:#1c2338;
-    --surface-3:#232c46; --line:#2a3350; --line-strong:#3a4568;
-    --ink:#eef1fb; --ink-2:#b6c0dc; --ink-3:#8391b4; --ink-inv:#0d1020;
+    --bg:#16120c; --bg-2:#100d08; --surface:#221c14; --surface-2:#2a231a;
+    --surface-3:#332b20; --line:#3a3122; --line-strong:#4c4030;
+    --ink:#f6efe3; --ink-2:#d0c4ad; --ink-3:#9c9079; --ink-inv:#16120c;
     --shadow-sm:0 1px 2px rgba(0,0,0,.4); --shadow:0 6px 20px rgba(0,0,0,.45);
     --shadow-lg:0 24px 60px rgba(0,0,0,.6);
   }
@@ -123,8 +123,8 @@ html{ font-size:var(--fs-base); -webkit-text-size-adjust:100%; }
 body{
   margin:0; font-family:var(--font); line-height:var(--lh);
   color:var(--ink); background:
-    radial-gradient(1200px 600px at 100% -10%, rgba(255,122,26,.08), transparent 60%),
-    radial-gradient(900px 500px at -10% 10%, rgba(91,108,255,.08), transparent 55%),
+    radial-gradient(1200px 600px at 100% -10%, rgba(225,145,43,.08), transparent 60%),
+    radial-gradient(900px 500px at -10% 10%, rgba(15,163,160,.08), transparent 55%),
     var(--bg);
   min-height:100dvh; overflow-x:hidden;
   -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
@@ -185,9 +185,9 @@ input,select,textarea{ font-family:inherit; font-size:inherit; }
 .btn:active{ transform:translateY(3px); box-shadow:0 0 0 var(--line-strong); }
 .btn[disabled]{ opacity:.5; cursor:not-allowed; box-shadow:none; }
 .btn.block{ display:flex; width:100%; }
-.btn.primary{ background:linear-gradient(180deg,var(--brand-2),var(--brand)); color:#fff; border-color:#e56200; box-shadow:0 4px 0 #c9560a; text-shadow:0 1px 0 rgba(0,0,0,.12); }
+.btn.primary{ background:linear-gradient(180deg,var(--brand-2),var(--brand)); color:#fff; border-color:#b57414; box-shadow:0 4px 0 #9c6212; text-shadow:0 1px 0 rgba(0,0,0,.12); }
 .btn.primary:hover{ filter:brightness(1.04); }
-.btn.primary:active{ box-shadow:0 0 0 #c9560a; }
+.btn.primary:active{ box-shadow:0 0 0 #9c6212; }
 .btn.good{ background:linear-gradient(180deg,#3ee089,var(--good)); color:#063d20; border-color:#12a45a; box-shadow:0 4px 0 #12864a; }
 .btn.bad{ background:linear-gradient(180deg,#ff6b7a,var(--bad)); color:#fff; border-color:#d62b3d; box-shadow:0 4px 0 #b2202f; }
 .btn.accent{ background:linear-gradient(180deg,#7688ff,var(--accent)); color:#fff; border-color:#3f4fe0; box-shadow:0 4px 0 #2f3bc0; }
@@ -258,7 +258,7 @@ input,select,textarea{ font-family:inherit; font-size:inherit; }
 .node:active{ transform:translateY(4px); box-shadow:0 2px 0 var(--line-strong); }
 .node.locked{ filter:grayscale(.6) opacity(.6); cursor:not-allowed; }
 .node.done{ background:linear-gradient(180deg,#4fe393,var(--good)); border-color:#12a45a; box-shadow:0 6px 0 #12864a; color:#063d20; }
-.node.current{ background:linear-gradient(180deg,var(--brand-2),var(--brand)); border-color:#e56200; box-shadow:0 6px 0 #c9560a, 0 0 0 6px rgba(255,122,26,.18); color:#fff; animation:bob 2.4s ease-in-out infinite; }
+.node.current{ background:linear-gradient(180deg,var(--brand-2),var(--brand)); border-color:#b57414; box-shadow:0 6px 0 #9c6212, 0 0 0 6px rgba(225,145,43,.18); color:#fff; animation:bob 2.4s ease-in-out infinite; }
 @keyframes bob{ 0%,100%{ transform:translateY(0);} 50%{ transform:translateY(-5px);} }
 .node .lname{ position:absolute; top:-10px; left:50%; transform:translateX(-50%); background:var(--ink); color:var(--bg); font-size:.62rem; font-weight:800; padding:2px 7px; border-radius:999px; white-space:nowrap; opacity:.9; }
 .node .crown-badge{ position:absolute; bottom:-8px; right:-6px; font-size:.9rem; }
@@ -318,7 +318,7 @@ input,select,textarea{ font-family:inherit; font-size:inherit; }
 
 /* Memory grid */
 .memgrid{ display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:7px; margin-top:16px; }
-.mcard{ min-width:0; min-height:78px; border-radius:12px; background:linear-gradient(180deg,var(--brand-2),var(--brand)); border:none; box-shadow:0 3px 0 #c9560a; display:grid; place-items:center; color:#fff; font-weight:800; font-size:.66rem; line-height:1.12; padding:6px 3px; text-align:center; overflow:hidden; word-break:break-word; hyphens:auto; }
+.mcard{ min-width:0; min-height:78px; border-radius:12px; background:linear-gradient(180deg,var(--brand-2),var(--brand)); border:none; box-shadow:0 3px 0 #9c6212; display:grid; place-items:center; color:#fff; font-weight:800; font-size:.66rem; line-height:1.12; padding:6px 3px; text-align:center; overflow:hidden; word-break:break-word; hyphens:auto; }
 .mcard.flip{ background:var(--surface); color:var(--ink); border:1px solid var(--line); box-shadow:var(--shadow-sm); }
 .mcard.matched{ background:color-mix(in srgb,var(--good) 22%, var(--surface)); color:var(--good-ink); box-shadow:none; opacity:.85; }
 .mcard .qm{ font-size:1.6rem; }
@@ -336,7 +336,7 @@ input,select,textarea{ font-family:inherit; font-size:inherit; }
 .check-dock{ position:sticky; bottom:0; padding:14px 0 calc(10px + var(--safe-bottom)); background:linear-gradient(color-mix(in srgb,var(--bg) 0%, transparent), var(--bg) 40%); }
 
 /* Combo flash */
-.combo{ position:fixed; top:22%; left:50%; transform:translateX(-50%); z-index:60; font-weight:900; font-size:1.6rem; color:var(--brand); text-shadow:0 2px 10px rgba(255,122,26,.35); pointer-events:none; animation:comboPop .8s var(--spring) both; }
+.combo{ position:fixed; top:22%; left:50%; transform:translateX(-50%); z-index:60; font-weight:900; font-size:1.6rem; color:var(--brand); text-shadow:0 2px 10px rgba(225,145,43,.35); pointer-events:none; animation:comboPop .8s var(--spring) both; }
 @keyframes comboPop{ 0%{ opacity:0; transform:translate(-50%,10px) scale(.6);} 30%{ opacity:1; transform:translate(-50%,0) scale(1.1);} 100%{ opacity:0; transform:translate(-50%,-26px) scale(1);} }
 
 /* ---- Modals / sheets ---------------------------------------------------- */
@@ -370,13 +370,13 @@ input,select,textarea{ font-family:inherit; font-size:inherit; }
 .levelup{ position:fixed; inset:0; z-index:92; display:grid; place-items:center; pointer-events:none; }
 .levelup .lu-card{ text-align:center; animation:luIn .5s var(--spring) both; }
 @keyframes luIn{ 0%{ opacity:0; transform:scale(.5) rotate(-8deg);} 60%{ transform:scale(1.08) rotate(2deg);} 100%{ opacity:1; transform:none;} }
-.lu-num{ font-size:5rem; font-weight:900; background:linear-gradient(180deg,var(--gold),var(--brand)); -webkit-background-clip:text; background-clip:text; color:transparent; filter:drop-shadow(0 6px 14px rgba(255,122,26,.4)); }
+.lu-num{ font-size:5rem; font-weight:900; background:linear-gradient(180deg,var(--gold),var(--brand)); -webkit-background-clip:text; background-clip:text; color:transparent; filter:drop-shadow(0 6px 14px rgba(225,145,43,.4)); }
 .lu-txt{ font-size:1.6rem; font-weight:900; color:#fff; text-shadow:0 2px 12px rgba(0,0,0,.5); }
 
-/* Fritz mascot */
-.fritz{ width:88px; height:88px; flex:none; }
-.fritz.talk{ animation:fritzTalk 2.6s ease-in-out infinite; }
-@keyframes fritzTalk{ 0%,100%{ transform:rotate(-2deg);} 50%{ transform:rotate(2deg) translateY(-2px);} }
+/* Maco mascot */
+.mascot{ width:88px; height:88px; flex:none; }
+.mascot.talk{ animation:mascotTalk 2.6s ease-in-out infinite; }
+@keyframes mascotTalk{ 0%,100%{ transform:rotate(-2deg);} 50%{ transform:rotate(2deg) translateY(-2px);} }
 .speech{ position:relative; background:var(--surface); border:1px solid var(--line); border-radius:16px; padding:12px 14px; box-shadow:var(--shadow); font-weight:700; }
 .mascot-row{ display:flex; gap:10px; align-items:flex-end; }
 
@@ -407,7 +407,7 @@ input,select,textarea{ font-family:inherit; font-size:inherit; }
 .plans{ display:grid; gap:12px; margin:14px 0; }
 .plan{ position:relative; border:2px solid var(--line); border-radius:18px; padding:16px; background:var(--surface); cursor:pointer; transition:border-color .15s, transform .12s; }
 .plan:active{ transform:scale(.99); }
-.plan.pick{ border-color:var(--brand); box-shadow:0 0 0 4px rgba(255,122,26,.14); }
+.plan.pick{ border-color:var(--brand); box-shadow:0 0 0 4px rgba(225,145,43,.14); }
 .plan .p-name{ font-weight:900; }
 .plan .p-price{ font-size:1.5rem; font-weight:900; }
 .plan .p-price small{ font-size:.8rem; color:var(--ink-3); font-weight:700; }
@@ -451,8 +451,8 @@ input,select,textarea{ font-family:inherit; font-size:inherit; }
 .calstrip{ display:flex; justify-content:space-between; gap:6px; margin-top:12px; }
 .calday{ flex:1; text-align:center; }
 .calday .cd-dot{ width:34px; height:34px; margin:4px auto 0; border-radius:50%; display:grid; place-items:center; background:var(--surface-3); font-size:1rem; border:1px solid var(--line); }
-.calday.hit .cd-dot{ background:linear-gradient(180deg,var(--brand-2),var(--brand)); color:#fff; border-color:#e56200; }
-.calday.today .cd-dot{ box-shadow:0 0 0 3px rgba(255,122,26,.3); }
+.calday.hit .cd-dot{ background:linear-gradient(180deg,var(--brand-2),var(--brand)); color:#fff; border-color:#b57414; }
+.calday.today .cd-dot{ box-shadow:0 0 0 3px rgba(225,145,43,.3); }
 .calday .cd-l{ font-size:.66rem; color:var(--ink-3); font-weight:800; }
 
 /* Segmented control */
@@ -521,7 +521,7 @@ input,select,textarea{ font-family:inherit; font-size:inherit; }
 <script>
 "use strict";
 /* ============================================================================
-   LERNFUCHS — single-file German learning app (A1–B2)
+   MERAK — single-file German learning app (A1–B2) · "Uči njemački s merakom"
    Vanilla JS. No external dependencies. Modular sections below:
      1. I18N            – interface strings (Bosnian + English)
      2. CONTENT         – CEFR curriculum, vocab, grammar (data-driven)
@@ -589,7 +589,7 @@ const LANGS = { bs:'Bosanski', en:'English' };
 
 const I18N = {
   bs:{
-    app_tagline:'Uči njemački — od A1 do B2',
+    app_tagline:'Uči njemački s merakom — A1 do B2',
     nav_learn:'Uči', nav_practice:'Vježbaj', nav_league:'Liga', nav_grammar:'Gramatika', nav_profile:'Profil',
     continue:'Nastavi', review_mistakes:'Ponovi greške', practice_weak:'Slabe riječi', ai_tutor:'AI Tutor',
     daily_quests:'Dnevni zadaci', quick:'Brzi pristup',
@@ -613,7 +613,7 @@ const I18N = {
     voice:'Glas (njemački)', larger_text:'Veći tekst', dyslexia:'Font za disleksiju', reduce_motion:'Manje animacija',
     interface_lang:'Jezik interfejsa', reset:'Resetuj napredak', export_data:'Izvezi podatke', import_data:'Uvezi podatke',
     achievements:'Dostignuća', trophy_shelf:'Polica trofeja', quests_reset:'Novi zadaci za', hours:'h', minutes:'min',
-    plus_title:'Lernfuchs Plus', plus_sub:'Otključaj sve i uči bez prekida',
+    plus_title:'Merak Plus', plus_sub:'Otključaj sve i uči bez prekida',
     start_trial:'Počni 7-dnevni probni period', restore:'Vrati kupovinu', monthly:'Mjesečno', yearly:'Godišnje',
     best_value:'Najbolja vrijednost', per_month:'/mjesec', per_year:'/godina', save_pct:'Uštedi',
     free:'Besplatno', trial_note:'7 dana besplatno, zatim se naplaćuje. Otkaži bilo kada.',
@@ -623,12 +623,12 @@ const I18N = {
     sort_gender:'Razvrstaj po rodu', fill_ending:'Dopuni nastavak', conjugate:'Konjugiraj glagol',
     translate:'Prevedi', match_pairs:'Spoji parove', fill_blank:'Popuni prazninu',
     ai_disabled_title:'AI Tutor (demo)', ai_no_key:'AI funkcije rade kad dodaš svoj Claude ključ. Do tada koristimo ugrađene primjere.',
-    ai_ask:'Pitaj Fritza', ai_thinking:'Fritz razmišlja…', ai_error:'Ne mogu doći do AI-a sada. Evo ugrađenog primjera:',
+    ai_ask:'Pitaj Macu', ai_thinking:'Maco razmišlja…', ai_error:'Ne mogu doći do AI-a sada. Evo ugrađenog primjera:',
     roleplay:'Razgovor uloga', send:'Pošalji', ai_cap:'Dostigao/la si dnevni AI limit (Free). Plus ima neograničeno.',
     save_word:'Sačuvaj riječ', saved:'Sačuvano', example:'Primjer', plural:'Množina', pron:'Izgovor',
     mastery:'Ovladanost', due_review:'Za ponavljanje', all_caught:'Sve na mjestu — nema riječi za ponoviti!',
     weak_none:'Nema slabih riječi još. Odradi lekciju pa se vrati!',
-    welcome:'Dobro došao/la u Lernfuchs!', pick_name:'Kako da te zovemo?', your_name:'Tvoje ime', lets_go:'Idemo!',
+    welcome:'Dobro došao/la u Merak!', pick_name:'Kako da te zovemo?', your_name:'Tvoje ime', lets_go:'Idemo!',
     pick_goal:'Koliko želiš učiti dnevno?', great:'Odlično!', confirm_reset:'Sigurno? Ovo briše sav napredak.',
     yes_reset:'Da, resetuj', cancel:'Otkaži', close:'Zatvori', level_up:'Novi nivo!',
     quest_xp:'Osvoji {n} XP', quest_listen:'Uradi vježbu slušanja', quest_gender:'Pogodi {n}× der/die/das',
@@ -657,7 +657,7 @@ const I18N = {
     exam_self_rate:'Kad završiš govor, uporedi s primjerom i ocijeni se.', exam_done_speaking:'Završio/la sam',
   },
   en:{
-    app_tagline:'Learn German — from A1 to B2',
+    app_tagline:'Learn German with joy — A1 to B2',
     nav_learn:'Learn', nav_practice:'Practice', nav_league:'League', nav_grammar:'Grammar', nav_profile:'Profile',
     continue:'Continue', review_mistakes:'Review mistakes', practice_weak:'Weak words', ai_tutor:'AI Tutor',
     daily_quests:'Daily quests', quick:'Quick access',
@@ -681,7 +681,7 @@ const I18N = {
     voice:'Voice (German)', larger_text:'Larger text', dyslexia:'Dyslexia-friendly font', reduce_motion:'Reduce motion',
     interface_lang:'Interface language', reset:'Reset progress', export_data:'Export data', import_data:'Import data',
     achievements:'Achievements', trophy_shelf:'Trophy shelf', quests_reset:'New quests in', hours:'h', minutes:'min',
-    plus_title:'Lernfuchs Plus', plus_sub:'Unlock everything and learn without interruptions',
+    plus_title:'Merak Plus', plus_sub:'Unlock everything and learn without interruptions',
     start_trial:'Start 7-day free trial', restore:'Restore purchase', monthly:'Monthly', yearly:'Yearly',
     best_value:'Best value', per_month:'/month', per_year:'/year', save_pct:'Save',
     free:'Free', trial_note:'7 days free, then billed. Cancel anytime.',
@@ -691,12 +691,12 @@ const I18N = {
     sort_gender:'Sort by gender', fill_ending:'Fill the ending', conjugate:'Conjugate the verb',
     translate:'Translate', match_pairs:'Match the pairs', fill_blank:'Fill in the blank',
     ai_disabled_title:'AI Tutor (demo)', ai_no_key:'AI features work once you add your Claude key. Until then we use built-in examples.',
-    ai_ask:'Ask Fritz', ai_thinking:'Fritz is thinking…', ai_error:"Can't reach the AI right now. Here's a built-in example:",
+    ai_ask:'Ask Maco', ai_thinking:'Maco is thinking…', ai_error:"Can't reach the AI right now. Here's a built-in example:",
     roleplay:'Roleplay', send:'Send', ai_cap:"You've hit today's AI limit (Free). Plus is unlimited.",
     save_word:'Save word', saved:'Saved', example:'Example', plural:'Plural', pron:'Pronunciation',
     mastery:'Mastery', due_review:'Due for review', all_caught:'All caught up — nothing to review!',
     weak_none:'No weak words yet. Do a lesson and come back!',
-    welcome:'Welcome to Lernfuchs!', pick_name:'What should we call you?', your_name:'Your name', lets_go:"Let's go!",
+    welcome:'Welcome to Merak!', pick_name:'What should we call you?', your_name:'Your name', lets_go:"Let's go!",
     pick_goal:'How much do you want to learn daily?', great:'Great!', confirm_reset:'Sure? This erases all progress.',
     yes_reset:'Yes, reset', cancel:'Cancel', close:'Close', level_up:'Level up!',
     quest_xp:'Earn {n} XP', quest_listen:'Do a listening exercise', quest_gender:'Nail {n}× der/die/das',
@@ -2772,7 +2772,7 @@ const ACHV = [
   {id:'level5', icon:'⭐', t:{bs:'Nivo 5',en:'Level 5'}, d:{bs:'Dostigni nivo 5',en:'Reach level 5'}, cond:()=>levelInfo(S.xp).level>=5},
   {id:'level10', icon:'🌟', t:{bs:'Nivo 10',en:'Level 10'}, d:{bs:'Dostigni nivo 10',en:'Reach level 10'}, cond:()=>levelInfo(S.xp).level>=10},
   {id:'b1_start', icon:'🚀', t:{bs:'Prema B1',en:'Onward to B1'}, d:{bs:'Otvori prvu B1 jedinicu',en:'Open your first B1 unit'}, cond:()=>UNITS.some(u=>u.lvl==='B1' && unitProgress(u.id).done>0)},
-  {id:'ai_first', icon:'🦊', t:{bs:'Fritz pomaže',en:'Fritz helps'}, d:{bs:'Koristi AI Tutora',en:'Use the AI Tutor'}, cond:()=>S._aiUsed},
+  {id:'ai_first', icon:'🐱', t:{bs:'Maco pomaže',en:'Maco helps'}, d:{bs:'Koristi AI Tutora',en:'Use the AI Tutor'}, cond:()=>S._aiUsed},
 ];
 function checkAchievements(){
   let any=false;
@@ -2826,7 +2826,7 @@ function toast(msg, kind){
 const FX = (function(){
   const canvas=$('#fx'); const ctx=canvas.getContext('2d');
   let parts=[], raf=null, dpr=1;
-  const COLORS=['#ff7a1a','#ffb020','#5b6cff','#28c76f','#33d6ff','#ff4d6d','#a26bff','#ffd861'];
+  const COLORS=['#e1912b','#ffb020','#0fa3a0','#28c76f','#33d6ff','#ff4d6d','#a26bff','#ffd861'];
   function resize(){ dpr=Math.min(2,window.devicePixelRatio||1); canvas.width=innerWidth*dpr; canvas.height=innerHeight*dpr; ctx.setTransform(dpr,0,0,dpr,0,0); }
   function spawn(x,y,n,power){
     for(let i=0;i<n;i++){ const a=Math.random()*Math.PI*2, sp=power*(0.4+Math.random());
@@ -2869,7 +2869,7 @@ function onLevelUp(level){
   const card=el('div',{class:'levelup'}, el('div',{class:'lu-card'},
     el('div',{class:'lu-num', text:''+level}),
     el('div',{class:'lu-txt', text:t('level_up')}),
-    el('div',{style:'margin-top:6px', html:fritz('cheer',96)})
+    el('div',{style:'margin-top:6px', html:maco('cheer',96)})
   ));
   root.append(card);
   announce(t('level_up')+' '+level);
@@ -2911,40 +2911,46 @@ function openOverlay(node, {center=false, dismissable=true, onClose}={}){
 function openSheet(node, opts={}){ const wrap=el('div',{class:'sheet'}, el('div',{class:'sheet-grip'}), node); return openOverlay(wrap, {...opts, center:false}); }
 function openModal(node, opts={}){ const wrap=el('div',{class:'modal'}, node); return openOverlay(wrap, {...opts, center:true}); }
 
-/* ---- Fritz the fox mascot (original inline SVG, expression by mood) ---- */
-function fritz(mood='happy', size=88){
+/* ---- Maco the cat mascot (original inline SVG, expression by mood) ------ */
+function maco(mood='happy', size=88){
   const eyes = {
-    happy:'<circle cx="34" cy="52" r="4"/><circle cx="66" cy="52" r="4"/>',
-    cheer:'<path d="M30 52 q4 -6 8 0" fill="none" stroke="#2a1a0a" stroke-width="3.5" stroke-linecap="round"/><path d="M62 52 q4 -6 8 0" fill="none" stroke="#2a1a0a" stroke-width="3.5" stroke-linecap="round"/>',
-    think:'<circle cx="34" cy="52" r="4"/><circle cx="66" cy="50" r="4"/>',
-    sad:'<path d="M30 54 q4 4 8 0" fill="none" stroke="#2a1a0a" stroke-width="3.5" stroke-linecap="round"/><path d="M62 54 q4 4 8 0" fill="none" stroke="#2a1a0a" stroke-width="3.5" stroke-linecap="round"/>',
-    cool:'<rect x="26" y="46" width="20" height="9" rx="3"/><rect x="54" y="46" width="20" height="9" rx="3"/><rect x="44" y="49" width="12" height="3"/>',
-    wave:'<circle cx="34" cy="52" r="4"/><circle cx="66" cy="52" r="4"/>',
-  }[mood] || '<circle cx="34" cy="52" r="4"/><circle cx="66" cy="52" r="4"/>';
+    happy:'<circle cx="35" cy="52" r="4.2"/><circle cx="65" cy="52" r="4.2"/>',
+    cheer:'<path d="M31 53 q4 -6 8 0" fill="none" stroke="#2a1a0a" stroke-width="3.5" stroke-linecap="round"/><path d="M61 53 q4 -6 8 0" fill="none" stroke="#2a1a0a" stroke-width="3.5" stroke-linecap="round"/>',
+    think:'<circle cx="35" cy="52" r="4.2"/><circle cx="65" cy="50" r="4.2"/>',
+    sad:'<path d="M31 55 q4 4 8 0" fill="none" stroke="#2a1a0a" stroke-width="3.5" stroke-linecap="round"/><path d="M61 55 q4 4 8 0" fill="none" stroke="#2a1a0a" stroke-width="3.5" stroke-linecap="round"/>',
+    cool:'<rect x="25" y="46" width="21" height="10" rx="4"/><rect x="54" y="46" width="21" height="10" rx="4"/><rect x="44" y="49" width="12" height="3"/>',
+    wave:'<circle cx="35" cy="52" r="4.2"/><circle cx="65" cy="52" r="4.2"/>',
+  }[mood] || '<circle cx="35" cy="52" r="4.2"/><circle cx="65" cy="52" r="4.2"/>';
   const mouth = {
-    happy:'<path d="M42 64 q8 8 16 0" fill="none" stroke="#2a1a0a" stroke-width="3" stroke-linecap="round"/>',
-    cheer:'<path d="M40 62 q10 12 20 0 q-10 4 -20 0Z" fill="#2a1a0a"/>',
-    think:'<path d="M44 66 q6 -3 12 0" fill="none" stroke="#2a1a0a" stroke-width="3" stroke-linecap="round"/>',
-    sad:'<path d="M42 68 q8 -8 16 0" fill="none" stroke="#2a1a0a" stroke-width="3" stroke-linecap="round"/>',
-    cool:'<path d="M42 64 q8 6 16 0" fill="none" stroke="#2a1a0a" stroke-width="3" stroke-linecap="round"/>',
-    wave:'<path d="M42 64 q8 8 16 0" fill="none" stroke="#2a1a0a" stroke-width="3" stroke-linecap="round"/>',
+    happy:'<path d="M44 63 q6 6 6 0 q0 6 6 0" fill="none" stroke="#2a1a0a" stroke-width="2.6" stroke-linecap="round"/>',
+    cheer:'<path d="M42 62 q8 10 16 0 q-8 3 -16 0Z" fill="#c85a6e"/>',
+    think:'<path d="M45 65 q5 -3 10 0" fill="none" stroke="#2a1a0a" stroke-width="2.6" stroke-linecap="round"/>',
+    sad:'<path d="M44 67 q6 -6 12 0" fill="none" stroke="#2a1a0a" stroke-width="2.6" stroke-linecap="round"/>',
+    cool:'<path d="M44 63 q6 5 6 0 q0 5 6 0" fill="none" stroke="#2a1a0a" stroke-width="2.6" stroke-linecap="round"/>',
+    wave:'<path d="M44 63 q6 6 6 0 q0 6 6 0" fill="none" stroke="#2a1a0a" stroke-width="2.6" stroke-linecap="round"/>',
   }[mood] || '';
-  return `<svg class="fritz" viewBox="0 0 100 100" width="${size}" height="${size}" role="img" aria-label="Fritz">
-    <defs><linearGradient id="fx1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff9d4d"/><stop offset="1" stop-color="#ff7a1a"/></linearGradient></defs>
+  return `<svg class="mascot" viewBox="0 0 100 100" width="${size}" height="${size}" role="img" aria-label="Maco">
+    <defs><linearGradient id="mc1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f5b44e"/><stop offset="1" stop-color="#e1912b"/></linearGradient></defs>
     <!-- ears -->
-    <path d="M18 34 L30 10 L42 32 Z" fill="url(#fx1)"/><path d="M24 30 L31 18 L37 30 Z" fill="#3a1f0c"/>
-    <path d="M82 34 L70 10 L58 32 Z" fill="url(#fx1)"/><path d="M76 30 L69 18 L63 30 Z" fill="#3a1f0c"/>
+    <path d="M22 40 L30 9 L49 33 Z" fill="url(#mc1)"/><path d="M29 35 L31 18 L41 32 Z" fill="#ffcdbe"/>
+    <path d="M78 40 L70 9 L51 33 Z" fill="url(#mc1)"/><path d="M71 35 L69 18 L59 32 Z" fill="#ffcdbe"/>
     <!-- head -->
-    <path d="M50 24 C74 24 84 42 84 58 C84 78 68 90 50 90 C32 90 16 78 16 58 C16 42 26 24 50 24 Z" fill="url(#fx1)"/>
-    <!-- cheeks / muzzle -->
-    <path d="M50 50 C64 50 74 58 74 68 C74 80 62 88 50 88 C38 88 26 80 26 68 C26 58 36 50 50 50 Z" fill="#fff4e8"/>
-    <!-- eyes + nose + mouth -->
-    <g fill="#2a1a0a">${eyes}<path d="M50 60 l-5 -5 h10 Z"/></g>
+    <ellipse cx="50" cy="56" rx="33" ry="31" fill="url(#mc1)"/>
+    <!-- subtle tabby stripes -->
+    <g stroke="#c47a1c" stroke-width="2.4" stroke-linecap="round" fill="none" opacity=".45"><path d="M50 27 v9"/><path d="M41 28 l2 8"/><path d="M59 28 l-2 8"/></g>
+    <!-- muzzle -->
+    <ellipse cx="50" cy="66" rx="25" ry="18" fill="#fff5ea"/>
+    <!-- eyes -->
+    <g fill="#2a1a0a">${eyes}</g>
+    <!-- nose -->
+    <path d="M50 60 l-4.5 -4 h9 Z" fill="#e5738a"/>
+    <!-- whiskers -->
+    <g stroke="#caa06a" stroke-width="1.6" stroke-linecap="round" opacity=".85"><path d="M30 60 H10"/><path d="M31 64 H12"/><path d="M31 68 H15"/><path d="M70 60 H90"/><path d="M69 64 H88"/><path d="M69 68 H85"/></g>
     ${mouth}
   </svg>`;
 }
 function mascotSay(mood, text){
-  return el('div',{class:'mascot-row'}, el('div',{html:fritz(mood,72)}), el('div',{class:'speech', style:'flex:1', text:text}));
+  return el('div',{class:'mascot-row'}, el('div',{html:maco(mood,72)}), el('div',{class:'speech', style:'flex:1', text:text}));
 }
 
 /* ============================================================================
@@ -3464,7 +3470,7 @@ const Lesson = {
     if(res.teach){ dock.append(el('button',{class:'btn primary block lg', onclick:()=>this.next(), text:t('cont')})); this._focusContinue(); return; }
     const ok=res.correct;
     const fb=el('div',{class:'feedback '+(ok?'ok':'no')},
-      el('div',{class:'fb-head'}, el('span',{html:fritz(ok?'cheer':'think',40)}), el('span',{text: ok? pick(PRAISE[LANG]||PRAISE.en) : t('not_quite')})),
+      el('div',{class:'fb-head'}, el('span',{html:maco(ok?'cheer':'think',40)}), el('span',{text: ok? pick(PRAISE[LANG]||PRAISE.en) : t('not_quite')})),
       (!ok && res.correctText)? el('div',{class:'fb-expl', html:'<b>'+t('correct_answer')+':</b> '+escapeHtml(res.correctText)}) : null,
       (res.explain)? el('div',{class:'fb-expl', html:escapeHtml(res.explain)}) : null,
       el('button',{class:'btn '+(ok?'good':'primary')+' block lg', style:'margin-top:12px', onclick:()=>this.next(), text:t('cont')})
@@ -3511,7 +3517,7 @@ function heartsBadge(){
 function openOutOfHearts(onContinue){
   const left=nextHeartMs();
   openSheet(el('div',{},
-    el('div',{class:'center'}, el('div',{html:fritz('sad',80)}), el('h2',{text:t('out_of_hearts')}), el('p',{class:'muted', text:t('out_hearts_desc')})),
+    el('div',{class:'center'}, el('div',{html:maco('sad',80)}), el('h2',{text:t('out_of_hearts')}), el('p',{class:'muted', text:t('out_hearts_desc')})),
     el('div',{class:'card', style:'margin-top:12px'}, el('div',{class:'row', style:'justify-content:space-between'},
       el('span',{text:t('next_heart_in')}), el('b',{id:'heartclock', text:fmtMs(left)}))),
     el('button',{class:'btn primary block lg', style:'margin-top:12px', onclick:()=>{ $$('.scrim').pop()?.click(); route('paywall',{reason:t('out_hearts_desc')}); }, html:'👑 '+t('get_plus')+' — '+t('unlimited')}),
@@ -3642,7 +3648,7 @@ SCREENS.home = function(){
   const hour=new Date().getHours();
   const hi = hour<11? (LANG==='bs'?'Dobro jutro':'Good morning') : hour<18? (LANG==='bs'?'Dobar dan':'Good afternoon') : (LANG==='bs'?'Dobro veče':'Good evening');
   wrap.append(el('div',{class:'card', style:'display:flex;align-items:center;gap:14px'},
-    el('div',{html:fritz(S.streak.count>0?'cheer':'wave',72)}),
+    el('div',{html:maco(S.streak.count>0?'cheer':'wave',72)}),
     el('div',{style:'flex:1'},
       el('div',{style:'font-weight:900;font-size:1.2rem', text:hi+(S.profile.name?(', '+S.profile.name):'')+'!'}),
       el('div',{class:'muted small', text: nl? (t('keep_going')) : (LANG==='bs'?'Sve lekcije završene — ponavljaj!':'All lessons done — keep reviewing!')}),
@@ -3707,7 +3713,7 @@ SCREENS.home = function(){
     tile('🔄', t('review_mistakes'), dueN? (dueN+' '+t('due_review').toLowerCase()):'', ()=>startReview()),
     tile('🎯', t('practice_weak'), '', ()=>startWeak()),
     tile('📚', t('grammar_ref'), '', ()=>route('grammar')),
-    tile('🦊', t('ai_tutor'), AI_ENABLED?t('with_ai'):t('mock'), ()=>route('tutor')),
+    tile('🐱', t('ai_tutor'), AI_ENABLED?t('with_ai'):t('mock'), ()=>route('tutor')),
     tile('💬', t('roleplay'), '', ()=>route('roleplay'))
   ));
 
@@ -3798,7 +3804,7 @@ SCREENS.league = function(){
     if(i===12) list.append(el('div',{class:'zone-line demote', text:'▼ '+t('demotion')}));
     list.append(el('div',{class:'league-row'+(row.me?' me':'')},
       el('span',{class:'rk'+(i<3?' top':''), text:String(i+1)}),
-      el('span',{style:'font-size:1.2rem', text: row.me?'🦊':pick(['🐱','🐶','🐰','🦉','🐼','🐻','🦁','🐨'])}),
+      el('span',{style:'font-size:1.2rem', text: row.me?'🐱':pick(['🐱','🐶','🐰','🦉','🐼','🐻','🦁','🐨'])}),
       el('span',{class:'who', text: row.me?(S.profile.name||'Ti')+' ('+t('level').toLowerCase()+' '+levelInfo(S.xp).level+')':row.name}),
       el('span',{class:'pts', text:row.xp+' XP'})
     ));
@@ -3900,8 +3906,8 @@ SCREENS.profile = function(){
   const wrap=el('div',{class:'screen'});
   wrap.append(el('div',{class:'sec-h'}, el('h2',{text:t('nav_profile')}), el('span',{class:'link', onclick:()=>route('settings'), text:'⚙️ '+t('settings')})));
   wrap.append(el('div',{class:'card center'},
-    el('div',{html:fritz('cool',96)}),
-    el('h2',{style:'margin-top:6px', text:S.profile.name||'Lernfuchs'}),
+    el('div',{html:maco('cool',96)}),
+    el('h2',{style:'margin-top:6px', text:S.profile.name||'Merak'}),
     isPlus()? el('span',{class:'pill-tag plus', text:'👑 '+t('plus_title')}) : el('span',{class:'pill-tag', text:t('free')}),
     el('div',{class:'result-stats', style:'margin-top:14px'},
       stat(li.level, t('level')), stat(S.xp, 'XP'), stat(S.streak.count, t('streak')))
@@ -3945,7 +3951,7 @@ SCREENS.settings = function(){
   // Audio quality — natural neural voice (online) + offline system fallback
   card.append(toggleRow('🎙️', LANG==='bs'?'Prirodni glas (online)':'Natural voice (online)',
     LANG==='bs'?'Pravi ljudski (neuralni) glas kad si online. Offline koristi glas sistema.':'Real human (neural) voice when online. Uses the system voice offline.',
-    S.settings.naturalVoice!==false, v=>{ S.settings.naturalVoice=v; save(); if(v) setTimeout(()=>Audio_.speak('Guten Tag! Ich bin Fritz, dein Deutschlehrer.'),150); }));
+    S.settings.naturalVoice!==false, v=>{ S.settings.naturalVoice=v; save(); if(v) setTimeout(()=>Audio_.speak('Guten Tag! Ich bin Maco, dein Deutschlehrer.'),150); }));
   if(S.settings.naturalVoice!==false){
     const nsel=el('select',{class:'type-in', style:'padding:10px', onchange:e=>{ S.settings.netVoice=e.target.value; save(); Audio_.speak('Hallo! Das Wetter ist heute schön. Ich lerne gern Deutsch.'); }});
     Audio_.netVoiceList().forEach(v=> nsel.append(el('option',{value:v, text:v+((v==='Vicki'||v==='Daniel')?' ★':''), selected:S.settings.netVoice===v})));
@@ -3958,7 +3964,7 @@ SCREENS.settings = function(){
   const vmain=el('div',{class:'sr-main'}, el('div',{class:'sr-t',text:(LANG==='bs'?'Offline glas (sistem)':'Offline voice (system)')}));
   if(!voices.length){ vmain.append(el('div',{class:'sr-d', text: LANG==='bs'?'Nema sistemskog njemačkog glasa u ovom browseru.':'No system German voice in this browser.'})); }
   else {
-    const sel=el('select',{class:'type-in', style:'padding:10px', onchange:e=>{ S.settings.voice=e.target.value; save(); Audio_.webSpeak('Guten Tag! Ich bin Fritz.'); }});
+    const sel=el('select',{class:'type-in', style:'padding:10px', onchange:e=>{ S.settings.voice=e.target.value; save(); Audio_.webSpeak('Guten Tag! Ich bin Maco.'); }});
     sel.append(el('option',{value:'', text:'— '+(LANG==='bs'?'automatski (najbolji)':'automatic (best)')+' —', selected:!S.settings.voice}));
     voices.forEach((v,i)=> sel.append(el('option',{value:v.name, text:(i===0?'★ ':'')+v.name, selected:S.settings.voice===v.name})));
     vmain.append(sel, el('button',{class:'btn sm ghost', style:'margin-top:6px', onclick:()=>Audio_.webSpeak('Das Wetter ist heute schön.'), html:'🔊 '+(LANG==='bs'?'Probaj':'Test')}));
@@ -3979,7 +3985,7 @@ SCREENS.settings = function(){
   wrap.append(data);
 
   wrap.append(el('div',{class:'info-note', html:'<b>AI:</b> '+(AI_ENABLED? t('with_ai') : t('no_key_badge'))+'. '+(LANG==='bs'?'Ključ (za demo) se postavlja u kodu — u produkciji ide preko backenda (Part B).':'The key (for demo) is set in code — production proxies it via a backend (Part B).')}));
-  wrap.append(el('div',{class:'center small muted', style:'margin-top:10px', text:'Lernfuchs · v1.0 · '+(AI_ENABLED?'AI':'offline')}));
+  wrap.append(el('div',{class:'center small muted', style:'margin-top:10px', text:'Merak · v1.0 · '+(AI_ENABLED?'AI':'offline')}));
   return wrap;
 };
 function toggleRow(ic, title, desc, on, onchange){
@@ -4082,7 +4088,7 @@ function wordSheet(w){
   const exBox=el('div',{class:'card', style:'margin-top:12px'});
   exBox.append(el('div',{class:'card-title', style:'font-size:.95rem', text:'📝 '+t('example')}));
   exBox.append(el('div',{id:'ws-ex'}, w.ex? el('div',{}, el('b',{text:w.ex}), el('div',{class:'small muted', text:LANG==='en'?(w.exen||''):(w.exbs||'')})) : el('span',{class:'muted small', text:'—'})));
-  exBox.append(el('button',{class:'btn sm block', style:'margin-top:10px', onclick:async(e)=>{ const b=e.target; b.disabled=true; b.textContent=t('ai_thinking'); const r=await aiExample(w); $('#ws-ex').innerHTML=''; $('#ws-ex').append(el('b',{text:r.text}), r.offline?el('div',{class:'small muted',text:'· '+t('mock')}):null); b.disabled=false; b.textContent='🦊 '+(LANG==='bs'?'Novi primjer':'New example'); }, text:'🦊 '+(LANG==='bs'?'AI primjer':'AI example')}));
+  exBox.append(el('button',{class:'btn sm block', style:'margin-top:10px', onclick:async(e)=>{ const b=e.target; b.disabled=true; b.textContent=t('ai_thinking'); const r=await aiExample(w); $('#ws-ex').innerHTML=''; $('#ws-ex').append(el('b',{text:r.text}), r.offline?el('div',{class:'small muted',text:'· '+t('mock')}):null); b.disabled=false; b.textContent='🐱 '+(LANG==='bs'?'Novi primjer':'New example'); }, text:'🐱 '+(LANG==='bs'?'AI primjer':'AI example')}));
   body.append(exBox);
   body.append(el('button',{class:'btn '+(S.saved.includes(w.id)?'ghost':'primary')+' block lg', style:'margin-top:12px', onclick:()=>{ toggleSave(w.id); $$('.scrim').pop()?.click(); render(); }, text:(S.saved.includes(w.id)?'★ '+t('owned'):'⭐ '+t('save_word'))}));
   openSheet(body);
@@ -4118,9 +4124,9 @@ async function aiBreakdown(sentence){
 /* AI TUTOR */
 SCREENS.tutor = function(){
   const wrap=el('div',{class:'screen'});
-  wrap.append(el('div',{class:'sec-h'}, el('h2',{text:'🦊 '+t('ai_tutor')}), el('span',{class:'link', onclick:()=>route('home'), text:'‹ '+t('back')})));
+  wrap.append(el('div',{class:'sec-h'}, el('h2',{text:'🐱 '+t('ai_tutor')}), el('span',{class:'link', onclick:()=>route('home'), text:'‹ '+t('back')})));
   wrap.append(el('div',{class:'card', style:'display:flex;gap:12px;align-items:center;background:'+(AI_ENABLED?'color-mix(in srgb,var(--good) 12%, var(--surface))':'var(--surface-2)')},
-    el('div',{html:fritz('cool',64)}),
+    el('div',{html:maco('cool',64)}),
     el('div',{style:'flex:1'}, el('b',{text: AI_ENABLED? t('with_ai') : t('ai_disabled_title')}),
       el('div',{class:'small muted', text: AI_ENABLED? (isPlus()? t('unlimited'):(aiQuotaLeft()+'/'+AI_FREE_DAILY+' '+ (LANG==='bs'?'danas':'today'))) : t('ai_no_key')}))
   ));
@@ -4134,7 +4140,7 @@ SCREENS.tutor = function(){
     el('button',{class:'btn accent block', style:'margin-top:10px', onclick:async()=>{ const s=saInput.value.trim(); if(!s) return; saOut.innerHTML=''; saOut.append(el('div',{class:'muted small',text:t('ai_thinking')})); const r=await aiBreakdown(s); saOut.innerHTML='';
       if(r.text){ saOut.append(el('div',{class:'info-note', style:'white-space:pre-wrap', text:r.text})); }
       else { const tbl=el('table',{class:'gtable'}); tbl.innerHTML='<tr><th>Wort</th><th>'+(LANG==='bs'?'Značenje':'Meaning')+'</th></tr>'+r.local.map(x=>'<tr><td><b>'+escapeHtml(x.de)+'</b></td><td>'+escapeHtml(x.gloss)+'</td></tr>').join(''); saOut.append(tbl); saOut.append(el('div',{class:'small muted',text:'· '+t('mock')})); }
-    }, text:'🦊 '+(LANG==='bs'?'Analiziraj':'Analyze')}),
+    }, text:'🐱 '+(LANG==='bs'?'Analiziraj':'Analyze')}),
     saOut
   ));
 
@@ -4174,7 +4180,7 @@ SCREENS.roleplay = function(){
     wrap.append(el('p',{class:'muted', text:LANG==='bs'?'Odaberi situaciju za vježbu razgovora:':'Pick a situation to practice a conversation:'}));
     RP_SCENARIOS.forEach(sc=> wrap.append(el('button',{class:'btn block lg', style:'margin-top:10px;justify-content:flex-start;gap:12px', onclick:()=>{ RP={scen:sc, msgs:[{role:'ai', text:sc.open}], step:0}; Audio_.speak(sc.open); route('roleplay'); }},
       el('span',{style:'font-size:1.4rem', text:sc.icon}), el('span',{text:sc.t[LANG]||sc.t.en}))));
-    if(!AI_ENABLED) wrap.append(el('div',{class:'info-note', style:'margin-top:14px', text:LANG==='bs'?'Bez AI ključa razgovor koristi skriptu. Sa ključem Fritz vodi pravi razgovor i ispravlja te.':'Without an AI key the chat is scripted. With a key Fritz holds a real conversation and corrects you.'}));
+    if(!AI_ENABLED) wrap.append(el('div',{class:'info-note', style:'margin-top:14px', text:LANG==='bs'?'Bez AI ključa razgovor koristi skriptu. Sa ključem Maco vodi pravi razgovor i ispravlja te.':'Without an AI key the chat is scripted. With a key Maco holds a real conversation and corrects you.'}));
     return wrap;
   }
   const sc=RP.scen;
@@ -4183,7 +4189,7 @@ SCREENS.roleplay = function(){
   function bubble(m){
     const ai=m.role==='ai';
     return el('div',{class:'row', style:'align-items:flex-end;gap:8px;'+(ai?'':'flex-direction:row-reverse')},
-      ai? el('div',{html:fritz('happy',40)}) : el('span',{style:'font-size:1.6rem',text:'🧑'}),
+      ai? el('div',{html:maco('happy',40)}) : el('span',{style:'font-size:1.6rem',text:'🧑'}),
       el('div',{class:'speech', style:'max-width:78%;'+(ai?'':'background:var(--accent);color:#fff;border-color:transparent'),
         onclick:ai?()=>Audio_.speak(m.text):null}, m.text));
   }
@@ -4320,7 +4326,7 @@ const ExamRun = {
     } else {
       const pct=Math.round(this.score/this.qs.length*100);
       wrap.append(el('div',{class:'card center', style:'background:'+(this.passed?'color-mix(in srgb,var(--good) 16%,var(--surface))':'color-mix(in srgb,var(--bad) 12%,var(--surface))')},
-        el('div',{html:fritz(this.passed?'cheer':'think',72)}),
+        el('div',{html:maco(this.passed?'cheer':'think',72)}),
         el('h2',{text:this.passed? t('exam_passed'):t('exam_failed')}),
         el('div',{class:'result-stats', style:'margin-top:10px'},
           el('div',{class:'rs'}, el('div',{class:'rs-v', text:this.score+'/'+this.qs.length}), el('div',{class:'rs-l',text:t('exam_result')})),
@@ -4353,7 +4359,7 @@ SCREENS.examWrite = function(p){
   const out=el('div',{style:'margin-top:10px'});
   wrap.append(el('div',{class:'grid2', style:'margin-top:10px'},
     el('button',{class:'btn', onclick:()=>{ out.innerHTML=''; out.append(el('div',{class:'card'}, el('div',{class:'card-title',text:'✅ '+t('exam_model')}), el('div',{style:'white-space:pre-wrap', text:task.model}))); }, text:'📄 '+t('exam_show_model')}),
-    el('button',{class:'btn accent', onclick:async(e)=>{ if(!ta.value.trim()){ toast('—'); return; } const btn=e.target; btn.disabled=true; out.innerHTML=''; out.append(el('div',{class:'muted small',text:t('ai_thinking')})); const r=await aiWritingFeedback(task, ta.value, p.level); out.innerHTML=''; out.append(el('div',{class:'card'}, el('div',{class:'card-title',text:'🦊 '+t('exam_ai_check')}), el('div',{style:'white-space:pre-wrap', text:r.text}), r.offline?el('div',{class:'small muted',style:'margin-top:6px',text:'· '+t('mock')}):null)); btn.disabled=false; }, text:'🦊 '+t('exam_ai_check')})));
+    el('button',{class:'btn accent', onclick:async(e)=>{ if(!ta.value.trim()){ toast('—'); return; } const btn=e.target; btn.disabled=true; out.innerHTML=''; out.append(el('div',{class:'muted small',text:t('ai_thinking')})); const r=await aiWritingFeedback(task, ta.value, p.level); out.innerHTML=''; out.append(el('div',{class:'card'}, el('div',{class:'card-title',text:'🐱 '+t('exam_ai_check')}), el('div',{style:'white-space:pre-wrap', text:r.text}), r.offline?el('div',{class:'small muted',style:'margin-top:6px',text:'· '+t('mock')}):null)); btn.disabled=false; }, text:'🐱 '+t('exam_ai_check')})));
   wrap.append(out);
   wrap.append(el('div',{class:'info-note', style:'margin-top:10px'}, el('b',{text:'💡 '+t('exam_tips')+': '}), (task.tips[LANG]||task.tips.en)));
   return wrap;
@@ -4392,7 +4398,7 @@ SCREENS.results = function(p){
   const perfect=p.perfect;
   setTimeout(()=>{ if(perfect||p.leveled) FX.fire({big:perfect, y:innerHeight*0.35}); }, 150);
   wrap.append(el('div',{class:'result-hero'},
-    el('div',{html:fritz(perfect?'cheer':'happy',110)}),
+    el('div',{html:maco(perfect?'cheer':'happy',110)}),
     el('h2',{style:'font-size:1.6rem;margin-top:8px', text: perfect? t('perfect') : t('lesson_done')}),
     el('div',{class:'muted', text: p.meta&&p.meta.type==='review'? t('review_title') : perfect? t('no_mistakes') : t('keep_going')})
   ));
@@ -4412,8 +4418,8 @@ SCREENS.results = function(p){
 SCREENS.onboarding = function(){
   const wrap=el('div',{class:'screen', style:'padding-top:6vh'});
   let name=S.profile.name||''; let goal=S.goal||'regular'; let lang=S.settings.lang||'bs';
-  wrap.append(el('div',{class:'center'}, el('div',{html:fritz('wave',120)}),
-    el('h1',{style:'font-size:1.9rem;margin-top:6px', text:'Lernfuchs 🦊'}),
+  wrap.append(el('div',{class:'center'}, el('div',{html:maco('wave',120)}),
+    el('h1',{style:'font-size:1.9rem;margin-top:6px', text:'Merak 🐱'}),
     el('p',{class:'muted', text:t('app_tagline')})));
   const card=el('div',{class:'card', style:'margin-top:18px'});
   card.append(el('h2',{text:t('welcome')}));
@@ -4499,10 +4505,10 @@ function applySettings(){
   r.setAttribute('lang', S.settings.lang==='en'?'en':'bs');
 }
 function setupPWA(){
-  const iconSvg='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" rx="22" fill="#ff7a1a"/><g transform="translate(6,6) scale(0.88)"><path d="M18 34 L30 10 L42 32 Z" fill="#ffb04d"/><path d="M82 34 L70 10 L58 32 Z" fill="#ffb04d"/><path d="M50 24 C74 24 84 42 84 58 C84 78 68 90 50 90 C32 90 16 78 16 58 C16 42 26 24 50 24 Z" fill="#ffedd8"/><circle cx="36" cy="54" r="4" fill="#2a1a0a"/><circle cx="64" cy="54" r="4" fill="#2a1a0a"/><path d="M50 62 l-5 -5 h10 Z" fill="#2a1a0a"/></g></svg>';
+  const iconSvg='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" rx="24" fill="#e1912b"/><g transform="translate(0,2)"><path d="M30 42 L35 16 L50 37 Z" fill="#fff5ea"/><path d="M70 42 L65 16 L50 37 Z" fill="#fff5ea"/><ellipse cx="50" cy="58" rx="28" ry="26" fill="#fff5ea"/><circle cx="40" cy="55" r="4.6" fill="#2a1a0a"/><circle cx="60" cy="55" r="4.6" fill="#2a1a0a"/><path d="M50 64 l-4.5 -4 h9 Z" fill="#e5738a"/><g stroke="#e1912b" stroke-width="2.2" stroke-linecap="round"><path d="M34 62 H17"/><path d="M34 66 H19"/><path d="M66 62 H83"/><path d="M66 66 H81"/></g></g></svg>';
   const iconUrl='data:image/svg+xml,'+encodeURIComponent(iconSvg);
-  const manifest={ name:'Lernfuchs — Deutsch A1–B2', short_name:'Lernfuchs', description:'Gamified German learning from A1 to B2.',
-    start_url:'.', scope:'.', display:'standalone', orientation:'portrait', background_color:'#0d1020', theme_color:'#ff7a1a',
+  const manifest={ name:'Merak — Deutsch A1–B2', short_name:'Merak', description:'Uči njemački s merakom — od A1 do B2. Learn German with joy.',
+    start_url:'.', scope:'.', display:'standalone', orientation:'portrait', background_color:'#16120c', theme_color:'#e1912b',
     icons:[ {src:iconUrl, sizes:'192x192', type:'image/svg+xml', purpose:'any maskable'}, {src:iconUrl, sizes:'512x512', type:'image/svg+xml', purpose:'any maskable'} ] };
   const mLink=$('#app-manifest'); if(mLink) mLink.href='data:application/manifest+json,'+encodeURIComponent(JSON.stringify(manifest));
   const fav=$('#app-favicon'); if(fav){ fav.href=iconUrl; fav.type='image/svg+xml'; }
