@@ -10,7 +10,31 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 <meta name="apple-mobile-web-app-title" content="Merak" />
 <meta name="mobile-web-app-capable" content="yes" />
-<title>Merak — Uči njemački (A1–B2)</title>
+<title>Merak — Uči njemački s merakom (A1–B2) · Goethe · telc · ÖSD</title>
+<meta name="keywords" content="njemački, učenje njemačkog, Deutsch lernen, Goethe, telc, ÖSD, A1, A2, B1, B2, Ausbildung, njemački za posao, Njemačka, Pflege" />
+<meta name="author" content="Merak" />
+<meta name="robots" content="index, follow" />
+<link rel="canonical" href="https://lernfuchs-gray.vercel.app/" />
+<!-- Open Graph (rich link previews when shared) -->
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Merak" />
+<meta property="og:title" content="Merak — Uči njemački s merakom (A1–B2)" />
+<meta property="og:description" content="Gejmifikovano učenje njemačkog za Balkan: put A1→B2, priprema za Goethe/telc/ÖSD ispite, prirodan glas i AI tutor. Tvoj najbrži put do Njemačke." />
+<meta property="og:url" content="https://lernfuchs-gray.vercel.app/" />
+<meta property="og:image" content="https://lernfuchs-gray.vercel.app/og-image.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:locale" content="bs_BA" />
+<meta property="og:locale:alternate" content="en_US" />
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Merak — Uči njemački s merakom (A1–B2)" />
+<meta name="twitter:description" content="Gejmifikovano učenje njemačkog za Balkan + priprema za Goethe/telc/ÖSD ispite." />
+<meta name="twitter:image" content="https://lernfuchs-gray.vercel.app/og-image.png" />
+<!-- Structured data (schema.org) so search engines understand the product -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"Merak","url":"https://lernfuchs-gray.vercel.app/","applicationCategory":"EducationalApplication","operatingSystem":"Web, iOS, Android","inLanguage":["bs","de","en"],"description":"Gejmifikovana aplikacija za učenje njemačkog jezika (A1–B2) s pripremom za Goethe, telc i ÖSD ispite, prilagođena govornicima bosanskog, hrvatskog i srpskog.","offers":{"@type":"Offer","price":"0","priceCurrency":"EUR","description":"Besplatno uz opcioni Merak Plus"},"featureList":["A1–B2 kurs","Priprema za Goethe/telc/ÖSD","Prostorno ponavljanje (SRS)","AI tutor","Prirodan glas"],"audience":{"@type":"EducationalAudience","educationalRole":"student"}}
+</script>
 <!-- PWA manifest is injected as a data: URL at runtime (see PWA module) -->
 <link rel="manifest" id="app-manifest" />
 <link rel="icon" id="app-favicon" />
@@ -667,6 +691,18 @@ const I18N = {
     readiness:'Spremnost', readiness_desc:'Procjena prema tvojim najboljim rezultatima po modulu (prag {p}%).', readiness_none:'Odradi module ili probni ispit da vidiš spremnost.',
     self_rate_q:'Kako procjenjuješ svoj odgovor?', self_good:'Dobro', self_ok:'Osrednje', self_weak:'Slabo',
     munja_title:'Munja', munja_desc:'Brzi krug — koliko tačnih za 60 s? (greška = −3 s)', munja_start:'Igraj Munju', munja_best:'Najbolje', munja_score:'Poeni', time_left:'Vrijeme',
+    ob_why:'Zašto učiš njemački?', ob_why_job:'Posao / Ausbildung', ob_why_move:'Selim se u Njemačku', ob_why_exam:'Ispit / certifikat', ob_why_talk:'Razgovor i putovanja',
+    ob_level:'Koliko već znaš?', ob_level_a1:'Počinjem od nule (A1)', ob_level_a2:'Znam osnove (A2)', ob_level_b1:'Srednji nivo (B1)', ob_level_b2:'Napredni (B2)', ob_level_unsure:'Nisam siguran/na — testiraj me',
+    ob_time:'Koliko vremena dnevno?', ob_when:'Kada ti treba?', ob_when_3:'Za 3 mjeseca', ob_when_6:'Za 6 mjeseci', ob_when_12:'Za godinu', ob_when_none:'Bez roka — mojim tempom',
+    ob_next:'Dalje', ob_plan_title:'Tvoj plan je spreman!', ob_plan_focus:'Fokus', ob_plan_goal:'Cilj', ob_plan_daily:'Dnevno', ob_plan_by:'Rok', ob_plan_lessons:'lekcija/dan', ob_start_learning:'Kreni s učenjem 🚀',
+    ob_value1:'Njemački na tvom jeziku', ob_value1d:'Objašnjenja na našem jeziku — ne kroz engleski.', ob_value2:'Priprema za ispit', ob_value2d:'Goethe, telc i ÖSD — od A1 do B2.', ob_value3:'Tvoj put do Njemačke', ob_value3d:'Vokabular za posao, Ausbildung i život.',
+    plan_today:'danas po planu', plan_daysleft:'dana do cilja', roadmap:'Moj plan',
+    pw_value_title:'Šta dobiješ s Plus', pw_v1:'Neograničen AI razgovor i vježba', pw_v2:'Svi nivoi B1–B2 + puni mock ispiti', pw_v3:'AI provjera pisanja + pametno ponavljanje', pw_v4:'Bez reklama i neograničena srca',
+    pw_trust1:'7 dana besplatno', pw_trust2:'Otkaži bilo kada', pw_trust3:'Sigurno (Stripe)', pw_faq:'Česta pitanja',
+    faq_q1:'Mogu li otkazati bilo kada?', faq_a1:'Da — otkažeš u par klikova, bez pitanja. Plus ostaje do kraja plaćenog perioda.',
+    faq_q2:'Šta ako mi se ne svidi?', faq_a2:'Imaš 7 dana besplatno. Ako otkažeš prije kraja probnog perioda, ništa se ne naplaćuje.',
+    faq_q3:'Je li plaćanje sigurno?', faq_a3:'Da — sve ide preko Stripe-a. Podatke o kartici ne vidimo niti čuvamo.',
+    faq_q4:'Radi li offline?', faq_a4:'Da — instaliraj Merak kao aplikaciju (dodaj na početni ekran) i uči i bez stabilnog interneta.',
   },
   en:{
     app_tagline:'Learn German with joy — A1 to B2',
@@ -745,6 +781,18 @@ const I18N = {
     readiness:'Readiness', readiness_desc:'Estimate from your best score per module (pass {p}%).', readiness_none:'Do some modules or a mock exam to see readiness.',
     self_rate_q:'How do you rate your answer?', self_good:'Good', self_ok:'OK', self_weak:'Weak',
     munja_title:'Lightning', munja_desc:'Fast round — how many correct in 60s? (wrong = −3s)', munja_start:'Play Lightning', munja_best:'Best', munja_score:'Score', time_left:'Time',
+    ob_why:'Why are you learning German?', ob_why_job:'Work / apprenticeship', ob_why_move:'Moving to Germany', ob_why_exam:'Exam / certificate', ob_why_talk:'Conversation & travel',
+    ob_level:'How much do you know?', ob_level_a1:'Starting from zero (A1)', ob_level_a2:'I know the basics (A2)', ob_level_b1:'Intermediate (B1)', ob_level_b2:'Advanced (B2)', ob_level_unsure:'Not sure — test me',
+    ob_time:'How much time per day?', ob_when:'When do you need it?', ob_when_3:'In 3 months', ob_when_6:'In 6 months', ob_when_12:'In a year', ob_when_none:'No deadline — my pace',
+    ob_next:'Next', ob_plan_title:'Your plan is ready!', ob_plan_focus:'Focus', ob_plan_goal:'Goal', ob_plan_daily:'Daily', ob_plan_by:'Deadline', ob_plan_lessons:'lessons/day', ob_start_learning:'Start learning 🚀',
+    ob_value1:'German in your language', ob_value1d:'Explanations in your language — not via English.', ob_value2:'Exam preparation', ob_value2d:'Goethe, telc and ÖSD — A1 to B2.', ob_value3:'Your path to Germany', ob_value3d:'Vocabulary for work, apprenticeship and life.',
+    plan_today:'today on plan', plan_daysleft:'days to goal', roadmap:'My plan',
+    pw_value_title:'What you get with Plus', pw_v1:'Unlimited AI conversation & practice', pw_v2:'All B1–B2 levels + full mock exams', pw_v3:'AI writing check + smart revision', pw_v4:'No ads and unlimited hearts',
+    pw_trust1:'7 days free', pw_trust2:'Cancel anytime', pw_trust3:'Secure (Stripe)', pw_faq:'FAQ',
+    faq_q1:'Can I cancel anytime?', faq_a1:'Yes — cancel in a couple of clicks, no questions. Plus stays until the end of the paid period.',
+    faq_q2:'What if I do not like it?', faq_a2:'You get 7 days free. If you cancel before the trial ends, you are not charged.',
+    faq_q3:'Is payment secure?', faq_a3:'Yes — everything goes through Stripe. We never see or store your card details.',
+    faq_q4:'Does it work offline?', faq_a4:'Yes — install Merak as an app (add to home screen) and learn even without a stable connection.',
   }
 };
 function t(key, vars){
@@ -2396,7 +2444,8 @@ function DEFAULT_STATE(){
   const today = dateKey();
   return {
     v: SCHEMA_VERSION,
-    profile: { name:'', joined:today, onboarded:false },
+    profile: { name:'', joined:today, onboarded:false, motivation:'', startLevel:'', targetDate:'' },
+    roadmap: null,             // personalized study plan generated at onboarding
     settings: { sound:true, theme:'auto', voice:'', naturalVoice:true, netVoice:'Vicki', textsize:'normal', dyslexia:false, reduce:false, lang:'bs' },
     xp: 0,
     gems: 30,
@@ -3863,6 +3912,19 @@ SCREENS.home = function(){
       )));
   }
 
+  // Personalized plan (from onboarding roadmap)
+  if(S.roadmap){ const rm=S.roadmap; let daysLeft=null;
+    if(rm.targetDate){ daysLeft=Math.max(0, Math.round((new Date(rm.targetDate+'T00:00:00')-new Date(dateKey()+'T00:00:00'))/86400000)); }
+    wrap.append(el('div',{class:'card', style:'margin-top:14px;border-left:5px solid var(--brand)'},
+      el('div',{class:'row', style:'justify-content:space-between;align-items:center'},
+        el('div',{class:'card-title', style:'margin:0'}, el('span',{text:'📋 '}), el('span',{text:t('roadmap')})),
+        el('span',{class:'pill-tag', text:rm.startLevel+' → '+rm.targetLevel})),
+      el('div',{class:'small muted', style:'margin-top:4px', text:rm.focus}),
+      el('div',{class:'row', style:'gap:18px;margin-top:8px'},
+        el('div',{}, el('b',{style:'font-size:1.1rem', text:'📚 '+rm.perDay}), el('div',{class:'small muted', text:t('plan_today')})),
+        daysLeft!=null? el('div',{}, el('b',{style:'font-size:1.1rem', text:'📅 '+daysLeft}), el('div',{class:'small muted', text:t('plan_daysleft')})) : null)));
+  }
+
   // Exam prep — prominent entry (separate from the learning path)
   wrap.append(el('button',{class:'card', style:'display:flex;gap:12px;align-items:center;width:100%;text-align:left;margin-top:14px;background:linear-gradient(135deg, color-mix(in srgb,var(--accent) 15%, var(--surface)), var(--surface));border-color:var(--accent)', onclick:()=>route('exams')},
     el('span',{style:'font-size:1.9rem',text:'📝'}),
@@ -4730,28 +4792,92 @@ SCREENS.results = function(p){
 };
 
 /* ONBOARDING */
+/* Generate a personalized study roadmap from the onboarding answers */
+function buildRoadmap(opts){
+  const order=LEVELS;
+  const startIdx=Math.max(0, order.indexOf(opts.startLevel||'A1'));
+  const targetLevel=(opts.motivation==='exam'||opts.motivation==='job'||opts.motivation==='move')?'B2':'B1';
+  const targetIdx=Math.max(startIdx, order.indexOf(targetLevel));
+  const levels=order.slice(startIdx, targetIdx+1);
+  const remaining=UNITS.filter(u=>{ const i=order.indexOf(u.lvl); return i>=startIdx && i<=targetIdx; }).reduce((n,u)=>n+u.lessons,0);
+  let days=null, perDay=null;
+  if(opts.targetDate){ const dt=new Date(opts.targetDate+'T00:00:00'), now=new Date(dateKey()+'T00:00:00');
+    days=Math.max(1, Math.round((dt-now)/86400000)); perDay=Math.min(8, Math.max(1, Math.ceil(remaining/days))); }
+  const paceByGoal={casual:1,regular:2,serious:3,intense:4};
+  if(perDay==null) perDay=paceByGoal[opts.goalKey||S.goal]||2;
+  const focus={ job:(LANG==='bs'?'Njemački za posao (Pflege, zanati) → B2':'German for work (care, trades) → B2'),
+    move:(LANG==='bs'?'Svakodnevni njemački + B1 za život':'Everyday German + B1 for living'),
+    exam:(LANG==='bs'?'Priprema za Goethe/telc/ÖSD ispit':'Goethe/telc/ÖSD exam prep'),
+    talk:(LANG==='bs'?'Razgovor i putovanja':'Conversation & travel') }[opts.motivation]||(LANG==='bs'?'Opšti njemački A1→B2':'General German A1→B2');
+  return { startLevel:order[startIdx], targetLevel:order[targetIdx], levels, remainingLessons:remaining, targetDate:opts.targetDate||'', days, perDay, motivation:opts.motivation||'', focus, created:dateKey() };
+}
+function fmtDate(iso){ try{ return new Date(iso+'T00:00:00').toLocaleDateString(LANG==='bs'?'bs-BA':'en-GB',{day:'numeric',month:'short',year:'numeric'}); }catch(e){ return iso; } }
+
+/* Personalized onboarding wizard → generates a study roadmap */
 SCREENS.onboarding = function(){
-  const wrap=el('div',{class:'screen', style:'padding-top:6vh'});
-  let name=S.profile.name||''; let goal=S.goal||'regular'; let lang=S.settings.lang||'bs';
-  wrap.append(el('div',{class:'center'}, el('div',{html:maco('wave',120)}),
-    el('h1',{style:'font-size:1.9rem;margin-top:6px', text:'Merak 🐱'}),
-    el('p',{class:'muted', text:t('app_tagline')})));
-  const card=el('div',{class:'card', style:'margin-top:18px'});
-  card.append(el('h2',{text:t('welcome')}));
-  card.append(el('label',{class:'sr-t small', style:'display:block;margin:12px 0 6px', text:t('pick_name')}));
-  const nameIn=el('input',{class:'type-in', placeholder:t('your_name'), value:name, oninput:e=>name=e.target.value});
-  card.append(nameIn);
-  card.append(el('div',{class:'sr-t small', style:'margin:16px 0 6px', text:t('interface_lang')}));
-  const langSeg=el('div',{class:'seg'}); [['bs','Bosanski'],['en','English']].forEach(([v,l])=> langSeg.append(el('button',{class:lang===v?'on':'', onclick:()=>{ lang=v; LANG=v; S.settings.lang=v; applySettings(); $$('button',langSeg).forEach(b=>b.classList.remove('on')); langSeg.querySelector('[data-v="'+v+'"]').classList.add('on'); }, 'data-v':v, text:l}))); card.append(langSeg);
-  card.append(el('div',{class:'sr-t small', style:'margin:16px 0 6px', text:t('pick_goal')}));
-  const goalWrap=el('div',{});
-  Object.entries(GOALS).forEach(([k,g])=> goalWrap.append(el('button',{class:'btn block'+(goal===k?' primary':''), style:'margin-top:8px;justify-content:space-between', 'data-g':k, onclick:()=>{ goal=k; $$('[data-g]',goalWrap).forEach(b=>b.classList.remove('primary')); goalWrap.querySelector('[data-g="'+k+'"]').classList.add('primary'); }}, el('span',{text:t(g.label)}), el('span',{text:g.xp+' XP'}))));
-  card.append(goalWrap);
-  card.append(el('button',{class:'btn primary block lg', style:'margin-top:18px', onclick:()=>{
-    S.profile.name=name.trim().slice(0,24); S.goal=goal; S.settings.lang=lang; LANG=lang; S.profile.onboarded=true;
-    ensureQuests(); ensureLeague(); save(); applySettings(); Audio_.play('levelup'); FX.fire({big:true}); route('home');
-  }, text:t('lets_go')+' 🚀'}));
-  wrap.append(card);
+  const wrap=el('div',{class:'screen', style:'padding-top:3vh'});
+  const st={ name:S.profile.name||'', lang:S.settings.lang||'bs', motivation:'', level:'A1', unsure:false, goal:S.goal||'regular', when:'none' };
+  const steps=6; let step=0;
+  const dots=el('div',{class:'row', style:'gap:6px;justify-content:center;margin:6px 0 12px'});
+  const body=el('div',{});
+  function choice(label, sel, onclick){ return el('button',{class:'btn block'+(sel?' primary':''), style:'margin-top:8px;justify-content:space-between;text-align:left', onclick}, el('span',{text:label}), el('span',{text:sel?'✓':'›'})); }
+  function nextBtn(){ return el('button',{class:'btn primary block lg', style:'margin-top:16px', onclick:()=>{ step=Math.min(steps-1,step+1); paint(); }, text:t('ob_next')+' →'}); }
+  function backBtn(){ return step>0? el('button',{class:'link', style:'display:inline-block;margin-bottom:8px', onclick:()=>{ step=Math.max(0,step-1); paint(); }, text:'‹ '+t('back')}) : null; }
+  function stepEl(){
+    const c=el('div',{}); const bb=backBtn(); if(bb) c.append(bb);
+    if(step===0){
+      c.append(el('div',{class:'center'}, el('div',{html:maco('wave',104)}), el('h1',{style:'font-size:1.7rem;margin-top:2px', text:'Merak 🐱'}), el('p',{class:'muted', style:'margin-top:2px', text:t('app_tagline')})));
+      [['🗣️',t('ob_value1'),t('ob_value1d')],['🎓',t('ob_value2'),t('ob_value2d')],['🇩🇪',t('ob_value3'),t('ob_value3d')]].forEach(([ic,ti,de])=>
+        c.append(el('div',{class:'row', style:'gap:10px;align-items:flex-start;margin-top:12px'}, el('span',{style:'font-size:1.35rem',text:ic}), el('div',{}, el('b',{text:ti}), el('div',{class:'small muted', text:de})))));
+      c.append(el('div',{class:'sr-t small', style:'margin:16px 0 6px', text:t('pick_name')}));
+      c.append(el('input',{class:'type-in', placeholder:t('your_name'), value:st.name, 'aria-label':t('your_name'), oninput:e=>st.name=e.target.value}));
+      c.append(el('div',{class:'sr-t small', style:'margin:14px 0 6px', text:t('interface_lang')}));
+      const seg=el('div',{class:'seg'}); [['bs','Bosanski'],['en','English']].forEach(([v,l])=> seg.append(el('button',{class:st.lang===v?'on':'', onclick:()=>{ st.lang=v; LANG=v; S.settings.lang=v; applySettings(); paint(); }, text:l}))); c.append(seg);
+      c.append(nextBtn());
+    } else if(step===1){
+      c.append(el('h2',{text:t('ob_why')}));
+      [['job','💼',t('ob_why_job')],['move','🇩🇪',t('ob_why_move')],['exam','🎓',t('ob_why_exam')],['talk','💬',t('ob_why_talk')]].forEach(([k,ic,l])=>
+        c.append(choice(ic+'  '+l, st.motivation===k, ()=>{ st.motivation=k; step++; paint(); })));
+    } else if(step===2){
+      c.append(el('h2',{text:t('ob_level')}));
+      [['A1',t('ob_level_a1')],['A2',t('ob_level_a2')],['B1',t('ob_level_b1')],['B2',t('ob_level_b2')]].forEach(([k,l])=>
+        c.append(choice(l, !st.unsure&&st.level===k, ()=>{ st.level=k; st.unsure=false; step++; paint(); })));
+      c.append(choice('❓  '+t('ob_level_unsure'), st.unsure, ()=>{ st.unsure=true; step++; paint(); }));
+    } else if(step===3){
+      c.append(el('h2',{text:t('ob_time')}));
+      const mins={casual:'5 min',regular:'10 min',serious:'15 min',intense:'20 min'};
+      Object.entries(GOALS).forEach(([k,g])=> c.append(choice(t(g.label)+' · '+mins[k]+' · '+g.xp+' XP', st.goal===k, ()=>{ st.goal=k; step++; paint(); })));
+    } else if(step===4){
+      c.append(el('h2',{text:t('ob_when')}));
+      [['3',t('ob_when_3')],['6',t('ob_when_6')],['12',t('ob_when_12')],['none',t('ob_when_none')]].forEach(([k,l])=>
+        c.append(choice(l, st.when===k, ()=>{ st.when=k; step++; paint(); })));
+    } else {
+      const startLevel=st.unsure?'A1':st.level;
+      const targetDate=st.when==='none'?'':(()=>{ const d=new Date(dateKey()+'T00:00:00'); d.setMonth(d.getMonth()+parseInt(st.when,10)); return d.toISOString().slice(0,10); })();
+      const rm=buildRoadmap({startLevel, motivation:st.motivation, targetDate, goalKey:st.goal});
+      c.append(el('div',{class:'center'}, el('div',{html:maco('cheer',92)}), el('h2',{style:'margin-top:2px', text:t('ob_plan_title')})));
+      const card=el('div',{class:'card', style:'margin-top:12px'});
+      card.append(el('div',{class:'kv'}, el('span',{class:'k',text:'🎯 '+t('ob_plan_focus')}), el('b',{text:rm.focus})));
+      card.append(el('div',{class:'kv'}, el('span',{class:'k',text:'📈 '+t('ob_plan_goal')}), el('b',{text:rm.startLevel+' → '+rm.targetLevel})));
+      card.append(el('div',{class:'kv'}, el('span',{class:'k',text:'⏱️ '+t('ob_plan_daily')}), el('b',{text:rm.perDay+' '+t('ob_plan_lessons')})));
+      if(rm.targetDate) card.append(el('div',{class:'kv'}, el('span',{class:'k',text:'📅 '+t('ob_plan_by')}), el('b',{text:fmtDate(rm.targetDate)+' · '+rm.days+' '+t('plan_daysleft')})));
+      c.append(card);
+      if(st.unsure) c.append(el('div',{class:'info-note', style:'margin-top:8px', text:'❓ '+t('ob_level_unsure')}));
+      c.append(el('button',{class:'btn primary block lg', style:'margin-top:16px', onclick:()=>finish(startLevel, targetDate, rm), text:t('ob_start_learning')}));
+    }
+    return c;
+  }
+  function paint(){ dots.innerHTML=''; for(let i=0;i<steps;i++) dots.append(el('span',{style:'width:8px;height:8px;border-radius:50%;transition:background .2s;background:'+(i<=step?'var(--brand)':'var(--line-strong)')})); body.innerHTML=''; body.append(stepEl()); wrap.scrollTop=0; }
+  function finish(startLevel, targetDate, rm){
+    S.profile.name=st.name.trim().slice(0,24); S.settings.lang=st.lang; LANG=st.lang;
+    S.profile.motivation=st.motivation; S.profile.startLevel=startLevel; S.profile.targetDate=targetDate;
+    S.goal=st.goal; S.roadmap=rm; S.profile.onboarded=true;
+    const startIdx=LEVELS.indexOf(startLevel);
+    if(startIdx>0){ S._placementLevel=startIdx; S.placementDone=true; UNITS.forEach(u=>{ if(LEVELS.indexOf(u.lvl)<startIdx){ const us=unitState(u.id); for(let j=0;j<u.lessons;j++) us.done[j]=true; us.crown=Math.max(us.crown,1); } }); }
+    ensureQuests(); ensureLeague(); save(); applySettings(); Audio_.play('levelup'); if(!reduceMotion()) FX.fire({big:true});
+    route(st.unsure?'placement':'home');
+  }
+  wrap.append(dots, body); paint();
   return wrap;
 };
 
@@ -4766,6 +4892,13 @@ SCREENS.paywall = function(p){
     el('p',{class:'muted', text:t('plus_sub')})
   ));
   if(p&&p.reason) wrap.append(el('div',{class:'info-note center', style:'margin-bottom:6px', text:p.reason}));
+
+  // Value-first: what you actually get (before showing price)
+  if(!isPlus()) wrap.append(el('div',{class:'card', style:'margin-top:6px'},
+    el('div',{class:'card-title', text:'✨ '+t('pw_value_title')}),
+    ...[['🗣️',t('pw_v1')],['🎓',t('pw_v2')],['✍️',t('pw_v3')],['🚫',t('pw_v4')]].map(([ic,tx])=>
+      el('div',{class:'row', style:'gap:10px;margin-top:8px;align-items:flex-start'}, el('span',{style:'font-size:1.1rem',text:ic}), el('span',{class:'small', style:'font-weight:600', text:tx})))
+  ));
 
   const plans=el('div',{class:'plans'});
   const yearly=el('div',{class:'plan pick', 'data-plan':'yearly'},
@@ -4790,6 +4923,8 @@ SCREENS.paywall = function(p){
   } else {
     wrap.append(el('button',{class:'btn primary block lg', style:'margin-top:6px', onclick:()=>Billing.startCheckout(planPick), html:'✨ '+t('start_trial')}));
     wrap.append(el('div',{class:'center small muted', style:'margin-top:8px', text:t('trial_note')}));
+    wrap.append(el('div',{class:'row', style:'gap:6px;justify-content:center;flex-wrap:wrap;margin-top:8px'},
+      ...[['✅',t('pw_trust1')],['🔓',t('pw_trust2')],['🔒',t('pw_trust3')]].map(([ic,tx])=> el('span',{class:'pill-tag', style:'font-size:.72rem', text:ic+' '+tx}))));
   }
 
   // Feature comparison
@@ -4808,6 +4943,13 @@ SCREENS.paywall = function(p){
   feats.forEach(([f,a,b])=> tb.append(el('tr',{}, el('td',{text:f}), el('td',{class:'c', html:a==='✓'?'<span class="yes">✓</span>':'<span class="no">'+escapeHtml(a)+'</span>'}), el('td',{class:'c', html:'<span class="yes">'+escapeHtml(b)+'</span>'}))));
   table.append(tb); wrap.append(el('div',{class:'card', style:'margin-top:16px'}, el('div',{class:'card-title', text:'⚖️ Free vs Plus'}), table));
 
+  if(!isP){ const faq=el('div',{class:'card', style:'margin-top:14px'}, el('div',{class:'card-title', text:'❓ '+t('pw_faq')}));
+    [[t('faq_q1'),t('faq_a1')],[t('faq_q2'),t('faq_a2')],[t('faq_q3'),t('faq_a3')],[t('faq_q4'),t('faq_a4')]].forEach(([q,a])=>{
+      const d=el('details',{style:'margin-top:6px;border-top:1px solid var(--line);padding-top:6px'});
+      d.append(el('summary',{style:'cursor:pointer;font-weight:700;font-size:.9rem', text:q}), el('div',{class:'small muted', style:'margin-top:5px', text:a})); faq.append(d);
+    });
+    wrap.append(faq);
+  }
   if(!isP) wrap.append(el('button',{class:'btn ghost block', style:'margin-top:12px', onclick:()=>Billing.restore(), text:t('restore_sub')}));
   wrap.append(el('div',{class:'info-note', style:'margin-top:10px', text: Billing.live()? ('🔒 '+t('pay_secure')) : ('💳 '+t('demo_billing'))}));
   return wrap;

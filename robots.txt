@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://lernfuchs-gray.vercel.app/sitemap.xml
